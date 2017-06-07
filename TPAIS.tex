@@ -1,0 +1,171 @@
+\documentclass[final]{siamltex}
+%test change
+\usepackage{cite}
+\usepackage{graphicx,bbm,pstricks,soul}
+\usepackage{pifont}
+\usepackage{bbm,algorithmic,mdframed,placeins,multirow,booktabs,subfigure}
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+
+\setlength{\parindent}{0in}
+\usepackage{amsmath,amsfonts,amsbsy,amssymb}
+\newcommand{\RARR}[3]{#1
+  \;\displaystyle\mathop{\displaystyle\longrightarrow}^{#3}\; #2}
+\newcommand{\RARRlong}[3]{#1
+  \;\displaystyle\mathop{-\!\!\!-\!\!\!-\!\!\!-\!\!\!-\!\!\!\!\displaystyle
+  \longrightarrow}^{#3}\; #2}
+\newcommand{\LARR}[3]{#1
+  \;\displaystyle\mathop{\displaystyle\longleftarrow}^{#3}\; #2}
+\newcommand{\LRARR}[4]{{\mbox{ \raise 0.4 mm \hbox{$#1$}}} \;
+  \mathop{\stackrel{\displaystyle\longrightarrow}\longleftarrow}^{#3}_{#4}
+  \; {\mbox{\raise 0.4 mm\hbox{$#2$}}}}
+\newcommand{\bX}{{\bf X}}
+\newcommand{\vecx}{{\mathbf x}}
+\newcommand{\vecy}{{\mathbf y}}
+\newcommand{\vecz}{{\mathbf z}}
+\newcommand{\vecq}{{\mathbf q}}
+\newcommand{\bs}{{\mathbf s}}
+\newcommand{\vecr}{{\mathbf r}}
+\newcommand{\vecX}{{\mathbf X}}
+\newcommand{\vecv}{{\mathbf v}}
+\newcommand{\tick}{\ding{52}}
+\newcommand{\cross}{\ding{54}}
+\newcommand{\vecn}{{\mathbf n}}
+\newcommand{\vecp}{{\mathbf p}}
+\newcommand{\cT}{{\mathcal T}}
+\newcommand{\dt}{{\mbox{d}t}}
+\newcommand{\dx}{{\mbox{d} \vecx}}
+\newcommand{\boldnu}{{\boldsymbol \nu}}
+\newcommand{\er}{{\mathbb R}}
+\renewcommand{\div}{{\rm div}}
+\newcommand{\bnu}{{\bf \nu}}
+\newcommand{\divergence}{\mathop{\mbox{div}}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\FP}{P_{\rm{FP}}}
+\newcommand{\ME}{P_{\rm{ME}}}
+\newcommand{\MEs}{P_{\rm{ME}_{S}}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\X}{{\mathbf X}}
+\newcommand{\Y}{{\mathbf Y}}
+\newcommand{\W}{{\mathbf W}}
+\newcommand{\data}{D}
+\newcommand{\neff}{n_{\text{eff}}}
+\newcommand{\E}{{\mathbb E}}
+\renewcommand{\b}[1]{{\bf #1}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\newcommand{\picturesAB}[6]{
+\centerline{
+\hskip #4
+\raise #3 \hbox{\raise 0.9mm \hbox{(a)}}
+\hskip #5
+\epsfig{file=#1,height=#3}
+\hskip #6
+\raise #3 \hbox{\raise 0.9mm \hbox{(b)}}
+\hskip #5
+\epsfig{file=#2,height=#3}
+}}
+\newcommand{\picturesCD}[6]{
+\centerline{
+\hskip #4
+\raise #3 \hbox{\raise 0.9mm \hbox{(c)}}
+\hskip #5
+\epsfig{file=#1,height=#3}
+\hskip #6
+\raise #3 \hbox{\raise 0.9mm \hbox{(d)}}
+\hskip #5
+\epsfig{file=#2,height=#3}
+}}
+
+\makeatletter  
+\newcommand{\xleftrightarrows}[2][]{\mathrel{%  
+ \raise.40ex\hbox{$  
+       \ext@arrow 3095\leftarrowfill@{\phantom{#1}}{#2}$}%  
+ \setbox0=\hbox{$\ext@arrow 0359\rightarrowfill@{#1}{\phantom{#2}}$}%  
+ \kern-\wd0 \lower.4ex\box0}}  
+ 
+\newcommand{\xrightleftarrows}[2][]{\mathrel{%  
+ \raise.40ex\hbox{$\ext@arrow 3095\rightarrowfill@{\phantom{#1}}{#2}$}%  
+ \setbox0=\hbox{$\ext@arrow 0359\leftarrowfill@{#1}{\phantom{#2}}$}%  
+ \kern-\wd0 \lower.4ex\box0}}  
+ 
+\def\leftrightarrowfill@{%
+ \arrowfill@\leftarrow\relbar\rightarrow%
+ }
+\newcommand*{\centerfloat}{%
+  \parindent \z@
+  \leftskip \z@ \@plus 1fil \@minus \textwidth
+  \rightskip\leftskip
+  \parfillskip \z@skip}
+\makeatother
+\makeatother 
+
+\title{Transport map accelerated-PAIS, and application to inverse problems arising from
+  multiscale stochastic reaction networks}
+\author{Simon Cotter, Yannis Kevrekidis, Paul Russell}
+\begin{document}
+\maketitle
+\begin{abstract}
+In many applications, inverse problems arise where where there are
+complex correlations between the different parameters which we wish to
+infer from data. The correlations often manifest themselves as lower
+dimensional manifolds on which the likelihood function is
+invariant, or varies very little. This can be due to trying to infer
+unobservable parameters, or due to sloppiness in the model which is
+being used to describe the data. In such a situation, standard
+sampling methods for characterising the posterior distribution which
+do not incorporate information about this structure will be highly
+inefficient. Moreover, most methods are inherently serial in nature,
+and as such are not expoiting the parallelised  nature of modern
+computer infrastructure. In this paper, we seek to develop a method to
+tackle this problem, using optimal transport maps to simplify
+posterior distributions which are concentrated on lower dimensional
+manifolds.
+
+We demonstrate the approach by considering inverse problems arising
+from partially observed stochastic reaction networks. In particular,
+we consider systems which exhibit multiscale behaviour, but for which
+only the slow variables in the system are observable. We demonstrate
+that certain multiscale approximations lead to more consistent
+approximations of the posterior than others.
+\end{abstract}
+
+
+\section{Introduction}
+%Topics to cover: parallel MCMC, pMC, PAIS
+%Transport maps, transport map MCMC
+%Stochastic reaction networks
+%Multiscale approximations, QSSA/QEA, CMA
+
+In Section \ref{sec:map} we show how an appropriate transport map can
+be constructed from importance samples which maps the posterior close
+to a reference Gaussian measure. In Section \ref{sec:TPAIS} we show
+how such a map can be incorporated into a sophisticated parallel MCMC
+infrastructure in order to accelerate mixing. In Section
+\ref{sec:multi} we consider how likelihoods can be approximated using
+multiscale methodologies in order to carry out inference for
+multiscale and/or partially observed stochastic reaction networks. In
+Section \ref{sec:num} we present some numerical examples, which serve
+to demonstrate the increased efficiency of the described sampling
+methodologies, as well as investigating the posterior approximations
+discussed in the previous section. We conclude with a discussion in
+Section \ref{sec:conc}.
+
+\section{Construction of transport maps in importance sampling} \label{sec:map}
+%Follow the other papers, show adaptation(s)
+
+\section{T-PAIS}\label{sec:TPAIS}
+%Plug into PAIS
+
+\section{Multiscale approximations of likelihoods in stochastic
+  reaction networks}\label{sec:multi}
+
+\section{Numerical Examples}\label{sec:num}
+
+\section{Conclusions}\label{sec:conc}
+
+\bibliographystyle{siam}
+\bibliography{refs}
+\end{document}
