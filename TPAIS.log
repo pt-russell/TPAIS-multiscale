@@ -1,4 +1,4 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2012.2.23)  15 JUN 2017 15:54
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2012.2.23)  15 JUN 2017 15:56
 entering extended mode
  %&-line parsing enabled.
 **TPAIS.tex $enable-write18 $shell-escape
@@ -913,11 +913,8 @@ LaTeX Font Info:    ... okay on input line 141.
 \AtBeginShipoutBox=\box70
 
 ABD: EveryShipout initializing macros
-
-LaTeX Warning: Citation `parno2014transport' on page 1 undefined on input line 
-192.
-
 LaTeX Font Info:    Try loading font information for U+msa on input line 193.
+
 (/usr/share/texmf/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2002/01/19 v2.2g AMS font definitions
 )
@@ -942,79 +939,12 @@ Package amsmath Warning: Foreign command \atopwithdelims;
 (amsmath)                 on input line 286.
 
 [3]
-
-LaTeX Warning: Citation `choi1992scalapack' on page 4 undefined on input line 2
-92.
-
-
 Overfull \hbox (0.96867pt too wide) in paragraph at lines 291--294
  \OT1/cmr/bx/n/10 2.3. Im-ple-men-ta-tion of the op-ti-mi-sa-tion prob-lem.[] \
 OT1/cmr/m/n/10 We now re-turn to Equa-
  []
 
-[4] [5] [6]
-
-LaTeX Warning: Citation `gillespie1977exact' on page 7 undefined on input line 
-472.
-
-[7]
-
-LaTeX Warning: Citation `szekely2014stochastic' on page 8 undefined on input li
-ne 491.
-
-
-LaTeX Warning: Citation `mcadams1999sa' on page 8 undefined on input line 491.
-
-
-LaTeX Warning: Citation `shahrezaei2008colored' on page 8 undefined on input li
-ne 491.
-
-
-LaTeX Warning: Citation `gillespie1991markov' on page 8 undefined on input line
- 493.
-
-
-LaTeX Warning: Citation `anderson2016product' on page 8 undefined on input line
- 493.
-
-
-LaTeX Warning: Citation `jahnke2007solving' on page 8 undefined on input line 4
-93.
-
-
-LaTeX Warning: Citation `anderson2010product' on page 8 undefined on input line
- 493.
-
-
-LaTeX Warning: Citation `cao2006efficient' on page 8 undefined on input line 49
-3.
-
-
-LaTeX Warning: Citation `cao2005avoiding' on page 8 undefined on input line 493
-.
-
-
-LaTeX Warning: Citation `chatterjee2005binomial' on page 8 undefined on input l
-ine 493.
-
-
-LaTeX Warning: Citation `gillespie2000chemical' on page 8 undefined on input li
-ne 493.
-
-[8]
-
-LaTeX Warning: Citation `gillespie2007stochastic' on page 9 undefined on input 
-line 515.
-
-[9]
-
-LaTeX Warning: Citation `cotter2011constrained' on page 10 undefined on input l
-ine 547.
-
-
-LaTeX Warning: Citation `cotter2016constrained' on page 10 undefined on input l
-ine 547.
-
+[4] [5] [6] [7] [8] [9]
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
@@ -1077,18 +1007,6 @@ File: "images/CMA_ref_space_MHlogTRW".pdf Graphic file (type pdf)
 File: "images/Diff_CMA_QEA".pdf Graphic file (type pdf)
 
 <use "images/Diff_CMA_QEA".pdf> [18 <./images/Diff_CMA_QEA.pdf>]
-
-LaTeX Warning: Citation `chen2012monte' on page 19 undefined on input line 870.
-
-
-
-LaTeX Warning: Citation `robert2013monte' on page 19 undefined on input line 87
-4.
-
-
-LaTeX Warning: Citation `kass1995bayes' on page 19 undefined on input line 895.
-
-
 <"images/QEA_approx_marginal".pdf, id=168, 514.92375pt x 382.42876pt>
 File: "images/QEA_approx_marginal".pdf Graphic file (type pdf)
 
@@ -1096,15 +1014,14 @@ File: "images/QEA_approx_marginal".pdf Graphic file (type pdf)
 <"images/CMA_approx_marginal".pdf, id=169, 514.92375pt x 382.42876pt>
 File: "images/CMA_approx_marginal".pdf Graphic file (type pdf)
 
-<use "images/CMA_approx_marginal".pdf> [19]
-No file TPAIS.bbl.
-[20 <./images/QEA_approx_marginal.pdf> <./images/CMA_approx_marginal.pdf>]
-[21] (./TPAIS.aux)
+<use "images/CMA_approx_marginal".pdf> [19] (./TPAIS.bbl [20 <./images/QEA_appr
+ox_marginal.pdf> <./images/CMA_approx_marginal.pdf>]
+Missing character: There is no â in font cmti8!
+Missing character: There is no € in font cmti8!
+Missing character: There is no ™ in font cmti8!
+) [21] (./TPAIS.aux)
 
 LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
  )
 (\end occurred inside a group at level 1)
@@ -1112,10 +1029,10 @@ LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 21555 strings out of 256216
+ 21556 strings out of 256216
  411474 string characters out of 1917072
- 463048 words of memory out of 1500000
- 24467 multiletter control sequences out of 10000+200000
+ 463108 words of memory out of 1500000
+ 24466 multiletter control sequences out of 10000+200000
  12997 words of font info for 48 fonts, out of 1200000 for 2000
  645 hyphenation exceptions out of 8191
  55i,20n,54p,10476b,10776s stack positions out of 5000i,500n,6000p,200000b,15000s
@@ -1137,7 +1054,7 @@ texmf/fonts/type1/bluesky/cm/cmsy6.pfb></usr/share/texmf/fonts/type1/bluesky/cm
 i7.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmti8.pfb></usr/share/texmf/fon
 ts/type1/bluesky/ams/msbm10.pfb></usr/share/texmf/fonts/type1/bluesky/ams/msbm7
 .pfb>
-Output written on TPAIS.pdf (21 pages, 412170 bytes).
+Output written on TPAIS.pdf (21 pages, 425119 bytes).
 PDF statistics:
  300 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 131072)
