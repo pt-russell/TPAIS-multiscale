@@ -1,15 +1,104 @@
 \relax 
 \providecommand\zref@newlabel[2]{}
-\bibstyle{siam}
-\bibdata{refs}
+\citation{parno2014transport}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}}
 \newlabel{sec:map}{{2}{1}}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Construction of transport maps in importance sampling}{1}}
-\newlabel{sec:TPAIS}{{3}{1}}
-\@writefile{toc}{\contentsline {section}{\numberline {3}T-PAIS}{1}}
-\newlabel{sec:multi}{{4}{1}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Multiscale approximations of likelihoods in stochastic reaction networks}{1}}
-\newlabel{sec:num}{{5}{1}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Numerical Examples}{1}}
-\newlabel{sec:conc}{{6}{1}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Conclusions}{1}}
+\newlabel{eq:pullback}{{2.1}{1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}The optimisation problem}{2}}
+\newlabel{eq:gen_map_optim}{{2.2}{2}}
+\citation{parno2014transport}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}The structure of the map}{3}}
+\newlabel{eqn:separable_jacobian}{{2.3}{3}}
+\newlabel{eq:map_defn}{{2.4}{3}}
+\citation{choi1992scalapack}
+\newlabel{sec:transport_implementation}{{2.3}{4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Implementation of the optimisation problem}{4}}
+\newlabel{eq:gauss_map_optim}{{2.5}{4}}
+\newlabel{eq:gamma_map_optim}{{2.6}{4}}
+\newlabel{eq:blas_map_optim}{{2.7}{4}}
+\citation{parno2014transport}
+\newlabel{eq:final_map_optim}{{2.8}{5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Implementation of the optimisation problem in PAIS}{5}}
+\newlabel{eq:weighted_map_optim}{{2.9}{5}}
+\newlabel{alg:TransportPAIS1}{{1}{6}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {1}{\ignorespaces PAIS algorithm with adaptive transport map. Option 1.}}{6}}
+\newlabel{sec:TPAIS}{{3}{6}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}T-PAIS}{6}}
+\citation{gillespie1977exact}
+\newlabel{alg:TransportPAIS2}{{2}{7}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {2}{\ignorespaces PAIS algorithm with adaptive transport map. Option 2.}}{7}}
+\newlabel{sec:multi}{{4}{7}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Multiscale approximations of likelihoods in stochastic reaction networks}{7}}
+\citation{szekely2014stochastic,mcadams1999sa}
+\citation{shahrezaei2008colored}
+\citation{gillespie1991markov}
+\citation{anderson2016product,jahnke2007solving,anderson2010product}
+\citation{gillespie1977exact}
+\citation{cao2006efficient,cao2005avoiding,chatterjee2005binomial}
+\citation{gillespie2000chemical}
+\newlabel{sec:SSAs}{{4.1}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Stochastic Simulation Algorithms}{8}}
+\newlabel{eqn:chem_reaction}{{4.1}{8}}
+\citation{gillespie2007stochastic}
+\citation{gillespie2007stochastic}
+\newlabel{alg:gillespie}{{3}{9}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {3}{\ignorespaces The Gillespie Algorithm\nobreakspace  {}\cite  {gillespie2007stochastic}.}}{9}}
+\citation{cotter2011constrained,cotter2016constrained}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Sufficient Statistics for Rate Recovery}{10}}
+\@writefile{lot}{\contentsline {table}{\numberline {4.1}{\ignorespaces Form of the data $D$, in the notation given in Algorithm\nobreakspace  {}3\hbox {}. The initial time $t_0$ is set to 0.}}{11}}
+\newlabel{tab:chem_data}{{4.1}{11}}
+\newlabel{eqn:chem_time_dist}{{4.2}{11}}
+\newlabel{eqn:chem_react_dist}{{4.3}{11}}
+\newlabel{sec:chem_stoch_posterior}{{4.3}{11}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Posterior Distribution}{11}}
+\citation{cotter2016constrained}
+\newlabel{eqn:chem_posterior}{{4.4}{12}}
+\newlabel{sec:num}{{5}{12}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Numerical Examples}{12}}
+\newlabel{eqn:full_system}{{5.1}{12}}
+\newlabel{eqn:QSSA_system}{{5.2}{12}}
+\newlabel{eqn:chem_CMA_rate}{{5.3}{12}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.1}{\ignorespaces Hyper-parameters in the prior distributions for the multiscale problem described in Section\nobreakspace  {}6.0.1\hbox {}.}}{13}}
+\newlabel{tab:multiscale_priors}{{5.1}{13}}
+\newlabel{sec:multiscale_posterior}{{5.0.1}{13}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.0.1}Target Distribution}{13}}
+\newlabel{eqn:chem_QEA_posterior}{{5.4}{13}}
+\newlabel{sec:chem_implementation}{{5.0.2}{13}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.0.2}Implementation}{13}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces Posterior for the constrained multiscale problem outlined in Section\nobreakspace  {}\G@refundefinedtrue \text  {\normalfont  \bfseries  ??}\GenericWarning  {               }{LaTeX Warning: Reference `sec:chem_multiscale' on page 14 undefined}.}}{14}}
+\newlabel{fig:chem_CMA_posterior}{{5.1}{14}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces Couplings between parameter space and reference when using the transport map proposal method to propose moves on parameter space.}}{14}}
+\newlabel{fig:chem_coupling}{{5.2}{14}}
+\citation{parno2014transport}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces Couplings between parameter space, an intermediate space and reference space when using the transport map proposal method to propose moves on a log space.}}{15}}
+\newlabel{fig:chem_log_coupling}{{5.3}{15}}
+\newlabel{sec:chem_conv}{{5.0.3}{16}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.0.3}Convergence Analysis for the Constrained Approach to a Multiscale Chemical Reaction Model}{16}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.2}{\ignorespaces Optimal scaling parameters for the MH and PAIS algorithms applied to the constrained multiscale problem in Section\nobreakspace  {}\G@refundefinedtrue \text  {\normalfont  \bfseries  ??}\GenericWarning  {               }{LaTeX Warning: Reference `sec:chem_multiscale' on page 16 undefined}. MH parameters optimised by acceptance rate, and PAIS parameters optimised using effective sample size.}}{16}}
+\newlabel{tab:chem_multiscale_scaling}{{5.2}{16}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.4}{\ignorespaces Convergence of the constrained multiscale example described in Section\nobreakspace  {}\G@refundefinedtrue \text  {\normalfont  \bfseries  ??}\GenericWarning  {               }{LaTeX Warning: Reference `sec:chem_multiscale' on page 16 undefined}.}}{16}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Sampling algorithms on $\mathcal {X}$.}}}{16}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Sampling algorithms on $\mathcal {Y}$.}}}{16}}
+\newlabel{fig:chem_multiscale_L2}{{5.4}{16}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.5}{\ignorespaces Reference space for the TRW and logTRW proposal distributions. Components are linked by the relation $r_i = T_i'(k_i)$ in (a) and $r_i = T_i\circ \qopname  \relax o{log}(k_i)$ in (b).}}{17}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Reference space mapped to by $T'$.}}}{17}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Reference space mapped to by $T\circ \qopname \relax o{log}$.}}}{17}}
+\newlabel{fig:chem_reference_spaces}{{5.5}{17}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.0.4}Comparison of the Constrained and QEA approaches}{18}}
+\newlabel{eqn:chem_diff}{{5.5}{18}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.6}{\ignorespaces Difference between the CMA and QEA posteriors as defined in Equation\nobreakspace  {}\textup  {\hbox {\mathsurround \z@ \normalfont  (\ignorespaces 6.5\hbox {}\unskip \@@italiccorr )}}.}}{18}}
+\newlabel{fig:chem_diff}{{5.6}{18}}
+\citation{chen2012monte}
+\citation{robert2013monte}
+\citation{kass1995bayes}
+\@writefile{lot}{\contentsline {table}{\numberline {5.3}{\ignorespaces Marginal distributions for the data $(\mathbf  {R},\mathbf  {T})^\top $ for each model considered in Section\nobreakspace  {}6.0.1\hbox {}.}}{19}}
+\newlabel{tab:chem_Bayes_marginals}{{5.3}{19}}
+\bibstyle{siam}
+\bibdata{refs}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.7}{\ignorespaces Comparison of the approximate marginal densities for the `observable parameter' $\mathaccentV {hat}05E{k}_4$ under models $\mathcal  {M}_1$ and $\mathcal  {M}_2$. Marginals for these two parameters are approximated using samples which have been produced by targeting the three densities $\pi _i = \mathbb  {P}(\theta _i|D,\mathcal  {M}_i)$ for $i = 0, 1, 2$.}}{20}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Marginal for $\mathaccentV{hat}05E{k}_4^{\text {QEA}}$.}}}{20}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Marginal for $\mathaccentV{hat}05E{k}_4^{\text {CMA}}$.}}}{20}}
+\newlabel{fig:chem_model_comp}{{5.7}{20}}
+\newlabel{sec:conc}{{6}{20}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Conclusions}{21}}
