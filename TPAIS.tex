@@ -189,12 +189,44 @@ Section \ref{sec:conc}.
 \section{Construction of transport maps in importance sampling} \label{sec:map}
 %Follow the other papers, show adaptation(s)
 
-In this section we give details on how \cite{parno2014transport} propose to couple the target,
-$\mu_{\theta}$, with the reference distribution, $\mu_r$. When sampling, ideally we would like to draw a sample directly from the target distribution. When we have the exact map, $T\in\mathcal{T}$, $T\colon \mathcal{X}\rightarrow\mathbb{R}^d$, we are able to map samples from the posterior distribution onto a reference density, $\pi_r$ which is a standard Gaussian. We can then draw a proposal sample from $\pi_r$, before mapping these samples back onto target space using $T^{-1}$. These proposed samples are distributed according to the target distribution. On target space, the proposal distribution is induced by the pullback of the standard Gaussian through the map,
+In this section, we give details on how we have adapted the method
+proposed in \cite{parno2014transport} to couple the target,
+$\mu_{\theta}$, with the reference distribution, $\mu_r$. In many
+applications ***REFS*** inverse problems arise which lead to posterior
+distributions from which it is challenging to sample efficiently. This
+can be due to multimodality, strong correlations between parameters,
+or vastly different scales of sensitivity in different directions, for
+example the concept of sloppy models. Standard random walks become
+inefficient in this context since the proposal distributions do not
+take into account these types of challenging structures in the
+density, leading to a large number of proposals being made in low
+density regions.
+
+One way that this can be tackled is to implement more complex MCMC
+methods which are able to explore the state space more
+efficiently. For example the Metropolis-Adjusted Langevin Algorithm (MALA) or Hamiltonian Monte
+Carlo (HMC) methods use gradient information about the target density
+in order to make proposals in better directions that RWMH. Riemannian
+manifold MCMC methods can use additionally approximations of the
+Hessian of the target in order to make very large moves with a good
+probability of being accepted.
+
+Another approach is the simplification of the posterior density
+itself. In \cite{parno2014transport}, the authors proposed the
+approximation of an invertible map which exactly couples the postieror distribution
+$\mu_{\theta}$ to a reference measure $\mu_r$. Given such a map,
+$T\in\mathcal{T}$, $T\colon \mathcal{X}\rightarrow\mathbb{R}^d$, we can then draw a proposal sample from $\pi_r$, before mapping these samples back onto target space using $T^{-1}$. These proposed samples are distributed according to the target distribution. On target space, the proposal distribution is induced by the pullback of the standard Gaussian through the map,
 \begin{equation}\label{eq:pullback}
 	\tilde{\pi}(\theta) = \pi_r(T(\theta))|J_T(\theta)|,
 \end{equation}
-which is equal to the target density when $T$ is exact. Clearly we require $T$ to be monotonic and have continuous first derivatives, which means that our space of feasible transference plans, $\mathcal{T}^\uparrow$, may not include the exact map. Since it is unlikely that $T\in\mathcal{T}^\uparrow$, we are motivated to formulate an optimisation problem as discussed in Section~\ref{sec:intro_optim}.
+which is equal to the target density when $T$ is exact. Clearly we
+require $T$ to be monotonic and have continuous first derivatives,
+which means that our space of feasible transference plans,
+$\mathcal{T}^\uparrow$, may not include the exact map. Since it is
+unlikely that $T\in\mathcal{T}^\uparrow$, we are motivated to
+formulate an optimisation problem as discussed in
+Section~\ref{sec:intro_optim}.  ****PAUL, what is
+$\mathcal{T}^\uparrow$, what is in Section~\ref{sec:intro_optim}*****
 
 We attempt to find a deterministic coupling of two continuous probability distributions, $(\mu_\theta, \mu_r)$, such that $\mu_r = T\mu_\theta$ is satisfied and also that $T \in \mathcal{T}^\uparrow$. There may be infinitely many such couplings, so we look to find the coupling which minimises the difference between the proposal density and the target distribution, i.e. the distance between $\pi(\theta)$ and $\tilde{\pi}(\theta)$. In this case, we measure this distance using the Kullback-Leibler divergence.
 
