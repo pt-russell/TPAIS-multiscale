@@ -1,99 +1,203 @@
 \relax 
 \providecommand\zref@newlabel[2]{}
-\citation{parno2014transport}
+\citation{reich2013ensemble}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}}
-\newlabel{sec:map}{{2}{1}}
-\@writefile{toc}{\contentsline {section}{\numberline {2}Construction of transport maps in importance sampling}{1}}
-\newlabel{eq:pullback}{{2.1}{1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}The optimisation problem}{2}}
-\newlabel{eq:gen_map_optim}{{2.2}{2}}
+\newlabel{sec:intro_optim}{{2}{1}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Deterministic Resampling Methods}{1}}
+\newlabel{def:transport_map}{{2.1}{1}}
+\citation{monge1781memoire}
+\citation{kantorovitch1958translocation}
+\citation{reich2013ensemble}
+\citation{kantorovich1960mathematical,kantorovitch1958translocation}
+\citation{knott1984optimal}
+\newlabel{def:coupling}{{2.2}{2}}
+\newlabel{sec:coupling}{{2.1}{2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Coupling Probability Distributions}{2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces Couplings with different correlations.}}{3}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {$\rho = 0.1$}}}{3}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {$\rho = 0.95$}}}{3}}
+\newlabel{fig:cts_couplings}{{2.1}{3}}
+\citation{reich2015probabilistic}
+\newlabel{eq:coupling_conditions}{{2.1}{4}}
+\citation{efron1992bootstrap}
+\citation{efron1992bootstrap}
+\citation{gordon1993novel}
+\newlabel{sec:OT}{{2.2}{5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Resampling with Filters}{5}}
+\newlabel{eq:empirical_dist}{{2.2}{5}}
+\newlabel{def:resampling}{{2.3}{5}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.1}Bootstrap Resampling}{5}}
+\newlabel{alg:bs_resampler}{{1}{5}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {1}{\ignorespaces The Bootstrap Resampler\nobreakspace  {}\cite  {efron1992bootstrap}.}}{5}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.2}The Bootstrap Particle Filter}{5}}
+\citation{reich2013nonparametric}
+\citation{reich2013nonparametric}
+\newlabel{alg:bs_filter}{{2}{6}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {2}{\ignorespaces The Bootstrap Particle Filter\nobreakspace  {}\cite  {gordon1993novel}.}}{6}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.3}Linear Ensemble Transform Filters}{6}}
+\newlabel{def:LETF}{{2.5}{6}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.4}The Ensemble Transform Particle Filter}{6}}
+\citation{reich2013nonparametric}
+\citation{cotter2015parallel}
+\newlabel{alg:ETPF}{{3}{7}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {3}{\ignorespaces The Ensemble Transform Particle Filter\nobreakspace  {}\cite  {reich2013nonparametric}.}}{7}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.5}Approximate Multinomial Resampling}{7}}
+\citation{cotter2015parallel}
+\newlabel{alg:AMR}{{4}{8}}
+\newlabel{algline:amr_mean}{{10}{8}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {4}{\ignorespaces The Approximate Multinomial Resampler\nobreakspace  {}\cite  {cotter2015parallel}.}}{8}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.6}Numerical Comparison of the Filter Resamplers}{8}}
+\citation{silverman1986density,snyder2008obstacles}
+\newlabel{alg:ETMC}{{5}{9}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {5}{\ignorespaces Comparing Resamplers.}}{9}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.7}Scaling of Resampling Algorithms with Dimension}{9}}
+\newlabel{sec:intro_TM}{{2.3}{9}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.2}{\ignorespaces Relative errors representing the error between $\mathaccentV {hat}05E{F}$ and $\mathaccentV {hat}05E{G}$ as described in Algorithm\nobreakspace  {}5\hbox {}, where $\mathaccentV {hat}05E{G}$ is constructed using the Bootstrap, ETPF and AMR algorithms.}}{10}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Relative error in $\mathbb {E}(X)$}}}{10}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Relative error in $\mathbb {E}(X^2)$}}}{10}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Relative error in $\mathbb {E}(X^3)$}}}{10}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(d)}{\ignorespaces {Cost of resamplers per iteration}}}{10}}
+\newlabel{fig:AMR}{{2.2}{10}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.3}{\ignorespaces Demonstration of the ETMC algorithm rapidly failing as the dimension increases in problem $G_1$ defined in Chapter\nobreakspace  {}\G@refundefinedtrue \text  {\normalfont  \bfseries  ??}\GenericWarning  {               }{LaTeX Warning: Reference `sec:PAIS' on page 10 undefined}. The relative error shown is that between $\mathbb  {E}_{\mathaccentV {hat}05E{F}}[X]$ and $\mathbb  {E}_{\mathaccentV {hat}05E{G}}[X]$.}}{10}}
+\newlabel{fig:ET_dim_scaling}{{2.3}{10}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Couplings between Arbitrary Probability Measures}{10}}
 \citation{parno2014transport}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}The structure of the map}{3}}
-\newlabel{eqn:separable_jacobian}{{2.3}{3}}
-\newlabel{eq:map_defn}{{2.4}{3}}
-\citation{choi1992scalapack}
-\newlabel{sec:transport_implementation}{{2.3}{4}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Implementation of the optimisation problem}{4}}
-\newlabel{eq:gauss_map_optim}{{2.5}{4}}
-\newlabel{eq:gamma_map_optim}{{2.6}{4}}
-\newlabel{eq:blas_map_optim}{{2.7}{4}}
+\citation{el2012bayesian}
 \citation{parno2014transport}
-\newlabel{eq:final_map_optim}{{2.8}{5}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Implementation of the optimisation problem in PAIS}{5}}
-\newlabel{eq:weighted_map_optim}{{2.9}{5}}
-\newlabel{alg:TransportPAIS1}{{1}{6}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {1}{\ignorespaces PAIS algorithm with adaptive transport map. Option 1.}}{6}}
-\newlabel{sec:TPAIS}{{3}{6}}
-\@writefile{toc}{\contentsline {section}{\numberline {3}T-PAIS}{6}}
+\citation{parno2015transport}
+\citation{el2012bayesian}
+\citation{parno2014transport}
+\newlabel{sec:map}{{3}{11}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Construction of transport maps in importance sampling}{11}}
+\citation{parno2014transport}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}The Transport Map}{12}}
+\newlabel{eq:pullback}{{3.1}{12}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.1}The optimisation problem}{13}}
+\newlabel{eq:gen_map_optim}{{3.2}{13}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.2}The structure of the map}{13}}
+\citation{parno2014transport}
+\citation{parno2015transport}
+\newlabel{eqn:separable_jacobian}{{3.3}{14}}
+\newlabel{eq:map_defn}{{3.4}{14}}
+\newlabel{sec:transport_implementation}{{3.1.3}{14}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.3}Implementation of the optimisation problem}{14}}
+\newlabel{eqn:TM_full_cost}{{3.5}{15}}
+\newlabel{eq:gauss_map_optim}{{3.6}{15}}
+\newlabel{eq:gamma_map_optim}{{3.7}{15}}
+\newlabel{eq:blas_map_optim}{{3.8}{15}}
+\citation{parno2014transport}
+\newlabel{eq:final_map_optim}{{3.9}{16}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.4}Implementation of the optimisation problem in PAIS}{16}}
+\newlabel{eqn:TPAIS_objective}{{3.10}{16}}
+\newlabel{eq:weighted_map_optim}{{3.11}{16}}
+\citation{reich2013nonparametric}
 \citation{gillespie1977exact}
-\newlabel{alg:TransportPAIS2}{{2}{7}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {2}{\ignorespaces PAIS algorithm with adaptive transport map. Option 2.}}{7}}
-\newlabel{sec:multi}{{4}{7}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Multiscale approximations of likelihoods in stochastic reaction networks}{7}}
+\newlabel{eqn:TPAIS_hessian}{{3.12}{17}}
+\newlabel{sec:TPAIS}{{4}{17}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}T-PAIS}{17}}
+\newlabel{sec:TPAIS_higher_dim}{{4.1}{17}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Sampling in higher dimensions}{17}}
+\newlabel{alg:TransportPAIS1}{{6}{18}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {6}{\ignorespaces PAIS algorithm with adaptive transport map. Option 1.}}{18}}
+\newlabel{sec:multi}{{5}{18}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Multiscale approximations of likelihoods in stochastic reaction networks}{18}}
+\newlabel{sec:SSAs}{{5.1}{18}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Stochastic Simulation Algorithms}{18}}
+\newlabel{eqn:chem_reaction}{{5.1}{18}}
 \citation{szekely2014stochastic,mcadams1999sa}
 \citation{shahrezaei2008colored}
+\newlabel{alg:TransportPAIS2}{{7}{19}}
+\newlabel{algline:TPAIS_resample}{{8}{19}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {7}{\ignorespaces PAIS algorithm with adaptive transport map. Option 2.}}{19}}
 \citation{gillespie1991markov}
 \citation{anderson2016product,jahnke2007solving,anderson2010product}
 \citation{gillespie1977exact}
 \citation{cao2006efficient,cao2005avoiding,chatterjee2005binomial}
 \citation{gillespie2000chemical}
-\newlabel{sec:SSAs}{{4.1}{8}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Stochastic Simulation Algorithms}{8}}
-\newlabel{eqn:chem_reaction}{{4.1}{8}}
+\newlabel{alg:ETPF_1d}{{8}{20}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {8}{\ignorespaces ETPF algorithm in one dimension.}}{20}}
 \citation{gillespie2007stochastic}
 \citation{gillespie2007stochastic}
-\newlabel{alg:gillespie}{{3}{9}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {3}{\ignorespaces The Gillespie Algorithm\nobreakspace  {}\cite  {gillespie2007stochastic}.}}{9}}
 \citation{cotter2011constrained,cotter2016constrained}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Sufficient Statistics for Rate Recovery}{10}}
-\@writefile{lot}{\contentsline {table}{\numberline {4.1}{\ignorespaces Form of the data $D$, in the notation given in Algorithm\nobreakspace  {}3\hbox {}. The initial time $t_0$ is set to 0.}}{11}}
-\newlabel{tab:chem_data}{{4.1}{11}}
-\newlabel{eqn:chem_time_dist}{{4.2}{11}}
-\newlabel{eqn:chem_react_dist}{{4.3}{11}}
-\newlabel{sec:chem_stoch_posterior}{{4.3}{11}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Posterior Distribution}{11}}
+\newlabel{alg:gillespie}{{9}{21}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {9}{\ignorespaces The Gillespie Algorithm\nobreakspace  {}\cite  {gillespie2007stochastic}.}}{21}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Sufficient Statistics for Rate Recovery}{22}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.1}{\ignorespaces Form of the data $D$, in the notation given in Algorithm\nobreakspace  {}9\hbox {}. The initial time $t_0$ is set to 0.}}{22}}
+\newlabel{tab:chem_data}{{5.1}{22}}
+\citation{anderson2010product}
+\newlabel{eqn:chem_time_dist}{{5.2}{23}}
+\newlabel{eqn:chem_react_dist}{{5.3}{23}}
+\newlabel{sec:chem_stoch_posterior}{{5.3}{23}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Posterior Distribution}{23}}
+\newlabel{eqn:chem_posterior}{{5.4}{23}}
 \citation{cotter2016constrained}
-\newlabel{eqn:chem_posterior}{{4.4}{12}}
-\newlabel{sec:num}{{5}{12}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Numerical Examples}{12}}
-\newlabel{eqn:full_system}{{5.1}{12}}
-\newlabel{eqn:QSSA_system}{{5.2}{12}}
-\newlabel{eqn:chem_CMA_rate}{{5.3}{12}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.1}{\ignorespaces Hyper-parameters in the prior distributions for the multiscale problem described in Section\nobreakspace  {}5.0.1\hbox {}.}}{13}}
-\newlabel{tab:multiscale_priors}{{5.1}{13}}
-\newlabel{sec:multiscale_posterior}{{5.0.1}{13}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.0.1}Target Distribution}{13}}
-\newlabel{eqn:chem_QEA_posterior}{{5.4}{13}}
-\newlabel{sec:chem_implementation}{{5.0.2}{13}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.0.2}Implementation}{13}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces Posterior for the constrained multiscale problem outlined in Section\nobreakspace  {}\G@refundefinedtrue \text  {\normalfont  \bfseries  ??}\GenericWarning  {               }{LaTeX Warning: Reference `sec:chem_multiscale' on page 14 undefined}.}}{14}}
-\newlabel{fig:chem_CMA_posterior}{{5.1}{14}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces Couplings between parameter space and reference when using the transport map proposal method to propose moves on parameter space.}}{14}}
-\newlabel{fig:chem_coupling}{{5.2}{14}}
+\citation{cotter2016constrained}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Mono-molecular examples}{24}}
+\newlabel{eqn:mono_stat_dist}{{5.5}{24}}
+\newlabel{sec:chem_multiscale}{{5.4.1}{24}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.4.1}A Multiscale Chemical System}{24}}
+\newlabel{eqn:full_system}{{5.6}{24}}
+\newlabel{eqn:QSSA_system}{{5.7}{24}}
+\newlabel{eqn:chem_CMA_rate}{{5.8}{24}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.2}{\ignorespaces Hyper-parameters in the prior distributions for the multiscale problem described in Section\nobreakspace  {}5.4.2\hbox {}.}}{25}}
+\newlabel{tab:multiscale_priors}{{5.2}{25}}
+\newlabel{sec:multiscale_posterior}{{5.4.2}{25}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.4.2}Target Distribution}{25}}
+\newlabel{eqn:chem_QEA_posterior}{{5.9}{25}}
+\newlabel{sec:chem_implementation}{{5.4.3}{25}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.4.3}Implementation}{25}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces Posterior for the constrained multiscale problem outlined in Section\nobreakspace  {}5.4.1\hbox {}.}}{26}}
+\newlabel{fig:chem_CMA_posterior}{{5.1}{26}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces Couplings between parameter space and reference when using the transport map proposal method to propose moves on parameter space.}}{26}}
+\newlabel{fig:chem_coupling}{{5.2}{26}}
 \citation{parno2014transport}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces Couplings between parameter space, an intermediate space and reference space when using the transport map proposal method to propose moves on a log space.}}{15}}
-\newlabel{fig:chem_log_coupling}{{5.3}{15}}
-\newlabel{sec:chem_conv}{{5.0.3}{16}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.0.3}Convergence Analysis for the Constrained Approach to a Multiscale Chemical Reaction Model}{16}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.2}{\ignorespaces Optimal scaling parameters for the MH and PAIS algorithms applied to the constrained multiscale problem in Section\nobreakspace  {}\G@refundefinedtrue \text  {\normalfont  \bfseries  ??}\GenericWarning  {               }{LaTeX Warning: Reference `sec:chem_multiscale' on page 16 undefined}. MH parameters optimised by acceptance rate, and PAIS parameters optimised using effective sample size.}}{16}}
-\newlabel{tab:chem_multiscale_scaling}{{5.2}{16}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.4}{\ignorespaces Convergence of the constrained multiscale example described in Section\nobreakspace  {}\G@refundefinedtrue \text  {\normalfont  \bfseries  ??}\GenericWarning  {               }{LaTeX Warning: Reference `sec:chem_multiscale' on page 16 undefined}.}}{16}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Sampling algorithms on $\mathcal {X}$.}}}{16}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Sampling algorithms on $\mathcal {Y}$.}}}{16}}
-\newlabel{fig:chem_multiscale_L2}{{5.4}{16}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.5}{\ignorespaces Reference space for the TRW and logTRW proposal distributions. Components are linked by the relation $r_i = T_i'(k_i)$ in (a) and $r_i = T_i\circ \qopname  \relax o{log}(k_i)$ in (b).}}{17}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Reference space mapped to by $T'$.}}}{17}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Reference space mapped to by $T\circ \qopname \relax o{log}$.}}}{17}}
-\newlabel{fig:chem_reference_spaces}{{5.5}{17}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.0.4}Comparison of the Constrained and QEA approaches}{18}}
-\newlabel{eqn:chem_diff}{{5.5}{18}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.6}{\ignorespaces Difference between the CMA and QEA posteriors as defined in Equation\nobreakspace  {}\textup  {\hbox {\mathsurround \z@ \normalfont  (\ignorespaces 5.5\hbox {}\unskip \@@italiccorr )}}.}}{18}}
-\newlabel{fig:chem_diff}{{5.6}{18}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces Couplings between parameter space, an intermediate space and reference space when using the transport map proposal method to propose moves on a log space.}}{27}}
+\newlabel{fig:chem_log_coupling}{{5.3}{27}}
+\newlabel{sec:chem_conv}{{5.4.4}{28}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.4.4}Convergence Analysis for the Constrained Approach to a Multiscale Chemical Reaction Model}{28}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.3}{\ignorespaces Optimal scaling parameters for the MH and PAIS algorithms applied to the constrained multiscale problem in Section\nobreakspace  {}5.4.1\hbox {}. MH parameters optimised by acceptance rate, and PAIS parameters optimised using effective sample size.}}{28}}
+\newlabel{tab:chem_multiscale_scaling}{{5.3}{28}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.4}{\ignorespaces Convergence of the constrained multiscale example described in Section\nobreakspace  {}5.4.1\hbox {}.}}{28}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Sampling algorithms on $\mathcal {X}$.}}}{28}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Sampling algorithms on $\mathcal {Y}$.}}}{28}}
+\newlabel{fig:chem_multiscale_L2}{{5.4}{28}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.5}{\ignorespaces Reference space for the TRW and logTRW proposal distributions. Components are linked by the relation $r_i = T_i'(k_i)$ in (a) and $r_i = T_i\circ \qopname  \relax o{log}(k_i)$ in (b).}}{29}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Reference space mapped to by $T'$.}}}{29}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Reference space mapped to by $T\circ \qopname \relax o{log}$.}}}{29}}
+\newlabel{fig:chem_reference_spaces}{{5.5}{29}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.4.5}Comparison of the Constrained and QEA approaches}{29}}
 \citation{chen2012monte}
+\newlabel{eqn:chem_diff}{{5.10}{30}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.6}{\ignorespaces Difference between the CMA and QEA posteriors as defined in Equation\nobreakspace  {}\textup  {\hbox {\mathsurround \z@ \normalfont  (\ignorespaces 5.10\hbox {}\unskip \@@italiccorr )}}.}}{30}}
+\newlabel{fig:chem_diff}{{5.6}{30}}
 \citation{robert2013monte}
 \citation{kass1995bayes}
-\@writefile{lot}{\contentsline {table}{\numberline {5.3}{\ignorespaces Marginal distributions for the data $(\mathbf  {R},\mathbf  {T})^\top $ for each model considered in Section\nobreakspace  {}5.0.1\hbox {}.}}{19}}
-\newlabel{tab:chem_Bayes_marginals}{{5.3}{19}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.4}{\ignorespaces Marginal distributions for the data $(\mathbf  {R},\mathbf  {T})^\top $ for each model considered in Section\nobreakspace  {}5.4.2\hbox {}.}}{31}}
+\newlabel{tab:chem_Bayes_marginals}{{5.4}{31}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.7}{\ignorespaces Comparison of the approximate marginal densities for the `observable parameter' $\mathaccentV {hat}05E{k}_4$ under models $\mathcal  {M}_1$ and $\mathcal  {M}_2$. Marginals for these two parameters are approximated using samples which have been produced by targeting the three densities $\pi _i = \mathbb  {P}(\theta _i|D,\mathcal  {M}_i)$ for $i = 0, 1, 2$.}}{32}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Marginal for $\mathaccentV{hat}05E{k}_4^{\text {QEA}}$.}}}{32}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Marginal for $\mathaccentV{hat}05E{k}_4^{\text {CMA}}$.}}}{32}}
+\newlabel{fig:chem_model_comp}{{5.7}{32}}
+\newlabel{sec:grn}{{5.5}{32}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5}Gene Regulatory Networks}{32}}
+\newlabel{eqn:GRN_reactions}{{5.11}{32}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.8}{\ignorespaces Diagram of the effects of molecule populations in a gene regulatory network.}}{33}}
+\newlabel{fig:grn_cycle}{{5.8}{33}}
+\newlabel{eqn:grn_propensities}{{5.12}{33}}
+\newlabel{eqn:grn_nonlinear_system}{{5.13}{34}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.5.1}Target Distribution}{34}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.5}{\ignorespaces Hyper parameters for the Gamma priors on each of the reaction rates in the GRN example in Section\nobreakspace  {}5.5\hbox {}.}}{34}}
+\newlabel{tab:grn_priors}{{5.5}{34}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.5.2}Implementation}{34}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.9}{\ignorespaces Marginal densities of the posterior distribution for the GRN example in Section\nobreakspace  {}5.5\hbox {}.}}{35}}
+\newlabel{fig:GRN_posterior}{{5.9}{35}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.5.3}Convergence results}{36}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.6}{\ignorespaces Scaling parameters for the sampling algorithms applied to the GRN example in Section\nobreakspace  {}5.5\hbox {}.}}{36}}
+\newlabel{tab:grn_scaling_parameters}{{5.6}{36}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.10}{\ignorespaces Convergence of the GRN example described in Section\nobreakspace  {}5.5\hbox {}.}}{36}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Sampling algorithms on $\mathcal {X}$.}}}{36}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Sampling algorithms on $\mathcal {Y}$.}}}{36}}
+\newlabel{fig:grn_L2}{{5.10}{36}}
 \bibstyle{siam}
 \bibdata{refs}
 \bibcite{anderson2016product}{1}
@@ -102,23 +206,30 @@
 \bibcite{cao2005avoiding}{4}
 \bibcite{chatterjee2005binomial}{5}
 \bibcite{chen2012monte}{6}
-\bibcite{choi1992scalapack}{7}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.7}{\ignorespaces Comparison of the approximate marginal densities for the `observable parameter' $\mathaccentV {hat}05E{k}_4$ under models $\mathcal  {M}_1$ and $\mathcal  {M}_2$. Marginals for these two parameters are approximated using samples which have been produced by targeting the three densities $\pi _i = \mathbb  {P}(\theta _i|D,\mathcal  {M}_i)$ for $i = 0, 1, 2$.}}{20}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Marginal for $\mathaccentV{hat}05E{k}_4^{\text {QEA}}$.}}}{20}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Marginal for $\mathaccentV{hat}05E{k}_4^{\text {CMA}}$.}}}{20}}
-\newlabel{fig:chem_model_comp}{{5.7}{20}}
-\newlabel{sec:conc}{{6}{20}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Conclusions}{20}}
+\bibcite{cotter2015parallel}{7}
 \bibcite{cotter2016constrained}{8}
 \bibcite{cotter2011constrained}{9}
-\bibcite{gillespie1977exact}{10}
-\bibcite{gillespie1991markov}{11}
-\bibcite{gillespie2000chemical}{12}
-\bibcite{gillespie2007stochastic}{13}
-\bibcite{jahnke2007solving}{14}
-\bibcite{kass1995bayes}{15}
-\bibcite{mcadams1999sa}{16}
-\bibcite{parno2014transport}{17}
-\bibcite{robert2013monte}{18}
-\bibcite{shahrezaei2008colored}{19}
-\bibcite{szekely2014stochastic}{20}
+\bibcite{efron1992bootstrap}{10}
+\bibcite{el2012bayesian}{11}
+\bibcite{gillespie1977exact}{12}
+\bibcite{gillespie1991markov}{13}
+\bibcite{gillespie2000chemical}{14}
+\bibcite{gillespie2007stochastic}{15}
+\bibcite{gordon1993novel}{16}
+\bibcite{jahnke2007solving}{17}
+\bibcite{kantorovich1960mathematical}{18}
+\bibcite{kantorovitch1958translocation}{19}
+\bibcite{kass1995bayes}{20}
+\bibcite{knott1984optimal}{21}
+\bibcite{mcadams1999sa}{22}
+\bibcite{monge1781memoire}{23}
+\bibcite{parno2015transport}{24}
+\bibcite{parno2014transport}{25}
+\bibcite{reich2013nonparametric}{26}
+\bibcite{reich2013ensemble}{27}
+\bibcite{reich2015probabilistic}{28}
+\bibcite{robert2013monte}{29}
+\bibcite{shahrezaei2008colored}{30}
+\bibcite{silverman1986density}{31}
+\bibcite{snyder2008obstacles}{32}
+\bibcite{szekely2014stochastic}{33}

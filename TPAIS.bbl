@@ -26,24 +26,30 @@
   The Journal of chemical physics, 122 (2005), p.~024112.
 
 \bibitem{chen2012monte}
-{\sc M.~Chen, Q.~Shao, and J.~Ibrahim}, {\em Monte Carlo methods in Bayesian
-  computation}, Springer Science \& Business Media, 2012.
+{\sc M.~Chen, Q.~Shao, and J.~Ibrahim}, {\em {Monte Carlo methods in Bayesian
+  computation}}, Springer Science \& Business Media, 2012.
 
-\bibitem{choi1992scalapack}
-{\sc J.~Choi, J.~Dongarra, R.~Pozo, and D.~Walker}, {\em {ScaLAPACK: A scalable
-  linear algebra library for distributed memory concurrent computers}}, in
-  Frontiers of Massively Parallel Computation, 1992., Fourth Symposium on the,
-  IEEE, 1992, pp.~120--127.
+\bibitem{cotter2015parallel}
+{\sc C.~Cotter, S.~Cotter, and P.~Russell}, {\em {Parallel Adaptive Importance
+  Sampling}}, arXiv preprint arXiv:1508.01132,  (2015).
 
 \bibitem{cotter2016constrained}
-{\sc S.~Cotter}, {\em Constrained approximation of effective generators for
+{\sc S.~Cotter}, {\em {Constrained approximation of effective generators for
   multiscale stochastic reaction networks and application to conditioned path
-  sampling}, Journal of Computational Physics, 323 (2016), pp.~265--282.
+  sampling}}, Journal of Computational Physics, 323 (2016), pp.~265--282.
 
 \bibitem{cotter2011constrained}
 {\sc S.~Cotter, K.~Zygalakis, I.~Kevrekidis, and R.~Erban}, {\em A constrained
   approach to multiscale stochastic simulation of chemically reacting systems},
   The Journal of chemical physics, 135 (2011), p.~094102.
+
+\bibitem{efron1992bootstrap}
+{\sc Bradley Efron}, {\em Bootstrap methods: another look at the jackknife}, in
+  Breakthroughs in Statistics, Springer, 1992, pp.~569--593.
+
+\bibitem{el2012bayesian}
+{\sc T.~El~Moselhy and Y.~Marzouk}, {\em Bayesian inference with optimal maps},
+  Journal of Computational Physics, 231 (2012), pp.~7815--7850.
 
 \bibitem{gillespie1977exact}
 {\sc D.~Gillespie}, {\em Exact stochastic simulation of coupled chemical
@@ -54,8 +60,8 @@
   introduction for physical scientists}, Elsevier, 1991.
 
 \bibitem{gillespie2000chemical}
-\leavevmode\vrule height 2pt depth -1.6pt width 23pt, {\em The chemical
-  langevin equation}, The Journal of Chemical Physics, 113 (2000),
+\leavevmode\vrule height 2pt depth -1.6pt width 23pt, {\em {The Chemical
+  Langevin equation}}, The Journal of Chemical Physics, 113 (2000),
   pp.~297--306.
 
 \bibitem{gillespie2007stochastic}
@@ -63,23 +69,63 @@
   simulation of chemical kinetics}, Annu. Rev. Phys. Chem., 58 (2007),
   pp.~35--55.
 
+\bibitem{gordon1993novel}
+{\sc Neil~J Gordon, David~J Salmond, and Adrian~FM Smith}, {\em Novel approach
+  to nonlinear/non-gaussian bayesian state estimation}, in IEE Proceedings
+  F-Radar and Signal Processing, vol.~140, IET, 1993, pp.~107--113.
+
 \bibitem{jahnke2007solving}
 {\sc Tobias Jahnke and Wilhelm Huisinga}, {\em Solving the chemical master
   equation for monomolecular reaction systems analytically}, Journal of
   mathematical biology, 54 (2007), pp.~1--26.
 
+\bibitem{kantorovich1960mathematical}
+{\sc L.~Kantorovich}, {\em Mathematical methods of organizing and planning
+  production}, Management Science, 6 (1960), pp.~366--422.
+
+\bibitem{kantorovitch1958translocation}
+{\sc L.~Kantorovitch}, {\em On the translocation of masses}, Management
+  Science, 5 (1958), pp.~1--4.
+
 \bibitem{kass1995bayes}
 {\sc R.~Kass and A.~Raftery}, {\em Bayes factors}, Journal of the american
   statistical association, 90 (1995), pp.~773--795.
+
+\bibitem{knott1984optimal}
+{\sc M.~Knott and C.~Smith}, {\em On the optimal mapping of distributions},
+  Journal of Optimization Theory and Applications, 43 (1984), pp.~39--49.
 
 \bibitem{mcadams1999sa}
 {\sc H.~McAdams and A.~Arkin}, {\em {It’s a noisy business! Genetic
   regulation at the nanomolar scale}}, Trends in genetics, 15 (1999),
   pp.~65--69.
 
+\bibitem{monge1781memoire}
+{\sc G.~Monge}, {\em M{\'e}moire sur la th{\'e}orie des d{\'e}blais et des
+  remblais}, De l'Imprimerie Royale, 1781.
+
+\bibitem{parno2015transport}
+{\sc M.~Parno}, {\em {Transport maps for accelerated Bayesian computation}},
+  PhD thesis, Massachusetts Institute of Technology, 2015.
+
 \bibitem{parno2014transport}
 {\sc M.~Parno and Y.~Marzouk}, {\em {Transport map accelerated Markov chain
   Monte Carlo}}, arXiv preprint arXiv:1412.5492,  (2014).
+
+\bibitem{reich2013nonparametric}
+{\sc S.~Reich}, {\em {A nonparametric ensemble transform method for Bayesian
+  inference}}, SIAM Journal on Scientific Computing, 35 (2013),
+  pp.~A2013--A2024.
+
+\bibitem{reich2013ensemble}
+{\sc S.~Reich and C.~Cotter}, {\em Ensemble filter techniques for intermittent
+  data assimilation}, Large Scale Inverse Problems. Computational Methods and
+  Applications in the Earth Sciences, 13 (2013), pp.~91--134.
+
+\bibitem{reich2015probabilistic}
+\leavevmode\vrule height 2pt depth -1.6pt width 23pt, {\em {Probabilistic
+  Forecasting and Bayesian Data Assimilation}}, Cambridge University Press,
+  2015.
 
 \bibitem{robert2013monte}
 {\sc C.~Robert and G.~Casella}, {\em Monte {C}arlo statistical methods},
@@ -89,6 +135,16 @@
 {\sc V.~Shahrezaei, J.~Ollivier, and P.~Swain}, {\em Colored extrinsic
   fluctuations and stochastic gene expression}, Molecular systems biology, 4
   (2008), p.~196.
+
+\bibitem{silverman1986density}
+{\sc B.~Silverman}, {\em {Density Estimation for Statistics and Data
+  Analysis}}, Chapman \& Hall/CRC Monographs on Statistics \& Applied
+  Probability, Taylor \& Francis, 1986.
+
+\bibitem{snyder2008obstacles}
+{\sc C.~Snyder, T.~Bengtsson, P.~Bickel, and J.~Anderson}, {\em {Obstacles to
+  High-Dimensional Particle Filtering}}, Monthly Weather Review, 136 (2008),
+  pp.~4629--4640.
 
 \bibitem{szekely2014stochastic}
 {\sc T.~Szekely and K.~Burrage}, {\em Stochastic simulation in systems
