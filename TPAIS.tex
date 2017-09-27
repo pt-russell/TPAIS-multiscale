@@ -192,569 +192,18 @@ methodologies, as well as investigating the posterior approximations
 discussed in the previous section. We conclude with a discussion in
 Section \ref{sec:conc}.
 
-\section{Deterministic Resampling Methods}\label{sec:intro_optim}
-
-Optimal transportation arises in many industries. It deals with the efficient allocation
-of a particular resource to someone who wishes to use this resource. For example a fresh food
-supplier may have many depots around the country, each with a certain number of vans capable of
-carrying a fixed amount of product a particular distance in a day. The supplier may need to supply
-many supermarkets up and down the country with their produce. The supplier naturally wishes to
-perform this task quickly, and using as little fuel as possible. To achieve this goal the supplier
-can choose which depot or depots deliver to which supermarket, and whether a van stops at zero, one
-or more supermarkets on its route. The efficient solution of this problem can make a huge difference
-to the profits of the supplier.
-
-The supplier knows the initial distribution, $\mu$, where we have all of the fresh produce,
-and they also know where we want it to go, the target distribution, $\eta$. We need to find a map which converts
-the initial distribution, $\mu$, into the target, $\eta$. These
-maps are known as transport maps. We can also contrain the problem to one where we must use as little fuel as possible, the map satisfying this condition is known as the optimal transport map.
-
-\begin{dfn}[Transport Map~\cite{reich2013ensemble}]\label{def:transport_map}
-Given a random variable $X \sim \mu$, $X \in \mathcal{X}$, and a second probability measure $\nu$, a
-measurable function $T\colon \mathcal{X}\rightarrow\mathcal{X}$ is a transport map if the induced
-random variable $Y = T(X)$ satisfies
-\[
-	\int_\mathcal{X} \! f(y)\nu(\text{d}y) = \int_\mathcal{X} \! f(T(x))\mu(\text{d}x),
-\]
-for all functions $f\colon \mathcal{X} \rightarrow \mathbb{R}$.
-\end{dfn}
-
-Mathematically, the formulation of this assignment problem is quite abstract. The original
-formulation by Monge in 1781~\cite{monge1781memoire}, is to find the transport map, $T(\cdot)$,
-which minimises the integral
-\[
-	\int_\mathcal{X} \! c(s, T(s)) \, \text{d}\mu(s),
-\]
-subject to the constraint that $T(\mu) = \nu$. We are able to choose what we consider to be
-expensive by choosing the cost function $c(x,y)$ which is non-negative for all states
-$x,y\in\mathcal{X}$.
-
-A more widely used formulation of the Monge problem was presented by Kantorovitch in
-1942~\cite{kantorovitch1958translocation}. This formulation considers a space of joint probability
-distributions known as the space of transference plans, $\Pi(\mu, \nu)$.
-
-\begin{dfn}[Coupling, Transference Plan~\cite{reich2013ensemble}]\label{def:coupling}
-Given two distributions $\mu$ and $\nu$ on a space $\mathcal{X}$, a coupling of these distributions
-is a pair $Z = (X,Y)$ such that $X\sim\mu$ and $Y\sim\nu$. The joint measure $\eta$, where
-$Z\sim\eta$, on $\mathcal{Z}=\mathcal{X}\times\mathcal{X}$ is known as the transference plan for
-this coupling.
-\end{dfn}
-
-The optimisation problem then becomes
-\[
-	\int_{\mathcal{X}\times\mathcal{X}} \! c(x, y) \, \text{d}\gamma(x, y),
-\]
-subject to $\gamma(x,y) \in \Pi(\mu, \nu)$. Kantorovitch also developed the field of
-linear programming to help deal with solutions to this
-problem~\cite{kantorovich1960mathematical,kantorovitch1958translocation}.
-
-When the cost function is $c(x,y) = \|x - y\|^2$, if $\mu$ is absolutely continuous with respect to
-Lebesgue measure, and both $\mu$ and $\nu$ have finite second order moments, then it is guaranteed
-that there is a unique optimal transference plan, between $\mu$ and $\nu$~\cite{knott1984optimal}.
-
-%%%%%%%%%%%%
-
-\subsection{Coupling Probability Distributions}\label{sec:coupling}
-
-In this section we return to the idea of coupling probability distributions, and motivate their use
-in resampling algorithms. We defined a coupling in Definition~\ref{def:coupling} as a pair of random
-variables $Z = (X,Y)$, the joint probability distribution for this pair being a quantity of
-interest. In this section we assume that the marginal distributions of both $X$ and $Y$ are known,
-later on we relax this so that one of these distributions is not known but can be approximated by a
-sample. All distributions used in the later chapters will be absolutely continuous on $\mathcal{X} =
-\mathbb{R}^n$, so we have $\mu(\text{d}x) = \pi_0(x)\text{d}x$ and $\nu(\text{d}x) =
-\pi(x)\text{d}x$. Having absolutely continuous marginals does not mean that the coupling itself is
-absolutely continuous.
-
-\begin{figure}
-\centering
-\subfigure[$\rho = 0.1$]{\includegraphics[width=0.45\textwidth]{images/coupling_indep}}
-\subfigure[$\rho = 0.95$]{\includegraphics[width=0.45\textwidth]{images/coupling_correlated}}
-\caption{Couplings with different correlations.}
-\label{fig:cts_couplings}
-\end{figure}
-
-We now look at couplings between continuous random variables. As an example we consider coupling two
-univariate Gaussian distributions, $X_1 \sim \mathcal{N}(\mu_1, \sigma^2_1)$ and $X_2 \sim
-\mathcal{N}(\mu_2, \sigma^2_2)$. We know that the transference plan $\gamma(x_1, x_2)$ will be the
-bivariate Gaussian distribution,
-\[
-	Z = (X_1, X_2), \quad Z \sim \mathcal{N}\left(\begin{pmatrix}\mu_1\\\mu_2\end{pmatrix},
-		\begin{pmatrix} \sigma^2_1 & \rho\sigma_1\sigma_2 \\ \rho\sigma_1\sigma_2 & \sigma^2_2
-		\end{pmatrix}\right).
-\]
-The form of this bivariate Gaussian is restricted by the marginal distributions to have this
-covariance matrix, where we can choose the correlation $-1 \leq \rho \leq 1$. This unknown
-correlation means that there are infinitely many couplings between $X_1$ and $X_2$, some examples
-are given in Figure~\ref{fig:cts_couplings}, which leads us back to the idea of optimising the
-transport map to maximise some criterion. We might want to maximise the correlation between the two
-random variables. If we consider the conditional distribution $X_1|X_2 \sim \mathcal{N}(x_1; \mu,
-\sigma^2)$, where
-\[
-	\mu = \mu_1 - \frac{\rho\sigma_1\sigma_2}{\sigma^2_2}(\mu_2 - x_2) \quad \text{and} \quad \sigma^2 =
-		\sigma^2_1 - \frac{(\rho\sigma_1\sigma_2)^2}{\sigma_2^2} = (1-\rho^2)\sigma_1^2,
-\]
-we notice that as $\rho\rightarrow 1$ the variance $\sigma^2 \rightarrow 0$, and we obtain a
-deterministic coupling with transport map $T\colon x_1 \mapsto \mu_1 -
-\frac{\sigma_1}{\sigma^2}(\mu_2 - x_2)$. If we set $\mathcal{N}(\mu_2, \sigma^2_2) = \mathcal{N}(0,
-1)$ we see that this coupling matches our standard map for transforming standard Gaussian random
-variables into general Gaussian random variables.
-
-Here we consider an optimal coupling to be one which maximises the correlation between $X_1$ and
-$X_2$. Maximising the correlation is equivalent to minimising the expectation of $(X_2-X_1)^2$,
-\[
-	\mathbb{E}[(X_2-X_1)^2] = \mathbb{E}[X_1^2]+\mathbb{E}[X_2^2] - 2\mathbb{E}[X_1]\mathbb{E}[X_2]-
-		2\text{cov}(X_1, X_2).
-\]
-The coupling which maximises the correlation is therefore the solution to the Monge-Kantorovich
-problem with cost function
-\[
-	c(X_1,X_2) = \|X_1-X_2\|^2.
-\]
-This problem always has a solution since for any marginals densities $\pi_X(x)$ and $\pi_Y(y)$, the
-trivial coupling $\pi_Z(x,y) = \pi_X(x)\pi_Y(y)$ exists.
-
-We now look at couplings between two discrete random variables. Unlike in the continuous case where
-the coupling had support over all of $\mathcal{X}\times\mathcal{X}$, for couplings between discrete
-random variables this is rarely the case.
-
-Consider two discrete R.V.s
-\[
-	Y_1 \sim \mu_{Y_1} \quad \text{and} \quad Y_2 \sim \mu_{Y_2},
-\]
-defined over a parameter space $\mathcal{Y} = \left\{a_1, \dots, a_M\right\}$, $a_i \in \mathbb{R}$.
-Assign the mass functions
-\[
-	\mathbb{P}(Y_1 = a_i) = \frac{1}{M} \quad \text{and} \quad \mathbb{P}(Y_2 = a_i) = w_i,
-\]
-where $w_i \geq 0$ and $\sum_i \! w_i = 1$. All possible couplings $Z = (Y_1, Y_2)$ can be described
-by the matrix $T \in \mathbb{R}^{M\times M}_+$, such that
-\begin{equation}\label{eq:coupling_conditions}
-\mathbb{P}(Y_2) = MT\mathbb{P}(Y_1), \quad \text{subject to} \quad \sum\limits_{i=1}^M \! t_{ij} =
-\frac{1}{M}, \quad \sum\limits_{j=1}^M \! t_{ij} = w_i,
-\end{equation}
-where $[T]_{ij} = t_{ij}$.
-
-We present two special cases, first the map with zero correlation, or trivial map,
-\[
-T^t = \frac{1}{M}\begin{bmatrix} w_1 & \dots & w_1 \\ \vdots & & \vdots \\ w_M & \dots & w_M
-\end{bmatrix}
-\]
-It is clear that, after renormalisation, along any row we obtain a uniform distribution,
-$\mathbb{P}(Y_1)$, and along any column we obtain the distribution $\sum_{i=1}^M
-\delta_{a_i}(\cdot)w_i$, $\mathbb{P}(Y_2)$. Hence our conditionals are equal to our marginals and
-there is no correlation.
-
-The second case is more interesting. The coupling which maximises the correlation between the two
-marginals, $T^*$, is the solution to the optimisation problem
-\[
-	T^*  = \arg\min_T \! \sum\limits_{i,j=1}^M \! t_{ij}(a_i - a_j)^2,
-\]
-subject to the row and column constraints on $T$ in Equation~\eqref{eq:coupling_conditions}~\cite{reich2015probabilistic}.
-
-We now look at a simple example of a discrete coupling. Given a state space $\mathcal{Y} = \{a_1,
-\dots, a_M\}$ where $M=5$, and two probability distributions defined over $\mathcal{Y}$,
-\[
-\mathbb{P}(Y_1 = a_i) = \frac{1}{M} \quad \text{and} \quad \mathbb{P}(Y_2 = \mathbf{a}) = (0.1,
-0.25, 0.05, 0.3, 0.3)^\top.
-\]
-If we assume that the states $a_i$ are sorted so that $a_i < a_{i+1}$ for all $i=1,\dots,M-1$, then
-the optimal coupling is
-\[
-	T^* = \begin{bmatrix} 0.1 & 0      & 0    & 0    & 0 \\
-					       0.1 & 0.15 & 0    & 0    & 0 \\
-					       0    & 0.05 & 0    & 0    & 0 \\
-					       0    & 0      & 0.2 & 0.1 & 0 \\
-					       0    & 0      & 0    & 0.1 & 0.2
-		\end{bmatrix}.
-\]
-For an ordered state space we can construct this coupling following this staircase pattern by
-starting in the top left and filling first the row then the column heading towards the bottom right
-corner. We notice that this staircase structure corresponds to the shape seen in the highly
-correlated coupling in Figure~\ref{fig:cts_couplings} (b). The $2M-1$ constraints mean that we have
-at most $2M-1$ non-zero entries, so the support of the joint distribution is much smaller than the
-full space.
-
-The product $MT^*$ results in a column stochastic matrix $P$. If we want to draw an evenly weighted
-sample, $\{s_i\}_{i=1}^5$, which obeys the probability law $\mathbb{P}(Y_2)$, we can use the columns
-of $P$ as probability distributions,
-\[
-	s_1 \sim \frac{1}{2}\delta_{a_1}(\cdot)+\frac{1}{2}\delta_{a_2}(\cdot), \quad s_2 \sim
-		\frac{3}{4}\delta_{a_2}(\cdot)+\frac{1}{4}\delta_{a_3}(\cdot), \quad s_4 \sim
-		\frac{1}{2}\delta_{a_4}(\cdot)+\frac{1}{2}\delta_{a_5}(\cdot),
-\]
-and deterministically $s_3 = a_4$, $s_5 = a_5$. What we have done here is used an optimal coupling
-between weighted and unweighted random variables to resample from the weighted distribution.
-
-%%%%%%%%%%%%
-
-\subsection{Resampling with Filters}
-\label{sec:OT}
-
-Resampling is a method which is distinct from most of the Statistical literature in that rather than
-sampling from a known parametric distribution which is usually the aim, we instead attempt to sample
-from empirical distributions. These distributions often arise from a sample, $\{(w_i,
-\theta_i)\}_{i=1}^n$, in the form,
-\begin{equation}\label{eq:empirical_dist}
-\pi(\cdot) = \sum\limits_{i=1}^n \! w_i\delta_{\theta_i}(\cdot), \quad \text{where}
-\quad\sum\limits_{i=1}^n \! w_i = 1.
-\end{equation}
-The weights, $w_i$ may be equal to $1/n$ or they may all be different.
-\begin{dfn}[Resampling]\label{def:resampling}
-Given a discrete empirical distribution of the type in Equation~\eqref{eq:empirical_dist}. Resampling provides
-us a new discrete distribution of the form
-\[
-	\tilde{\pi}(\cdot) = \frac{1}{n}\sum\limits_{i=1}^n \! n_i\delta_{\theta_i}(\cdot), \quad
-		\text{where} \quad n_i \in \{0,\dots,n\}, \quad \sum\limits_{i=1}^n \! n_i = n.
-\]
-The density $\tilde{\pi}$ is in some way close to the original density $\pi$.
-\end{dfn}
-In Definition~\ref{def:resampling} the condition on the sum of the $n_i$ restricts $\tilde{\pi}$ to
-be composed of the same number of samples as $\pi$. This is not necessary although as mentioned in
-Section~\ref{sec:gmh} one can run into trouble when this is not the case. These problems arise
-because the empirical density $\pi$ is usually approximating some continuous distribution, $f$, and
-over reliance on one approximation will cause the tails of the $f$ to be underestimated. If a sample
-is required, one uses $n_i$ lots of $\theta_i$, otherwise statistics can be computed directly from
-$\tilde{\pi}$.
-
-%%%%%%
-
-\subsubsection{Bootstrap Resampling}
-
-One of the first resamplers capable of accomplishing the feat in Definition~\ref{def:resampling} was
-the bootstrap resampler (BSR)~\cite{efron1992bootstrap}.
-
-\begin{table}[htpb]
-\begin{algorithm}[H]
-\DontPrintSemicolon
-\BlankLine
-Obtain sample, $\{x_i\}_{i=1}^n$ from some distribution.\;
-Construct
-\[
-	\hat{F} = \sum\limits_{i=1}^n \! n_i\delta_{x_i}(\cdot), \quad n_i = \sum\limits_{k=1}^n \!
-		\text{I}(x_i = x_k).
-\]
-
-Sample with replacement $X^* = [x^*_1,\dots,x_n^*]^\top \sim \hat{F}$. i.e. $X^* \sim
-\text{Multi}(1, \frac{1}{n}[n_1,\dots,n_n]^\top)$.\;
-\caption{The Bootstrap Resampler~\cite{efron1992bootstrap}.\label{alg:bs_resampler}}
-\end{algorithm}
-\end{table}
-
-Algorithm~\ref{alg:bs_resampler} presents the BSR when we have an evenly weighted sample, this can
-just as easily be extended to a weighted sample, $\{(w_i, x_i)\}_{i=1}^n$. In this case the
-probability vector in the Multinomial distribution becomes $\tilde{\mathbf{w}} = [\tilde{w}_1,
-\dots, \tilde{w}_n]^\top$ where $\tilde{w}_i = \sum_{k=1}^n \! w_i\text{I}(x_i = x_k)$.
-
-%%%%%%
-
-\subsubsection{The Bootstrap Particle Filter}
-
-The data assimilation community is concerned with predicting the state of time dependent systems
-given noisy observations. This type of problem is known as the filtering problem. Usually there is a
-model for the system although it may be expensive to evaluate. We assume that we have a prediction,
-$x(t)=[x_1(t),\dots,x_N(t)]^\top$, from the model calculated using observations, $D_i(t-1)$. We also
-observe some data at time $t$, $D_i(t)$. An application of Bayes' formula allows us to combine these
-two pieces of information to refine the prediction.
-\begin{dfn}[Particle Filter]
-A particle filter is an algorithm which solves the filtering problem.
-\end{dfn}
-
-\begin{table}[htpb]
-\begin{algorithm}[H]
-\DontPrintSemicolon
-\BlankLine
-Define a system model,
-\[
-	x_i(t) = f_{t-1}(x_i(t-1), \xi_i(t-1)), \quad \text{where} \quad f_t\colon
-		\mathbb{R}^n\times\mathbb{R}^m\rightarrow\mathbb{R}^n, \quad \xi_i(t-1) \sim \mathcal{N}(0,
-\sigma^2).
-\]
-
-\nonl \textbf{Predict}\;
-Sample $\xi_i(t-1) \sim \mathcal{N}(0, \sigma^2)$.\;
-Calculate $x_i^*(t) = f_{t-1}(x_i(t-1), \xi_i(t-1))$.\;
-\nonl\;
-\nonl \textbf{Update}\;
-For each particle calculate
-\[
-	w_i = \frac{\ell(D_i(t)| x_i^*(t))}{\sum_{k=1}^N \! \ell(D_k(t)| x_k^*(t))}.
-\]
-
-Resample $x(t) \sim \text{Multi}(1, w/\|w\|_1)$, where $w = (w_1,\dots,w_N)^\top$.
-\caption{The Bootstrap Particle Filter~\cite{gordon1993novel}.\label{alg:bs_filter}}
-\end{algorithm}
-\end{table}
-The bootstrap filter is an early particle filter, consisting of two steps. The first is to propogate
-the prior's predictions through the system model. We then assign a weight to each particle based on
-how likely the data we have just received is given the prior prediction. Finally we use the
-bootstrap resampler to convert these weighted particles into the estimate of the current state. This
-current state can become the prior information for the next iteration.
-
-%%%%%%
-
-\subsubsection{Linear Ensemble Transform Filters}
-
-The bootstrap filter is a random transformation of the empirical density, $\pi$, and the transformed
-density, $\tilde{\pi}$, has the same support as $\pi$, with a number of copies of each
-particle. It is often undesirable for us to have copies since this means that we do not cover as
-much of the sample space as we could. This leads to wasted computation, poorer quality samples and a
-worse approximation of the densities of interest. One method of reducing the number of repeats in a
-sample is to allow $\tilde{\pi}$ to be built from linear combinations of the original sample. This
-means that the support of the density $\tilde{\pi}$ is not restricted to being the same as $\pi$ and
-reduces the likelihood of having two particles in the same position. Particle filters which use
-linear combinations to produce the transformed density are known as Linear Ensemble Transform
-Filters (LETFs).
-
-\begin{dfn}[Linear Ensemble Transform Filter]\label{def:LETF}
-A particle filter where the original sample, $\{\theta_i\}_{i=1}^M$, is transformed into a new
-sample, $\{\tilde{\theta}_i\}_{i=1}^M$, according to the relation
-\[
-	\tilde{\theta}_j = \sum\limits_{i=1}^M \! w_{ij}\theta_i, \quad w_{ij} \geq 0, \ \sum\limits_{i=1}^M
-		w_{ij} = 1,
-\]
-is known as a linear ensemble transform filter.
-\end{dfn}
-
-%%%%%%
-
-\subsubsection{The Ensemble Transform Particle Filter}
-
-The ensemble transform particle filter (ETPF) proposed by Reich in~\cite{reich2013nonparametric} is
-an ensemble transform method which combines the optimal coupling ideas from
-Section~\ref{sec:coupling} with the LETF framework to produce a particle filter which is consistent
-in the limit of the ensemble size $M\rightarrow\infty$. The transform takes a sample of weighted
-particles $\{(w_i,y_i)\}_{i=1}^M$ with law$(\mu_Y) = \pi_{Y}$ and converts it into a sample of
-evenly weighted particles $\{x_i\}_{i=1}^M$ with law$(\mu_{X}) = \pi_{X}$, by means of defining a
-coupling $T^*$ between the distributions $Y$ and $X$. The couplings used here are optimal in the
-sense discussed in Section~\ref{sec:coupling}. The coupling $T^*$ is the solution to a linear
-programming problem in $M^2$ variables with $2M-1$ constraints as defined in
-\cite{reich2013nonparametric}. Choosing to maximise the correlation means that a statistic $s(X)
-\rightarrow s(Y)$ as $M\rightarrow\infty$, and $s(X)$ converges faster than any other random
-variable induced by a linear coupling. The density $\pi_X$ is the optimal density for approximating
-$\pi_Y$ given that the mixture components have equal variance and equal weight.
-
-\begin{table}[htpb]
-\begin{algorithm}[H]
-\DontPrintSemicolon
-\BlankLine
-
-\nonl \textbf{Predict}\;
-Sample $\xi_i(t-1) \sim \mathcal{N}(0, \sigma^2)$.\;
-Calculate $x_i^*(t) = f_{t-1}(x_i(t-1), \xi_i(t-1))$.\;
-\nonl \textbf{Update}\;
-For each particle calculate
-\[
-	w_i = \frac{\ell(D_i(t)| x_i^*(t))}{\sum_{k=1}^N \! \ell(D_k(t)| x_k^*(t))}.
-\]
-
-Find the optimal coupling,
-\[
-	T^* = \arg\min\limits_{T} \sum\limits_{i,j=1}^M \! t_{ij}\|x_i^*(t) - x_j^*(t)\|^2_2.
-\]
-
-Set $x(t) = M(T^*)^\top x^*(t)$.\;
-
-\caption{The Ensemble Transform Particle Filter~\cite{reich2013nonparametric}.\label{alg:ETPF}}
-\end{algorithm}
-\end{table}
-
-The ETPF is outlined in Algorithm~\ref{alg:ETPF}. It follows the same structure as the bootstrap
-filter in Algorithm~\ref{alg:bs_filter}, but in this case the resampling step is performed by taking
-a linear combination of the prior states rather than sampling from a multinomial distribution. The
-conditions on the $t_{ij}$ are given in Equation~\eqref{eq:coupling_conditions}.
-
-%%%%%%
-
-\subsubsection{Approximate Multinomial Resampling}
-
-The ETPF described in the previous section is optimal in terms of maximising the correlation between
-the two marginal distributions. However the linear programming problem which must be solved for
-every new empirical distribution is very costly, especially as the ensemble size grows. For the
-purposes we require, discussed in Chapter~\ref{sec:PAIS}, we do not need as much accuracy as is
-provided by the ETPF. For this reason we introduce a new algorithm, the approximate multinomial
-resampler (AMR)~\cite{cotter2015parallel}, which shares many properties with the ETPF, but relaxes the constraint on
-finding the optimal coupling. Instead we find a coupling via a greedy method in which the
-correlation is high near particles with large weights, but is poor for particles with a low weight.
-
-To perform the resampling, we split the state space into $M$, not necessarily disjoint subspaces,
-$R_i\neq\emptyset$, each subspace containing at least one of the original samples $\{x_i\}$. We
-define $M$ new probability distributions, $p^i$, such that $\sum_{i=1}^M \! p^i = w$, where $w$ is
-the vector of the original probabilities corresponding to $x$. These probability distributions each
-satisfy the conditions
-\[
-	\tilde{p}_k^i \leq w_k, \quad \|\tilde{p}^i\|_1 = \frac{1}{M},\quad \text{and}\quad p^i =
-		M\tilde{p}^i.
-\]
-At this point, we could still be talking about the ETPF. The distinction comes in the way that we
-choose the $R_i$ and $\tilde{p}^i_k$. We choose to first pick the particle, $x_J$, with the highest
-weight and then expand a ball around it until the ball contains $1/M$ of the total probability mass.
-The particle furthest from $x_J$ inside the ball may have its weight reduced by the amount required
-for $\|\tilde{p}^i\|_1=1$. All other particles in the ball will have $\tilde{p}^i_k = w_k$. Once
-this is done, particles which have had all their probability mass assigned to a distribution $p^i$
-are removed, and we choose the particle with the next highest weight.
-
-This method ensures that areas with a high weight have a particle chosen in that area again. The
-greedy nature of the algorithm means that the correlation is sub optimal. In Algorithm~\ref{alg:AMR}
-we present the pseudo-code form of this algorithm.
-
-\begin{table}[htpb]
-\begin{algorithm}[H]
-\DontPrintSemicolon
-\BlankLine
-
-Obtain a weighted sample $\{(w_i, y_i)\}_{i=1}^M$.\;
-\For{$i=1,\dots,M$}{
-	$J = \arg\max_j \! w_j$.\;
-	$p_{J,i} = 1/M \wedge w_J$.\;
-	$w_J = w_J - p_{J,i}$.\;
-	\While{$\sum_j p_{j,i} < 1/M$}{
-		$K = \arg\min_{k\in\{k|w_k>0\}} \! \|y_J - y_k\|$.\;
-		$p_{K,i} = (1/M-\sum_j \! p_{j,i}) \wedge w_K$.\;
-		$w_K = W_K - p_{K,i}$.\;
-	}
-}
-$x = MP^\top y$.\label{algline:amr_mean}\;
-\caption{The Approximate Multinomial Resampler~\cite{cotter2015parallel}.\label{alg:AMR}}
-\end{algorithm}
-\end{table}
-
-In Line~\ref{algline:amr_mean} of Algorithm~\ref{alg:AMR} we see that the output of the algorithm,
-an evenly weighted sample, takes the form required by Definition~\ref{def:LETF} to be an LETF. We
-note that the AMR algorithm, like the ETPF algorithm preserves the mean of the sample,
-\[
-	\hat{\mu}_X = \frac{1}{M}\sum_i \! x_i = \frac{1}{M}\sum_i \sum_k \! p_{k,i}y_k = \frac{1}{M}\sum_k
-		w_ky_k = \hat{\mu}_Y.
-\]
-Here we use that the columns of $P$ are the probability distributions $p^i$, and the sum of these
-distributions is equal to the weights, $w$, hence
-\[
-	\sum_i \! p_{k,i}y_k = (p^1_k + \dots + p^M_k)y_k = w_ky_k.
-\]
-
-%%%%%%
-
-\subsubsection{Numerical Comparison of the Filter Resamplers}
-
-We have designed the AMR with the aims of being numerically cheaper than the ETPF, and more accurate
-than the BSR. Therefore we now present numerical examples which demonstrate that we have achieved
-this. To compare the algorithms, we write a simple MC algorithm which compares the ability of each
-algorithm to preserve the statistics of a weighted sample in an evenly weighted sample.
-
-\begin{table}[htpb]
-\begin{algorithm}[H]
-\DontPrintSemicolon
-\BlankLine
-\For{$k=1,2,\ldots,\frac{N}{M}$}{
-	Sample $y_j \sim Q$, for $j = 1, \ldots, M$.\;
-	Weight $y_j$ under $F$,
-	\[
-		w_j = F(y_j) / Q(y_j).
-	\]
-
-	Resample 
-	\[
-		\hat{F}_k = \sum_j w_j\delta_{y_j}(\cdot) \rightarrow \sum_j n_j\delta_{x_j}(\cdot) = \hat{G}_k \approx \hat{F}_k.
-	\]
-
-	Calculate error in the statistic
-	\[
-		s_k = \frac{|s(\{x_j\}) - s(\{(w_j, y_j)\})|}{|s(\{x_j\})|}.
-	\]
-}
-Return mean($\{s_k\}$).\;
-\caption{Comparing Resamplers.\label{alg:ETMC}}
-\end{algorithm}
-\end{table}
-
-In Algorithm~\ref{alg:ETMC} we create random empirical weighted distributions, $\hat{F}$, which are an
-approximation of a chosen distribution $F$. We then resample from $\hat{F}$ to create a new
-distribution $\hat{G}$. The new empirical distribution, $\hat{G}$, follows roughly the same
-distribution but some error is introduced since we require an integer number,
-$n_j$, of each particle. We want to calculate how big the error is between the distributions of $\hat{F}$ and
-$\hat{G}$. To do this we calculate some chosen statistics of both $\hat{F}$ and $\hat{G}$ and
-calculate the relative difference between these statistics. This is done for each resampler with a fixed total sample size of $N$,
-and we vary $M$ to see how the relative error varies with the ensemble sizes.
-
-\begin{figure}[htb]
-\centering
-\subfigure[Relative error in $\mathbb{E}(X)$]{\includegraphics[width=0.45\textwidth]{"images/AMR_EX"}}
-\subfigure[Relative error in
-$\mathbb{E}(X^2)$]{\includegraphics[width=0.45\textwidth]{"images/AMR_EX2"}}\\
-\subfigure[Relative error in $\mathbb{E}(X^3)$]{\includegraphics[width=0.45\textwidth]{"images/AMR_EX3"}}
-\subfigure[Cost of resamplers per iteration]{\includegraphics[width=0.45\textwidth]{"images/AMR_speed"}}\\
-\caption{Relative errors representing the error between $\hat{F}$ and $\hat{G}$ as described in Algorithm~\ref{alg:ETMC}, where $\hat{G}$ is constructed using the Bootstrap, ETPF and AMR algorithms.}
-\label{fig:AMR}
-\end{figure}
-
-To test the resamplers we chose a proposal distribution, $Q = \mathcal{N}(1,2)$, and a target
-distribution $F = \mathcal{N}(2,3)$. Figure \ref{fig:AMR} (a)-(c) shows how the relative errors in
-the first three raw moments varies with ensemble size $M$. As expected, the AMR lies somewhere
-between the high accuracy of the ETPF and the less accurate BSR. Note that only the error for the
-BSR is presented for the first moment since both the ETPF and the AMR are mean preserving. Figure
-\ref{fig:AMR} (d) shows how the computational cost, measured in seconds, scales with the ensemble
-size. These results demonstrate that the AMR behaves how we wish, and importantly ensures that
-exactly one sample of the output will lie in each region with higher than average density.
-
-%%%%%%
-
-\subsubsection{Scaling of Resampling Algorithms with Dimension}
-Ideally the dimension of particles in a filter will not affect the convergence of the method.
-Unfortunately, the approximation of continuous density functions is computationally infeasible in
-high dimensions with the ensemble size required to achieve convergence growing exponentially in the
-dimension\cite{silverman1986density,snyder2008obstacles}.
-
-\begin{figure}[htb]
-\begin{center}
-\includegraphics[width=0.7\textwidth]{images/ET_dim_scaling}
-\caption{Demonstration of the ETMC algorithm rapidly failing as the dimension increases in problem
-$G_1$ defined in Chapter~\ref{sec:PAIS}. The relative error shown is that between $\mathbb{E}_{\hat{F}}[X]$ and $\mathbb{E}_{\hat{G}}[X]$.}
-\label{fig:ET_dim_scaling}
-\end{center}
-\end{figure}
-
-Figure~\ref{fig:ET_dim_scaling} shows how quickly the ETMC algorithm loses its ability to accurately
-represent the mean of the target distribution as the dimension increases. Clearly for a simple
-Gaussian problem, we can not resample in much more than 10 dimensions and hope to recover a
-representative sample without massively increasing the ensemble size. This phenomenon is known as
-the curse of dimensionality. The AMR and BSR suffer in a similar manner as the dimension increases.
-
-%%%%%%%%%%%%
-
-\subsection{Couplings between Arbitrary Probability Measures}\label{sec:intro_TM}
-
-In the previous sections we have looked at couplings which convert a weighted sample into an
-unweighted sample while preserving the approximate empirical distribution. In this section we look at
-how we can couple two arbitrary measures. In the following discussion we concentrate on designing a
-coupling which maps from an arbitrary probability distribution onto a standard Gaussian
-distribution. The main difference here is that we would like to construct a map between the
-continuous distribution $F$ and a \emph{reference measure}, $\mathcal{N}(0, \text{I})$, rather than
-between the approximation of $F$, $\hat{F}$, and the approximation of $\hat{F}$, $\hat{G}$.
-
-Obviously constructing an exact map for arbitrary $F$ is infeasible, so we must again use an
-empirical distribution $\hat{F}$ where $\hat{F}\rightarrow F$ in the limit of infinite samples,
-however we can ensure that we are coupling $\hat{F}$ to the continuous distribution $\mathcal{N}(0,
-1)$. This convergence must be achieved by continual sampling from $F$, which for an arbitrary
-distribution can be expensive. To speed up this process~\cite{parno2014transport} proposes an MCMC
-algorithm which sequentially updates the distribution $\hat{F}$ and recalculates the map so that
-after each update, sampling from $F$ becomes cheaper. Calculating the transport map between
-$\hat{F}$ and $\mathcal{N}(0, \text{I})$ allows us to sample more efficiently because it reduces the
-sampling problem to sampling from a standard Gaussian distribution and then mapping these Gaussian
-random variables onto an arbitrary probability measure. Which for the class of maps considered is
-very cheap. These couplings are discussed further in Chapter~\ref{sec:map}.
 
 \section{Construction of transport maps in importance sampling} \label{sec:map}
 %Follow the other papers, show adaptation(s)
 
 So far we have seen that the PAIS algorithm is efficient for low dimensional posterior sampling.
 PAIS is particularly useful if the posterior is multimodal, or inconveniently shaped such as the
-Rosenbrock density discussed in Chapter~\ref{chapter:HMC}. However, we have had trouble when
+Rosenbrock density discussed in Chapter~\ref{sec:LPAIS}. However, we have had trouble when
 attempting to increase the dimension of the parameter space. This was seen when we attempted to
 recover the initial condition for the wave equation in Chapter~\ref{sec:PAIS}.
 
-In this Chapter we look at a method which will allow us to improve efficiency in low dimensions, and
-will also allow us to sample more efficiently in higher dimensions. The ideal sampling
-situation in MCMC is to explore an $n$-dimensional Gaussian distribution (or other standard distribution) using a near proportional
+In this Chapter we look at a method which will allow us to improve efficiency in our proposal distributions. The ideal sampling
+situation in MCMC is to explore an $d$-dimensional Gaussian distribution (or other standard distribution) using a near proportional
 proposal distribution. We therefore aim to transform an arbitrary distribution, $\mu_\theta$, in to a Gaussian distribution, which we can then sample from efficiently, and finally transform this sample back into a sample from $\mu_\theta$. In this way we hope to be able to sample from any distribution $\mu_\theta$ with a similar efficiency as we obtain when sampling from a Gaussian distribution. In particular for the PAIS algorithm, resampling schemes are more efficient in higher
 dimensions if the dimensions are uncorrelated. The work of Moselhy and
 Marzouk~\cite{el2012bayesian}, Parno and Marzouk~\cite{parno2014transport} and
@@ -776,7 +225,7 @@ Metropolis-Hastings algorithm.
 %While the restrictions on the map are essential for well-posedness, the approximate map which
 %results from these constraints can be made arbitrarily accurate by increasing the number of basis
 %functions used in the expansion, and increasing the number of samples used in the optimisation
-%problem. In practise it appears that we need not aim to achieve a high accuracy solution. Excellent
+%problem. In practice it appears that we need not aim to achieve a high accuracy solution. Excellent
 %results have been observed using monomial basis functions of total order 3, and we need a sample of
 %size of only $\mathcal{O}(10^3)$ to obtain a well converged map.
 
@@ -800,7 +249,7 @@ efficiently approximate the reference space and so lead to higher overall effect
 Further we show that the algorithm arising from the combination of these methods can lead to more
 efficient sampling than either can achieve on its own.
 
-\subsection{The Transport Map}
+\section{The Transport Map}
 
 In this section we outline the methodology in \cite{parno2014transport} for coupling the target,
 $\mu_{\theta}$, with the reference distribution, $\mu_r$.
@@ -815,14 +264,21 @@ We also show how the map can be constructed using a weighted sample and hence ho
 \end{dfn}
 
 \begin{dfn}[Exact Transport Map $T$]
-	A transport map $T$ is exact if the {\it pullback} of the standard Gaussian density,
+	A transport map $T$ is exact if the {\it pullback} of the standard Gaussian density, $\phi(\cdot)$,
 	\begin{equation}\label{eq:pullback}
 		\tilde{\pi}(\theta) = \phi(T(\theta))|J_T(\theta)|,
 	\end{equation}
-	is equal to the target density $\pi(\theta)$ for all $\theta \in \mathcal{X}$.
+	is equal to the target density $\pi(\theta)$ for all $\theta \in \mathcal{X}$. The pullback is defined in terms of the determinant of the Jacobian of $T$,
+	\[
+		|J_T(\theta)| = \text{det}\begin{bmatrix} \partial_{\theta_1} T_1(\theta) & \dots & \partial_{\theta_d} T_1(\theta) \\ \vdots & \ddots & \vdots \\ \partial_{\theta_1} T_d(\theta) & \dots & \partial_{\theta_d} T_d(\theta) \end{bmatrix}.
+	\]
 \end{dfn}
 
-In the rare case that we have the exact map, $T\in\mathcal{T}$ where $\mathcal{T}$ is the space of all invertible maps, we are able to draw a sample from $\pi_r = \phi$, the density of the standardised Gaussian distribution, and map these samples back onto target space using $T^{-1}$. These proposed samples are distributed according to the target distribution.
+In the case that we have the exact map, $T\in\mathcal{T}$ where $\mathcal{T}$ is the space of all invertible maps, we are able to draw a sample from $\pi_r = \phi$, the density of the standardised Gaussian distribution, and map these samples back onto target space using $T^{-1}$. These proposed samples are distributed according to the target distribution.
+
+\begin{dfn}[Target and Reference Space]
+	The transport map pushes a particle from a {\it target space} $\mathcal{X}$, that is a subset of $\mathbb{R}^d$ equipped with a target measure $\mu_{\theta}$, onto a {\it reference space}, $R$, again a subset of $\mathbb{R}^d$ equipped with the reference measure $\mu_r$.
+\end{dfn}
 
 On target space, the proposal density is induced by the pullback of $\phi$ through $T^{-1}$.
 Clearly the pullback only exists when $T$ is monotonic and has continuous first derivatives.
@@ -843,11 +299,11 @@ numerically, it is not guaranteed that the resulting map will be invertible, so 
 where $T_i\colon \mathbb{R}^i \to \mathbb{R}$. We assume that the target and reference probability densities are absolutely continuous on
 $\mathbb{R}^d$. Under this formulation we are guaranteed a unique invertible map $\tilde{T}$ with the property that
 \[
-	\mu_{\theta} \approx \tilde{T}\mu_r.
+	\tilde{T}\mu_{\theta} \approx \mu_r.
 \]
-Relaxing the equality constraint to; finding the approximate map $\tilde{T} \in \mathcal{T}^{\ltri}$ which minimises the distance, allows us to formulate an efficient sampling method in terms of the linear algebra required, and experimentation has shown that the departure of the reference space from Gaussian is not too severe.
+Relaxing the equality constraint to finding the approximate map $\tilde{T} \in \mathcal{T}^{\ltri}$ which optimises $C(T)$, allows us to formulate an efficient sampling method, in terms of the linear algebra required, and experimentation has shown that the pushforward of the target is close enough to Gaussian to achieve efficient sampling.
 
-\subsubsection{The optimisation problem}
+\subsection{The optimisation problem}
 
 With these constraints in mind we formulate the optimisation problem explicitly. The cost function
 is chosen to be the Kullback-Leibler divergence between the posterior density and the pullback density,
@@ -855,19 +311,24 @@ is chosen to be the Kullback-Leibler divergence between the posterior density an
 	D_\text{KL}(\pi\|\tilde{\pi}) =
 		\mathbb{E}_\pi\left[\log\left(\frac{\pi(\theta)}{\tilde{\pi}(\theta)}\right)\right].
 \]
-Given the form of the pullback in Equation~\eqref{eq:pullback}, now taken through an approximate map, the divergence becomes
+This divergence results in some nice properties which we will explore in the following derivation. The KL divergence is not a true metric since it is not symmetric, however it is commonly used to measure the distance between probability distributions due to it's relatively simple form, and because it provides a bound for the square of the Hellinger distance by Pinsker's inequality~\cite{pinsker1960information},
+\[
+	D_{KL}(p\|q) \geq D_H^2(p,q),
+\]
+which is a true metric between probability distributions $p$ and $q$.
+Given the form of the pullback in Equation~\eqref{eq:pullback}, now taken through an approximate map $\tilde{T}$, the divergence becomes
 \[
 	D_\text{KL}(\pi\|\tilde{\pi}) = \mathbb{E}_\pi\left[\log\pi(\theta) - \log\pi_r(\tilde{T}(\theta)) -
 		\log\left|J_{\tilde{T}}(\theta)\right|\right].
 \]
-We note the posterior density is constant in $\tilde{T}$, and so it is not necessary for us to compute it when optimising this cost function. This expression is a complicated integral with respect to the target distribution, for which the normalisation constant is unknown, however this is exactly the scenario for which we would turn to MCMC methods for a solution.
+We note the posterior density is independent of $\tilde{T}$, and so it is not necessary for us to compute it when optimising this cost function. This expression is a complicated integral with respect to the target distribution, for which the normalisation constant is unknown. However this is exactly the scenario for which we would turn to MCMC methods for a solution.
 
 To find the best coupling, $\tilde{T} \in \mathcal{T}^{\ltri}$, we solve the optimisation problem,
 \[
 	\tilde{T} = \arg\min_{T \in \mathcal{T}^{\smallltri}} \mathbb{E}_\pi\left[-\log\pi_r(T(\theta)) -
 		\log\left|J_T(\theta)\right|\right]
 \]
-which has a unique solution.
+which has a unique solution since the cost function is convex.
 
 We also include a regularisation term which is required for reasons which will become clear later. The optimisation problem now takes the form
 \begin{equation}\label{eq:gen_map_optim}
@@ -877,14 +338,14 @@ We also include a regularisation term which is required for reasons which will b
 \end{equation}
 This parameter $\beta$ does not need to be tuned, experimentation has shown that the choice
 $\beta=1$ is sufficient for most problems. The form of the penalisation term promotes maps which are
-close to the identity.
+closer to the identity.
 
-\subsubsection{The structure of the map}
+\subsection{The structure of the map}
 
 Before we continue with the derivation of the optimisation problem, we consider the structure
-of the map in more detail. The lower lower triangular structure of the map not only guarantees monotonicity, it also allows for efficient calculation of the pullback density as well as the inverse of the map, $\tilde{T}^{-1}$. The Jacobian of $\tilde{T}$ is a lower triangular matrix,
+of the map in more detail. The lower triangular structure of the map not only guarantees monotonicity, it also allows for efficient calculation of the pullback density, as well as the inverse of the map, $\tilde{T}^{-1}$. The Jacobian of $\tilde{T}$ is a lower triangular matrix,
 \[
-	DT(\theta) = \begin{bmatrix}
+	J_T(\theta) = \begin{bmatrix}
 		\partial_{\theta_1} \tilde{T}_1(\theta) & \dots & \partial_{\theta_d} \tilde{T}_1(\theta)\\
 		\vdots & \ddots & \vdots \\
 		\partial_{\theta_1} \tilde{T}_d(\theta) & \dots & \partial_{\theta_d} \tilde{T}_d(\theta)
@@ -902,7 +363,7 @@ Here we note that this term is separable in terms of the dimension $i$.
 
 %Inverting $T$ is simplified by the lower triangular structure in the sense that in each dimension, $i$, we need only invert a univariate polynomial. This simplification comes about because we invert each dimension of the map independently, beginning with $T_1$ which is a function of only $\theta_1$. Finding the root of $T_1(\theta_1) = r_1$, gives us the value of $\theta_1$ which we can then use to find the root of $T_2(\theta_2;\theta_1) = r_2$, and so on. These roots, $r_1,\dots,r_d$, are restricted to be real since $\mathcal{X} \subset \mathbb{R}^d$, which allows us to find the unique point, $\theta$, which corresponds to the point $r$.
 
-Inverting $\tilde{T}$ at a point $r$ is simplified by the lower triangular structure of the map. The map component $\tilde{T}_1(\theta)$ is a univariate polynomial in $\theta_1$, we can find the inverse of this function by solving the equation $T_1(\theta_1) = r_1$. This inversion tells us the value of $\theta_1$, which means the next component is again a univariate polynomial, $T_2(\theta_2; \theta_1)=r_2$. This means that we can perform $d$ root finding problems instead of a full $d$ dimensional non-linear solve.
+Inverting $\tilde{T}$ at a point $r$ is simplified by the lower triangular structure of the map. The map component $\tilde{T}_1(\theta)$ is a univariate polynomial in $\theta_1$, so we can find the inverse of this function by solving the equation $T_1(\theta_1) = r_1$. This inversion tells us the value of $\theta_1$, which means the next component is again a univariate polynomial, $T_2(\theta_2; \theta_1)=r_2$. We can then perform $d$ root finding problems instead of a full $d$ dimensional non-linear solve.
 
 We require that the first derivatives of the map are continuous, which is easy to enforce by the choice of basis functions. Here we assume that the map will be built from a family of orthogonal polynomials, $\mathcal{P}(\theta)$, not necessarily orthogonal with respect to the target distribution. Each component of the map is defined as a multivariate polynomial expansion,
 \begin{equation}\label{eq:map_defn}
@@ -922,11 +383,11 @@ to use polynomials of total order $p$,
 \[
 	\mathcal{J}_i^\text{TO} = \left\{\mathbf{j}:\|\mathbf{j}\|_1 \leq p, j_k = 0\ \forall k > i\right\},
 \]
-which is optimal in terms of the amount of information captured by the map about the target. The cardinality of $\mathcal{J}_i^\text{TO}$ is $M_i = {i+p \choose p}$ which increases rapidly in $d$ and $p$, where $i = 1, \dots, d$. Smaller optimisation problems can be produced by constructing subsets of $\mathcal{J}_i^\text{TO}$. These index sets are discussed further
+which is optimal in terms of the amount of information captured by the map about the target. The cardinality of $\mathcal{J}_i^\text{TO}$ is $M_i = {i+p \choose p}$ which increases rapidly in $d$ and $p$, where $i = 1, \dots, d$. Smaller optimisation problems can be produced by constructing subsets of $\mathcal{J}_i^\text{TO}$. These index sets are discussed
 in~\cite{parno2014transport}. Increased information with a slower increase in the number of map parameters can be achieved with the composition of maps discussed in~\cite{parno2015transport}. Here we stick with polynomials of total order $p$ since we work with low dimensional problems with the PAIS algorithm.
 
 
-\subsubsection{Implementation of the optimisation problem}\label{sec:transport_implementation}
+\subsection{Implementation of the optimisation problem}\label{sec:transport_implementation}
 
 We now discuss how we can evaluate Equation~\eqref{eq:gen_map_optim} using a sample from the target distribution. We first reformulate the expectation in the cost functional in terms of a MC estimator,
 \begin{align}
@@ -942,7 +403,7 @@ Optimisation of this cost function results in a map from $\pi$ to some reference
 		\beta(T_i(\theta^{(k)})-\theta^{(k)})^2\right].
 \end{equation}
 Note that since we assume that the map is monotonic, the derivatives of each component are
-positive and so this functional is always finite. In practise it is infeasible to enforce this condition across the whole parameter space. We instead enforce this condition by ensuring that the derivatives are positive at each sample point. This means that when we sample away from these support points while in reference space, it is possible to enter a region of space where the map is not monotonic.
+positive and so this functional is always finite. In practice it is infeasible to enforce this condition across the whole parameter space. We instead enforce this condition by ensuring that the derivatives are positive at each sample point. This means that when we sample away from these support points while in reference space, it is possible to enter a region of space where the map is not monotonic.
 
 We now return to the structure of the map components given in Equation~\eqref{eq:map_defn}. Since the basis functions are
 fixed, the optimisation problem in \eqref{eq:gen_map_optim} is really over the map components $\bar{\gamma} = (\gamma_1, \dots,
@@ -952,7 +413,7 @@ fixed, the optimisation problem in \eqref{eq:gen_map_optim} is really over the m
 		\left[\frac{1}{2}T_i^2(\theta^{(k)}; \gamma_i) - \log\frac{\partial T_i}{\partial\theta_i}(\theta^{(k)}; \gamma_i) + \beta(T_i(\theta^{(k)};
 		\gamma_i)-\theta^{(k)})^2\right], \\
 	&\text{subject to} \quad \frac{\partial T_i}{\partial\theta_i}(\theta^{(k)};
-		\gamma_i) > 0 \ \text{for all}\ k=1,\dots,K,\ i=1,\dots,n.
+		\gamma_i) > 0 \ \text{for all}\ k=1,\dots,K,\ i=1,\dots,d.
 		\notag
 \end{align}
 The sum in Equation~\eqref{eq:map_defn} is an inner
@@ -1002,7 +463,7 @@ during a Monte Carlo run, using previous guesses of the optimal map to seed the 
 results in much faster convergence, usually taking only a couple of iterations to satisfy the stopping
 criteria.
 
-\subsubsection{Implementation of the optimisation problem in PAIS}
+\subsection{Implementation of the optimisation problem in PAIS}
 
 In the PAIS algorithm, we use weighted samples to approximate the posterior rather than equally weighted samples. Fortunately, the majority of the derivation of this cost function follows unchanged. We look at the importance sampling Monte Carlo estimate of $C(T)$, compared with
 Equation~\eqref{eq:gauss_map_optim},
@@ -1019,7 +480,7 @@ Equation~\eqref{eq:final_map_optim},
 		\frac{w^\top}{\bar{w}}\log(G_i\gamma_i) + \frac{\beta}{K}\|\gamma_i-\iota\|^2, \\
 	&\text{subject to} \quad G_i\gamma_i > 0. \notag
 \end{align}
-We introduce a diagonal matrix $W = \text{diag}(w)$, where $w = (w_1,\dots,w_K)^\top$ into the log of the reference density, and replace the ones vector, $c$, with $w$. We also include a $1/K$ to the regularisation term to allow it to be drowned out. We should obtain the same optimal map with a weighted sample as we do with an unweighted sample since we are trying to approximate the same expectation. The weights are strictly
+We introduce a diagonal matrix $W = \text{diag}(w)$, where $w = (w_1,\dots,w_K)^\top$ into the log of the reference density, and replace the ones vector, $c$, with $w$. Analogously to the unweighted case, we include a $1/K$ to the regularisation term so that it has less influence as we obtain more samples. If we allowed this regularisation term to exert influence at all updates we would converge to a suboptimal map. We should converge to the same optimal map with a weighted sample as we do with an unweighted sample since we are trying to approximate the same expectation. The weights are strictly
 positive resulting in a positive definite matrix $W$. This means that the Hessian of the objective
 function is still positive definite, and so the optimisation problem remains convex. It is important in implementation to ensure that any weights which are numerically zero are dealt with to ensure this positive definiteness.
 
@@ -1037,9 +498,71 @@ identity matrix. The first derivative of $C_i(T)$ is
 \]
 again $[G_i\gamma_i]^{-1}$ is taken element-wise.
 
+\section[Transport map MCMC]{Using the transport map to propose states in MCMC algorithms}\label{sec:transport_algs}
 
-\section{T-PAIS}\label{sec:TPAIS}
-%Plug into PAIS
+Given samples from the target distribution, we have demonstrated how to construct an approximate transport map from the
+target measure to a reference measure. We now consider how to implement an MCMC algorithm which uses
+these maps to propose new states. These algorithms fit into the adaptive framework described in
+Section~\ref{sec:adapt} since we use the full history of the chain when updating the map, and this update changes the shape of our proposal
+distribution. Convergence of this adaptation is shown in~\cite{parno2014transport}.
+
+\subsection{Transport map MH algorithms}
+
+As introduced in~\cite{parno2014transport}, a MH algorithm using the transport map to propose new
+states can be designed, as given in Algorithm~\ref{alg:TransportMH}. These algorithms
+map a sample from the target onto the reference space, a new state is then efficiently
+proposed using a Gaussian kernel and is mapped back onto target space. This can
+result in rapid mixing, where step size and direction are now a function of the current particles location in state space, similar to the ideas of Riemann manifold Hamiltonian Monte Carlo~\cite{girolami2011riemann}.
+
+\begin{table}
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\BlankLine
+Initialise state $\theta^{(1)} = \theta_0$.\;
+Initialise map $\bar{\gamma}^{(1)} = \iota$.\;
+\For{$k \leftarrow 1, \dots, L-1$}{
+	Compute $r = \tilde{T}(\theta^{(k)}; \bar{\gamma}^{(k)})$.\;
+	Sample $r' \sim q_r(\cdot; r)$.\;
+	Invert $\theta' = \tilde{T}^{-1}(r'; \bar{\gamma}^{(k)})$.\;
+	Calculate:
+	\[
+		\alpha = 1 \wedge
+			\frac{\pi(\theta')}{\pi(\theta^{(k)})}\frac{q_r(r|r')|J_{\tilde{T}}(\theta^{(k)};
+			\bar{\gamma}^{(k)})|}{q_r(r'|r)|J_{\tilde{T}}(\theta';\bar{\gamma}^{(k)})|}.
+	\]
+
+	Sample $u \sim U[0,1]$.\;
+	Set $\theta^{(k+1)}$ to $\theta'$ with probability $\alpha$, otherwise $\theta^{(k+1)} =
+		\theta^{(k)}$.
+
+	\eIf{$k\ \text{mod}\ K_U = 0$ and $k < K_\text{stop}$}{
+		\For{$i \leftarrow 1, \dots, n$}{
+			Solve \eqref{eq:final_map_optim} with $\{\theta^{(1)}, \dots, \theta^{(k+1)}\}$ and
+				update $\gamma_i^{(k+1)}$.\;
+		}
+	}{
+		$\bar{\gamma}^{(k+1)} = \bar{\gamma}^{(k)}$.\;
+	}
+}
+\caption{MH algorithm with adaptive transport map~\cite{parno2014transport}\label{alg:TransportMH}}
+\end{algorithm}
+\end{table}
+
+Initially we begin with the identity map, $\iota$, while we build enough samples to produce an approximate
+map. For simplicity, we update the map at uniform intervals of $K_U$ iterations, given an initial
+burn-in phase. In order to satisfy the conditions for adaptive algorithms to be ergodic, discussed
+in Section~\ref{sec:adapt}, this adaptive phase must come to an end. It is sensible to stop
+adaptation once the map has sufficiently converged, e.g. when updates do not change the coefficients, $\gamma$,
+above some tolerance, or as suggested by~\cite{parno2014transport} when the variance of $D_\text{KL}(\pi\|\tilde{\pi})$ is sufficiently close to zero.
+
+Once the map is sufficiently converged, we can decide whether we would like to continue using a local proposal distribution, or whether to use a distribution which is independent of the current state. An independent proposal is more efficient
+if the reference space is close to Gaussian; however, if it is not then certain regions of the target
+space could be less likely to be visited than in a standard MH algorithm. A compromise can be found by randomly selecting which kernel to sample from, i.e. the proposal distribution
+\[
+	q(x, \cdot) = p\mathcal{N}(x, \Sigma)+(1-p)\mathcal{N}(0,\text{I}), \quad p \in [0, 1].
+\]
+
+\subsection{Transport map PAIS algorithms}
 
 In a similar way, we can use the Transport map derived in Equation~\eqref{eq:weighted_map_optim} to
 design a proposal scheme for the PAIS algorithm. In this case we have a choice in how to proceed; we
@@ -1112,13 +635,100 @@ Initialise map $\bar{\gamma}^{(1)} = \iota$.\;
 
 The second option, Algorithm~\ref{alg:TransportPAIS2}, is similar to the first except on Line~\ref{algline:TPAIS_resample} where rather than resampling in target space we resample in reference space. In reference space the dimensions are roughly uncorrelated, and the Gaussian marginals are easy to approximate with fewer ensemble members. This means that the resampling step will be more efficient in higher dimensions, which we discuss in Section~\ref{sec:TPAIS_higher_dim}.
 
-\subsection{Sampling in higher dimensions}\label{sec:TPAIS_higher_dim}
+\section[Convergence of transport MCMC]{Convergence of the transport proposal based MCMC algorithms}
+
+In this section we study the convergence of the transport based proposal distributions which we have described in Section~\ref{sec:transport_algs}. We follow a similar strategy to that in Chapter~\ref{sec:PAIS}. We begin by finding optimal values for the scaling parameters by performing a series of simulations with differing scaling parameters. We then produce 1 million samples from the target distribution with the optimal scaling parameter and an ensemble size of $M=150$. We take 32 repeats of this optimal simulation and present the geometric average of the convergence rates. This process is then repeated for each of the algorithms we have discussed, Algorithms~\ref{alg:TransportMH}, \ref{alg:TransportPAIS1}, \ref{alg:TransportPAIS2}.
+
+In this section we return to the Rosenbrock banana-shaped density which in Chapter~\ref{sec:LPAIS} we labelled $R_1$. This target density is
+\begin{equation}\label{eqn:R2_repeat}
+	\pi(\theta) = \frac{\sqrt{10}}{\pi}\exp\left\{ -(1 - \theta_1)^2 - 10(\theta_2 - \theta_1^2)^2 \right\}.
+\end{equation}
+A contour plot of the target density is given in Figure~\ref{fig:R2_posterior}.
+\begin{figure}
+\centering
+\subfigure[Marginal density function for $\theta_1$.]{\includegraphics[width=0.31\textwidth]{"images/R2_marginal_1"}}
+\subfigure[Marginal density function for $\theta_2$.]{\includegraphics[width=0.31\textwidth]{"images/R2_marginal_2"}}
+\subfigure[Contour plot for Rosenbrock density.]{\includegraphics[width=0.31\textwidth]{images/R2_posterior}}
+\caption{Visualisation of the density of example $R_1$, as given in Equation~\eqref{eqn:R2_repeat}.}
+\label{fig:R2_posterior}
+\end{figure}
+
+\subsection{Implementation details}
+
+We now demonstrate some properties of the transport maps we will be using in our MCMC algorithms. We draw 1 million samples from the density in \eqref{eqn:R2_repeat}, and use this sample in the framework of Section~\ref{sec:transport_implementation} to build a transport map. We use this map to push forward the original sample onto the reference space, where we will be able to see how well the map has performed at converting the original sample to a standard Gaussian. We then pull the sample back on to target space using the inverse map to check that our map is invertible and well behaved.
+
+For this example, we use an index set of total order 3 with monomial basis functions. This results in a map of the form
+\[
+	T(\theta_1, \theta_2) = \begin{bmatrix} T_1(\theta_1) \\ T_2(\theta_1, \theta_2) \end{bmatrix},
+\]
+where
+\begin{align*}
+		T_1(\theta_1) &= \gamma_{1,1} + \gamma_{1,2}\theta_1 + \gamma_{1,3}\theta_1^2 + \gamma_{1,4}\theta_1^3, \\
+		T_2(\theta_1, \theta_2) &= \gamma_{2,1} + \gamma_{2,2}\theta_1 + \gamma_{2,3}\theta_1^2 + \gamma_{2,4}\theta_1^3
+					+ \gamma_{2,5}\theta_2 + \gamma_{2,6}\theta_1\theta_2 \\
+				 & \qquad \quad + \gamma_{2,7}\theta_1^2\theta_2 + \gamma_{2,8}\theta_2^2 + \gamma_{2,9}\theta_1\theta_2^2 +
+					 \gamma_{2,10}\theta_2^3.
+\end{align*}
+Clearly even with only basis functions of total order 3, we have a large number of unknowns in our optimisation problem, $\bar{\gamma} \in \mathbb{R}^{14}$. If we were to increase the dimension of $\theta$ further we would need to reduce the number of terms we include in the expansion by, for example, removing all the cross terms. This reduces the quality of our map but since we only require an approximate map we can afford to reduce the accuracy.
+
+\begin{figure}[htpb]
+\centering
+\subfigure[Original sample $\theta$ from RWMH algorithm.]{\includegraphics[width=0.31\textwidth]{"images/R2_transport_orig"}}\quad
+\subfigure[Push forward of $\theta$ onto reference space.]{\includegraphics[width=0.31\textwidth]{"images/R2_transport_ref"}}\quad
+\subfigure[Pull back of reference sample onto target space.]{\includegraphics[width=0.31\textwidth]{images/R2_transport_pullback}}
+\caption{Rosenbrock target density as described in Equation~\eqref{eqn:R2_repeat}.}
+\label{fig:R2_transport}
+\end{figure}
+
+Figure~\ref{fig:R2_transport} shows the efficiency of the transport map. Even though we have truncated the infinite expansion in the monomial basis down to 4 and 10 terms in respective dimensions, the push forward of the sample is still a unimodal distribution centred at the origin with standard deviation 1. As you move out into the tails of the reference density more non-Gaussian features form, but these are not too much of a problem when using a suitable proposal distribution. The pullback from reference space, in Figure~\ref{fig:R2_transport}, is an exact match of the original sample since we have not perturbed the sample in reference space. This inversion is well defined in the sampling region, although not necessarily outside.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.8\textwidth]{images/zero_jacobian}
+\caption{An example transport map which does not allow exploration of the full target distribution, and has a non-invertible point.}
+\label{fig:TM_zero_jacobian}
+\end{figure}
+
+If we consider a map built from polynomials of total order $p=2$, it is clear that the map $\tilde{T}$ does not map onto $\mathbb{R}^d$, but on to a subset of it. Figure~\ref{fig:TM_zero_jacobian} illustrates this point. We see that in this dimension, the $\tilde{T}^{-1}$ will not map any proposal $r > 0.8$ to a point in the target space. The point at which no inverse exists for a point $r_1$ can be made arbitrarily far out in the tails of the posterior distribution, but will be finite. The point at which the Jacobian is zero is also a non-invertible point since the logarithm in the pullback becomes infinite. This means that (1) we will never sample from the tail of the target distribution which lies beyond this turning point, and (2) all points in reference space $r < 0.8$ have the possibility of being mapped to two distinct points in target space. We can choose to truncate our parameter space at this turning point which allows our map to be bijective, however we will not be able to sample from the true posterior. For this reason it is best to chose an index set where the maximum order is an odd number.
+
+\subsection[Numerical results]{Numerical results for convergence of transport map based algorithms}
+
+We first find the optimal scaling parameters for the individual algorithms. This is done as before by optimising the effective sample size in the PAIS algorithm, and by tuning the relative $L^2$ error in the MH algorithm. There is currently no guidance on the best way of tuning the MH algorithm with transport map proposals although one might expect results similar to the standard MH results. As in the PAIS algorithm, the effective sample size might be the best option.
+
+\begin{table}[!h]
+\centering
+\begin{tabular}{lrrr}
+\toprule
+	Statistic \quad / \quad Algorithm & \ref{alg:TransportMH} & \ref{alg:TransportPAIS1} & \ref{alg:TransportPAIS2}  \\ \cmidrule(lr){1-4}
+	$\delta_{L^2}$				 & 1.0e-0 & 1.1e-1 & 3.5e-1 \\
+	$\delta_{\text{ESS}}$				 & - & 1.0e-1 & 5.2e-1 \\ \cmidrule(lr){1-4}
+	Acc. rate							 & 0.23 & - & - \\
+	ESS ratio							 & - & 0.62 & 0.71 \\
+\bottomrule
+\end{tabular}
+\caption{Optimal scaling parameters for the transport map based algorithms applied to $R_1$.}
+\label{tab:R2_opt_scaling}
+\end{table}
+
+The optimal scaling parameters are given in Table~\ref{tab:R2_opt_scaling}. Here we see that the effective sample size is much lower than we see in the one-dimensional examples with the PAIS algorithms. However, in $R_1$ we are dealing with a much more complicated correlation structure, as well as a very slowly decaying tail in $\theta_2$. We have seen in Section~\ref{sec:LPAIS_R1} that the standard PAIS-RW required an ensemble size of $M=500$ to overcome the problems in this density, however the transport map transforms the tails to be more like those of a Gaussian which can be approximated well by a smaller ensemble size of $M=150$.
+
+\begin{figure}[!h]
+\centering
+\subfigure[Comparison of the two Transport PAIS options.]{\includegraphics[width=0.45\textwidth]{images/R1_L2}}
+\subfigure[Comparison of Transport PAIS option (2) with the standard algorithms.]{\includegraphics[width=0.45\textwidth]{images/R1_L2_all}}
+\caption{Convergence of Algorithms~\ref{alg:TransportMH}, \ref{alg:TransportPAIS1}, \ref{alg:TransportPAIS2} for $R_1$. Ensemble size $M=150$, resampling performed using the AMR algorithm.}
+\label{fig:R2_l2_convergence}
+\end{figure}
+
+The convergence of the three algorithms is displayed in Figure~\ref{fig:R2_l2_convergence}. Figure (a) shows that the two variations of the transport based PAIS algorithms converge with similar rates. The second version, which performs the resampling stage in reference space rather than target space, has a slightly higher ESS, and is more stable than option (1). This version also has a property that we can exploit in Section~\ref{sec:TPAIS_higher_dim}.
+
+\section{Sampling in higher dimensions}\label{sec:TPAIS_higher_dim}
 
 Algorithm~\ref{alg:TransportPAIS2} allows us to decorrelate the dimensions of our random parameter on reference space, where we then can resample and map the resulting ensemble back onto target space. Since, on reference space, the dimensions are uncorrelated, we are able to resample in each dimension separately. Resampling in a single dimension allows for optimisations in resampling code, and also means that the resampler is not affected by the curse of dimensionality.
 
 If we can approximate the posterior well with our mixture and with the transport map, we should not be affected by the increase in dimension to the extent we have been with the standard PAIS-RW algorithm. In one dimension the ETPF algorithm can be implemented very efficiently. As described in~\cite{reich2013nonparametric}, the coupling matrix has all non-zero entries in a staircase pattern when the state space is ordered. We can exploit this knowledge to produce Algorithm~\ref{alg:ETPF_1d}. Which is much faster than using the simplex algorithm to minimise the associated cost function, and faster than the AMR algorithm.
 
-\begin{table}
+\begin{table}[!htpb]
 \begin{algorithm}[H]
 \DontPrintSemicolon
 \BlankLine
@@ -1182,16 +792,20 @@ Given $n$ chemical species with populations
 \[
 	\mathbf{X}(t) = [X_1(t),\dots,X_n(t)]^\top,
 \]
-the likelihood of a reaction, $R_i$, occurring is determined by the \emph{propensity function} $\alpha_i(\mathbf{X}(t); \mathbf{k})$ and depends on the current state of the system and the reaction rates $\mathbf{k}$.
+the likelihood of a reaction, $R_i$, occurring is determined by the \emph{propensity function}
+\[
+	\alpha_i(\mathbf{X}(t); \mathbf{k}) = \lim\limits_{\Delta t\rightarrow 0} \! \frac{\mathbb{P}(\text{Reaction $i$ occurs in $[t, t+\Delta t)$})}{\Delta t}
+\]
+which depends on the current state of the system and the reaction rates $\mathbf{k}$.
 \end{dfn}
 
 The propensity function also takes into account the volume of the domain, the temperature, and many other factors. These functions $\alpha_i(\mathbf{X}(t);\mathbf{k})$ are normalised to give the probabilities, $p_i(\mathbf{X}(t);\mathbf{k})$, that $R_i$ will be the next reaction to occur,
 \[
 	p_i(\mathbf{X}(t); \mathbf{k}) = \frac{\alpha_i(\mathbf{X}(t);\mathbf{k})}{\alpha_0(\mathbf{X}(t);\mathbf{k})}, \quad \text{where} \quad \alpha_0(\mathbf{X}(t);\mathbf{k}) = \sum_i \! \alpha_i(\mathbf{X}(t);\mathbf{k}).
 \]
-There is a propensity function associated with each of the $d$ possible reactions. The form of these functions is dependent on the the type of reaction which occurs. This notation can become cumbersome and so the dependence on the current state and reaction rates may be omitted. The normalisation constant $\alpha_0$ is known as the \emph{total system propensity} or \emph{total propensity}.
+There is a propensity function associated with each of the $d$ possible reactions. The form of these functions is dependent on the type of reaction which occurs. This notation can become cumbersome and so the dependence on the current state and reaction rates may be omitted. The normalisation constant $\alpha_0$ is known as the \emph{total system propensity} or \emph{total propensity}.
 
-The Gillespie algorithm simulates a Markov jump process about the chemical population state space. The algorithm assumes that reactions occur at times which follow an exponential distribution. The rate associated with this exponential distribution is linked to the total system propensity $\alpha_0$. Which reaction occurs at each of these times depends on the distribution $\mathbf{p} = [p_1, \dots, p_d]^\top$. This assumption is the same as that in the formulation of the chemical master equation.
+The Gillespie algorithm is a stochastically exact algorithm which simulates a Markov jump process about the chemical population state space. The algorithm assumes that reactions occur in intervals which follow an exponential distribution. The rate associated with this exponential distribution is linked to the total system propensity $\alpha_0$. Which reaction occurs at each of these times depends on the distribution $\mathbf{p} = [p_1, \dots, p_d]^\top$.
 
 Simulating a trajectory by sampling every reaction in this way allows us to generate stochastically exact draws from the true distribution $(\mu_t, \forall t)$, however it can be extremely costly, especially when reactions occur on different timescales. Variations on the algorithm have been proposed which reduce the computational cost, these are described in the review \cite{gillespie2007stochastic}.
 
@@ -1208,24 +822,48 @@ Simulating a trajectory by sampling every reaction in this way allows us to gene
 		Set $\alpha_0 = \sum_i \alpha_i(\mathbf{X}(t_j); \mathbf{k})$ and calculate $\mathbf{p}$.\;
 		Sample $\Delta t \sim \text{Exp}(\alpha_0)$ and $r(t_j+\Delta t) \sim \text{Multinomial}(1, \mathbf{p})$.\;
 		Set $t_{j+1} \leftarrow t_j + \Delta t$.\;
-		Update populations $\mathbf{X}(t_{j+1}) = f_{r(t_{j+1})}(\mathbf{X}(t_j))$.\;
+		Update populations $\mathbf{X}(t_{j+1}) = \mathbf{X}(t_j) + \nu_{r(t_{j+1})}$.\;
 		$j \leftarrow j+1$.\;
 	}
 \caption{The Gillespie Algorithm~\cite{gillespie2007stochastic}.\label{alg:gillespie}}
 \end{algorithm}
 \end{table}
 
-The Gillespie algorithm is outlined in Algorithm~\ref{alg:gillespie}. At each iteration we calculate the propensities, $\alpha_i(\mathbf{X}(t_j);\mathbf{k})$, based on the current state of each of the populations. We use these propensities to calculate $\alpha_0$ as well as the probabilities, $\mathbf{p}(\mathbf{X}(t_j); \mathbf{k})$. We now generate two random numbers, the first, $r(t_j)$, is from the multinomial distribution defined by the probability vector $\mathbf{p}$, which tells us which reaction occurs next. The second, $\Delta t$, is from the exponential distribution with rate $\alpha_0$, and tells us how long until this reaction occurs. Finally we update the system's state, $\mathbf{X}(t_{j+1})$, taking into account which reaction has occurred, using the transition function $f_{r(t_j)}$. These steps result in a stochastically exact trajectory from which we can determine the probability of being in any particular state.
+The Gillespie algorithm is outlined in Algorithm~\ref{alg:gillespie}. At each iteration we calculate the propensities, $\alpha_i(\mathbf{X}(t_j);\mathbf{k})$, based on the current state of each of the populations. We use these propensities to calculate $\alpha_0$ as well as the probabilities, $\mathbf{p}(\mathbf{X}(t_j); \mathbf{k})$. We now generate two random numbers, the first, $r(t_j)$, is from the multinomial distribution defined by the probability vector $\mathbf{p}$, which tells us which reaction occurs next. The second, $\Delta t$, is from the exponential distribution with rate $\alpha_0$, and tells us how long until this reaction occurs. Finally we update the system's state, $\mathbf{X}(t_{j+1})$, according to which reaction has occurred, using the reaction state change vector, $\nu_i$.
+
+\begin{dfn}[State change vectors and the stoichiometric matrix]
+	The {\it state change vector} of a reaction $R_i$ is the vector, $\nu_i$, where the $j$th entry corresponds to the change made to the $j$th species by the reaction $R_i$. e.g. In a system with two chemicals $\mathbf{X} = [X_1, X_2]^\top$, and a reaction $R_1\colon X_1 \rightarrow X_2$, the state change vector of $R_1$ is $v_1 = [-1, 1]^\top$. The columns of the {\it stoichiometric matrix} are formed by the state change vectors for each reaction.
+\end{dfn}
 
 %%% Multiscale
 
-In real world chemical systems, reactions will occur on more than one time scale. It is often possible to isolate which reactions are occurring more frequently (the \textit{fast reactions}) and those which are occurring less frequently (the \textit{slow reactions}). In many cases we are interested in the dynamics of the slow reactions, and the full simulation of the fast reactions can be considered a waste of computational resources. In this thesis we consider two separate simplifying approaches for these multiscale systems. The first approach uses the quasi-equilibrium assumption.
+In many chemical systems, we can find variables which change on more than one time scale. These variables might be a single species, or a linear combination of different species. It is often possible to isolate which variables are changing more frequently (the \textit{fast variables}) and those which are changing less frequently (the \textit{slow variables}). In many cases we are interested in the dynamics of the slow variables, and the full simulation of the fast variables can be considered a waste of computational resources. In real world experiments it can also be difficult to measure the quantities of the fast variables given the relatively short times the system stays in a single state. In this thesis we consider two separate simplifying approaches for these multiscale systems. The first approach uses the quasi-equilibrium assumption.
 
 \begin{dfn}[Quasi-equilibrium assumption]
-	The quasi-equilibrium assumption (QEA) is the assumption that the fast reactions converge in distribution on a timescale which is negligible with respect to the rate of occurrence of the slow reactions.
+	The quasi-equilibrium assumption (QEA) is the assumption that the fast variables converge in distribution on a timescale which is negligible with respect to the rate of change of the slow variables.
 \end{dfn}
 
-This assumption allows us to approximate the dynamics of the slowly changing quantities in the system by assuming that the fast quantities are in equilibrium with respect to the fast reactions in isolation. We also consider the constrained multiscale approach (CMA) described in \cite{cotter2011constrained,cotter2016constrained}. The CMA accounts for the differences in the invariant distribution of the fast species which are due to the occurrence of slow reactions. When the fast and slow subsystems operate on very different timescales, the CMA and QEA produce near identical results, however when the systems are not so clearly separated the CMA provides superior accuracy. Other simulation methods such as the $\tau$-leap method introduce significant bias into the approximations.
+This assumption allows us to approximate the dynamics of the slowly changing quantities in the system by assuming that the fast quantities are in equilibrium with respect to the fast variables in isolation, i.e. the slow rates $\rightarrow 0$. We also consider the constrained multiscale approach (CMA) described in \cite{cotter2011constrained,cotter2016constrained}. The CMA is similar to the QEA except that it takes into account changes in the slow variables which also change the fast variables. We briefly define the CMA as is given in \cite{cotter2016constrained}.
+
+\begin{dfn}[Constrained Projector]\label{dfn:constrained_projector}
+	Given a partition of the state space with $N$ variables into $N_s$ slow variables $\mathbf{S} = [S_1,\dots, S_{N_s}]$ and $N_f$ fast variables $\mathbf{F} = [F_1,\dots, F_{N_f}]$. A constrained projector $\mathcal{P}_\mathbf{S}\colon\mathbb{N}^N_0\rightarrow\mathbb{N}^N_0$ maps the values of the slow variables to a given value $\mathbf{S}$, while preserving the values of the fast variables.
+\[
+	\mathcal{P}_\mathbf{S}([\hat{\mathbf{S}}, \hat{\mathbf{F}}]) = [\mathbf{S}, \hat{\mathbf{F}}], \quad \forall \, [\mathbf{S},\mathbf{F}] \in \mathbb{N}_0^N.
+\]
+\end{dfn}
+
+\begin{dfn}[Constrained Stoichiometric Projector]
+	Given the partition in Definition~\ref{dfn:constrained_projector}, the constrained stoichiometric projector $\mathcal{P}\colon\mathbb{N}_0^{N}\rightarrow\mathbb{N}_0^{N}$ maps all non-zero values of the slow variables to zero.
+\[
+	\mathcal{P}([\mathbf{S}, \mathbf{F}]) = [\mathbf{0}, \mathbf{F}], \quad \forall \, [\mathbf{S}, \mathbf{F}] \in \mathbb{N}_0^{N}.
+\]
+\end{dfn}
+
+\begin{dfn}[Constrained subsystem]
+	The constrained subsystem is defined for a chemical reaction system, such as those we have been discussing so far, and is the system which arises from partitioning this chemical reaction system as in Definition~\ref{dfn:constrained_projector} and applying the constrained projector, $\mathcal{P}_\mathbf{S}$ to the state vector $\mathbf{X} = [\mathbf{S}, \mathbf{F}]$ after every new reaction, or equivalently applying the constrained stoichiometric projector, $\mathcal{P}$, to the change in state resulting from each reaction. When a stoichiometric vector becomes null by application of $\mathcal{P}$, that reaction can be removed from the system. If a reaction with one of the new stoichiometries would result in a species with a negative population, the propensity of this reaction is set to zero.
+\end{dfn}
+
+The CMA accounts for the differences in the invariant distribution of the fast species which are due to the occurrence of slow reactions. When the fast and slow subsystems operate on very different timescales, the CMA and QEA produce near identical results, however when the systems are not so clearly separated the CMA provides superior accuracy. 
 
 In this section we are interested in chemical systems where we have a small number of chemical species. We assume that we have thermal equilibrium and that the chemicals are well mixed so that we have a homogeneous system. We assume that we have accurate observations of the populations of the chemicals and the times of the reactions, and we are concerned with recovering the probability distribution which describes the rates of the reactions. The posteriors arising from situations such as these often have non-Gaussian tails which, as discussed in previous chapters, can cause problems when using kernel density estimations of the posterior distribution as we do in the standard PAIS algorithm. The dynamics of these systems are also highly non-linear resulting in complex correlation structures between parameters.
 
@@ -1233,7 +871,7 @@ In this section we are interested in chemical systems where we have a small numb
 
 \subsection{Sufficient Statistics for Rate Recovery}
 
-Following the assumptions for the modelling of the stochastic process $\mathbf{X}(t),\ t \in (t_0, \tau]$ outlined in the previous section, we can determine sufficient statistics for the probability distributions of the model parameters $\mathbf{k}$. Here we treat the problem in the Bayesian context and so we define a posterior distribution, $\pi(\mathbf{k}|D)$, which incorporates the model likelihoods with prior information for these reaction rates. The data, $D$, is a complete trajectory of a molecular system which includes the times of each reaction as well as which reaction occurs. In practise it might not be obvious which reaction has occurred just by looking at the changes in chemical populations, however we ignore this problem for now.
+Following the assumptions for the modelling of the stochastic process $\mathbf{X}(t),\ t \in (t_0, \tau]$ outlined in the previous section, we can determine sufficient statistics for the probability distributions of the model parameters $\mathbf{k}$. Here we treat the problem in the Bayesian context and so we define a posterior distribution, $\pi(\mathbf{k}|D)$, which incorporates the model likelihoods with prior information for these reaction rates. The data, $D$, is a complete trajectory of a molecular system which includes the times of each reaction as well as which reaction occurs. In practice it might not be obvious which reaction has occurred just by looking at the changes in chemical populations, however we ignore this problem for now.
 
 For a problem with $n$ chemical species, $X_i$,  and $d$ reactions, $R_j$, the data, $D$, has the form given in Table~\ref{tab:chem_data}. The data is measured over a time interval which contains $M$ reactions. We assume that the times between reactions have the exponential distribution, so we define the differences $\Delta t_j = t_{j}-t_{j-1} \sim \text{Exp}\left(\alpha_0(\mathbf{X}(t_{j-1});\mathbf{k})\right)$.
 
@@ -1257,7 +895,7 @@ At a time $t_j$, the reaction $R_i$ occurs with probability $p_i(\mathbf{X}(t_{j
 \]
 All the possible states of the process, $\mathbf{X}(t),\ t \in (t_0,\tau]$, belong in the state space $\mathcal{S}$, the space itself does not depend on time for the problems which we are considering.
 
-From this formulation, we see that the random variables $(\Delta t_j, r(t_j))$ only depend on the states $\mathbf{X}(t_{j-1})$ and so are independent of each other. This independence means that we can group events together by what state the system was in when the event happened. We define two new random variables which depend on a state $\mathbf{Y} \in \mathcal{S}$, first the total time spent in state $\mathbf{Y}$,
+From this formulation, we see that the random variables $(\Delta t_j, r(t_j))$ only depend on the states $\mathbf{X}(t_{j-1})$ and so are Markovian. This conditional independence means that we can group events together by what state the system was in when the event happened. We define two new random variables which depend on a state $\mathbf{Y} \in \mathcal{S}$, first the total time spent in state $\mathbf{Y}$,
 \[
 	T(\mathbf{Y}) = \sum\limits_{j=1}^M \Delta t_j\; \text{I}(\mathbf{X}(t_{j-1}) = \mathbf{Y}).
 \]
@@ -1288,7 +926,7 @@ where $K = |\mathcal{S}|$, the number of states in $\mathcal{S}$, and each state
 
 To construct the posterior distribution for the reaction rates, $\mathbf{k}$, in the chemical system, we formulate the likelihood using the sufficient statistics derived in the previous section. Due to the positivity of these reaction rates, we assign a Gamma prior distribution to each rate. Given the distributions in Equations~\eqref{eqn:chem_time_dist} and~\eqref{eqn:chem_react_dist} for our data, the likelihood of observing the data $\mathbf{R}$ and $\mathbf{T}$ is
 \[
-	\ell(\mathbf{R},~ \mathbf{T}|\mathbf{k}) \propto \prod\limits_{i=1}^K \text{Multi}(\mathbf{r}(\mathbf{Y}_i); \mathbf{K}_i, \mathbf{p}(\mathbf{Y}_i))\text{Gamma}(\mathbf{T}_i; \mathbf{K}_i, \alpha_0(\mathbf{Y}_i)),
+	\ell(\mathbf{R}, \mathbf{T}|\mathbf{k}) \propto \prod\limits_{i=1}^K \text{Multi}(\mathbf{r}(\mathbf{Y}_i); \mathbf{K}_i, \mathbf{p}(\mathbf{Y}_i))\text{Gamma}(\mathbf{T}_i; \mathbf{K}_i, \alpha_0(\mathbf{Y}_i)),
 \]
 where again $\mathbf{Y}_i \in \mathcal{S}$ and the propensities $\alpha_i$ and probabilities $p_i$ depend on the reaction rates $\mathbf{k}$.
 
@@ -1304,7 +942,7 @@ Our choice of Gamma prior distributions with hyper-parameters $(a_i, b_i)$ resul
 		&	\qquad\qquad\qquad{} + \sum_{i=1}^d ((a_i-1)\log k_i - b_ik_i)\Bigg\}. \label{eqn:chem_posterior}
 \end{align}
 
-\subsection{Mono-molecular examples}
+\section{Mono-molecular examples}
 
 In this section we look at two examples of chemical systems to demonstrate the effectiveness of the Bayesian approach. These two systems will only contain mono-molecular reactions, i.e. reactions which convert one species into another species at a particular rate. As shown in~\cite{anderson2010product} these systems have a Poisson invariant distributions on the populations. In the limit of infinite reactions, a mono-molecular reaction system with $n$ species will follow the distribution
 \begin{equation}\label{eqn:mono_stat_dist}
@@ -1314,7 +952,7 @@ where $x_i \in \mathbb{N}$ and $\bar{c}_i$ are the complex balances or the conce
 
 %%%%%
 
-\subsubsection{A Multiscale Chemical System}\label{sec:chem_multiscale}
+\subsection{A Multiscale Chemical System}\label{sec:chem_multiscale}
 
 In this section, we consider a simple multiscale example involving two chemical species $S_1$ and $S_2$:
 \begin{equation}\label{eqn:full_system}
@@ -1325,21 +963,21 @@ some rate constant $k_i$, and where the rates of the reactions are
 assumed to follow mass action kinetics. The parameters $k_i$ are strictly positive, and $\mathbf{k} = [k_1,\dots,k_4]^\top \in \mathbb{R}_+^4 = \mathcal{X}$. We denote the concentration of
 species $S_i$ by $X_i$. We assume that we are in a
 parameter regime such that the reactions $R_2\colon S_1\rightarrow S_2$ and $R_3\colon S_2\rightarrow S_1$ occur
-much much more frequently than the other reactions, $R_1\colon \emptyset \rightarrow S_1$, and $R_4\colon S_2 \rightarrow \emptyset$. Notice that both
+more frequently than the other reactions, $R_1\colon \emptyset \rightarrow S_1$, and $R_4\colon S_2 \rightarrow \emptyset$. Notice that both
 chemical species are involved in fast reactions. However, the quantity
-$S = X_1 + X_2$ is conserved by both of the fast reactions,
+$X = X_1 + X_2$, corresponding to an artificial species $S$, is conserved by both of the fast reactions,
 and as such, this is the slowly changing quantity in this system.
+When recording our data, we are only able to take readings of the reactions which change the slow variable $S$. 
 The effective dynamics of $S$ can be represented as follows
 \begin{equation}\label{eqn:QSSA_system}
 	\emptyset \xrightarrow{k_1} S \xrightarrow{\hat{k}_4} \emptyset.
 \end{equation}
 The new reaction rate $\hat{k}_4$ is approximated through
-application of the two approaches mentioned in Section~\ref{sec:SSAs}. Under the QEA, the value of $\mathbb{E}\left[k_4X_2|S=s\right]$ is approximated by finding the steady state of the ODE representing the fast subsystem of
-reactions:
+application of the two approaches mentioned in Section~\ref{sec:SSAs}. Under the QEA, the value of $\mathbb{E}\left[k_4X_2|S=s\right]$ is found by computing the invariant distribution of the fast subsystem of reactions~\cite{jahnke2007solving},
 \[
 	S_1 \xleftrightarrows[k_3]{k_2} S_2, \qquad X_1 + X_2 = s
 \]
-we arrive at
+which tells us that $X_2$ is distributed according to Bin$(S, k_3(k_3+k_4)^{-1})$ and so
 \[
 	\hat{k}_4^{\text{QEA}}(s) = \mathbb{E}_{\text{QEA}}\left[k_4X_2|S=s\right] = \frac{k_2k_4s}{k_2+k_3}.
 \]
@@ -1358,7 +996,7 @@ exploration around $\mathcal{M}$ is slow.
 
 \subsubsection{Target Distribution}\label{sec:multiscale_posterior}
 
-We can use the posterior distribution derived in Section~\ref{sec:chem_stoch_posterior} to specify the posterior distribution for each of the three scenarios we are interested in. We are interested in the posterior distribution when we have a complete data set telling informing us of every reaction which occurs as well as perfect readings of the numbers of reactants. We are also interested in the two simplifying assumptions we saw in the previous section.
+We can use the posterior distribution derived in Section~\ref{sec:chem_stoch_posterior} to specify the posterior distribution for each of the three scenarios we are interested in. We would like to find out how the posterior distributions we obtain from the two models, the QEA and CMA, differ to the posterior for a complete data set.
 
 In all three cases, we find the posterior distribution for $\mathbf{k} \in \mathcal{X}$. These four parameters are assigned Gamma prior distributions,
 \[
@@ -1472,7 +1110,7 @@ where the first determinant is as we saw in the previous chapter, and the second
 \]
 
 % choices made in transport map
-For this problem, we continue to use monomials in each dimension in our transport map construction. We use polynomials of total order $p=4$ as the basis functions, i.e.
+For this problem, we continue to use monomials in each dimension in our transport map construction. We use polynomials of total order $p=3$ as the basis functions, i.e.
 \[
 	T_i(\theta) = \sum_{\mathbf{j}\in\mathcal{J}^{\text{TO}}_i(p)} \gamma_{i,\mathbf{j}}\psi_{\mathbf{j}}(\theta) \quad \text{where} \quad \psi_\mathbf{j}(\theta) = \prod\limits_{k=1}^i \theta_k^{j_k},
 \]
@@ -1480,7 +1118,6 @@ and
 \[
 	\mathcal{J}^{\text{TO}}_i(p) = \{\mathbf{j} \in \mathbb{N}^d_0\ |\ \|\mathbf{j}\|_1 \leq p, \ \text{and}\ j_k = 0\ \forall k > i\}.
 \]
-Since $\mathcal{X}$ is four-dimensional, this yields a total of 125 map coefficients across the four index sets. This number can be reduced by using smaller index sets as discussed in~\cite{parno2014transport}.
 
 % choice of resampler?
 As with the mixture model in Section~\ref{sec:app_mixture}, we will use the AMR resampler with an ensemble size of $M=500$. This increase in ensemble size from Chapter~\ref{sec:PAIS} compensates for the increase in parameter dimension.
@@ -1533,7 +1170,7 @@ The PAIS variants with RW and TRW proposals perform similarly on both sample spa
 
 We now look at the proposal distributions of the transport map accelerated algorithms. In Figure~\ref{fig:chem_reference_spaces}, we see the reference spaces found by; in (a) mapping the posterior through the map $T'$, and in (b) by mapping the posterior through $T\circ\log$. For the most part, each of these marginal distributions can be recognised as a Gaussian. However, with the exception of $\mathbb{P}(r_2,r_3)$, we would not consider them to be close to a standardised $\mathcal{N}(0, \text{I})$ distribution. Before thinking that the transport map has not helped us to find a `nicer' space on which to propose new values we should consider that the dimensions are now (1) largely uncorrelated, and (2) the variances in each dimension are much more similar than they are in Figure~\ref{fig:chem_CMA_posterior}.
 
-Particularly in Figure~\ref{fig:chem_reference_spaces} (b) we see that $\text{var}(r_1)$ and $\text{var}(r_4)$ are much smaller than $\text{var}(r_2)$ and $\text{var}(r_3)$. To combat this we have a number of choices, we might wish to use two different scaling parameters to match these scales, which would require knowledge of the reference space before beginning sampling. We could alternatively use a proposal distribution such as in the LPAIS algorithm to adaptively learn this at each iteration. Another option is to increase the total order of our index set. For these numerics we have chosen $p=4$, but we know that we can obtain reference spaces which are closer to $\mathcal{N}_d(0, \text{I})$ by choosing a larger $p$.
+Particularly in Figure~\ref{fig:chem_reference_spaces} (b) we see that $\text{var}(r_1)$ and $\text{var}(r_4)$ are much smaller than $\text{var}(r_2)$ and $\text{var}(r_3)$. To combat this we have a number of choices, we might wish to use two different scaling parameters to match these scales, which would require knowledge of the reference space before beginning sampling. We could alternatively use a proposal distribution such as in the LPAIS algorithm to adaptively learn this at each iteration. Another option is to increase the total order of our index set. For these numerics we have chosen $p=3$, but we know that we can obtain reference spaces which are closer to $\mathcal{N}_d(0, \text{I})$ by choosing a larger $p$.
 
 \subsubsection{Comparison of the Constrained and QEA approaches}
 
@@ -1553,10 +1190,10 @@ This difference in the denominator causes a shift in the parameters as can be se
 \label{fig:chem_diff}
 \end{figure}
 
-Since the two posteriors have been approximated using an MCMC sample, there is a significant amount of noise, particularly in the tails of the distributions We can see that the differences in the marginals for $k_1, k_2,$ and $k_3$ are relatively small and the differences are largely positive. This means that the constrained approach is slightly more informative about the values of these first three parameters. However the marginal for $k_4$ varies by a significant amount and is more negative. This means that the mean estimates for $k_4$ vary by a large amount, and we should be more confident in the solution given by the QEA.
+Since the two posteriors have been approximated using an MCMC sample, there is a significant amount of noise, particularly in the tails of the distributions We can see that the differences in the marginals for $k_1, k_2,$ and $k_3$ are relatively small and the differences are largely positive. These positive differences tell us that the constrained approach claims to be more informative about the values of these first three parameters. However the marginal for $k_4$ varies by a significant amount and is more negative. This means that the mean estimates for $k_4$ differ by a large amount, the posterior for the QEA is most peaked.
 
 % compare solution with full data.
-We now consider how we should interpret the information given by these models. The QEA assumption tells us that we cannot observe the parameters $k_2$, $k_3$ and $k_4$ independently from the reduced data set, but we can observe the quantity $\hat{k}_4^{\text{QEA}} = k_2k_4/(k_2+k_3)$. Similarly, the constrained approach tells us that we are able to observe the quantity $\hat{k}_4^{\text{CMA}} = k_2k_4/(k_2+k_3+k_4)$. To validate our inferences on $k_2$, $k_3$ and $k_4$ we would like to discover which model is most informative about these parameters, and which model gives us results which are most similar to what we can obtain from the full model.
+We now consider how we should interpret the information given by these models. The QEA assumption tells us that we cannot observe the parameters $k_2$, $k_3$ and $k_4$ independently from the reduced data set, but we can observe the quantity $\hat{k}_4^{\text{QEA}} = k_2k_4/(k_2+k_3)$. Similarly, the constrained approach tells us that we are able to observe the quantity $\hat{k}_4^{\text{CMA}} = k_2k_4/(k_2+k_3+k_4)$. To validate our inferences on $k_2$, $k_3$ and $k_4$ we would like to discover which model is most accurate and informative about these parameters, and which model gives us results which are most similar to what we can obtain from the full model, with all reactions observed.
 
 A conventional way to compare two models under a Bayesian framework is to calculate the Bayes factors~\cite{chen2012monte}. The Bayes factor, $B_{1,2}$, between two models, $\mathcal{M}_1$ and $\mathcal{M}_2$, can be interpreted as a ratio of the normalisation constants of the posterior distributions given each model,
 \[
@@ -1583,7 +1220,7 @@ We now label the constrained model as $\mathcal{M}_1$, the model arising from th
 \label{tab:chem_Bayes_marginals}
 \end{table}
 
-Computing the Bayes factors from Table~\ref{tab:chem_Bayes_marginals} we see that we should of course prefer the model in which we observe all reactions perfectly, however this model is not significantly better than the CMA model ($B_{0,1} = 2.09 < 3.2$, ~\cite{kass1995bayes}). Again the constrained model is not substantially more attractive than the QEA model when we consider the Bayes factor $B_{1,2} = 1.96 < 3.2$. The Bayes factor $B_{0,2} = 4.1 > 3.2$ does tell us that we should significantly prefer the full model to the QEA model. These Bayes factors present a weak argument that that the constrained model provides us with a better description of the data than the QEA model. We can also present this information graphically, which might provide us with a greater justification for preferring the constrained model.
+Computing the Bayes factors from Table~\ref{tab:chem_Bayes_marginals} we see that we should of course prefer the model in which we observe all reactions perfectly, however this model is not significantly better than the CMA model ($B_{0,1} = 2.09 < 3.2$, ~\cite{kass1995bayes}). Again the constrained model is not substantially more attractive than the QEA model when we consider the Bayes factor $B_{1,2} = 1.96 < 3.2$. The Bayes factor $B_{0,2} = 4.1 > 3.2$ does tell us that we should significantly prefer the full model to the QEA approximation of the posterior. These Bayes factors present a weak argument that that the constrained model provides us with a better description of the data than the QEA model. We can also present this information graphically, which might provide us with a greater justification for preferring the constrained approximation of the posterior.
 
 \begin{figure}[!htb]
 \centering
@@ -1598,7 +1235,7 @@ Figure~\ref{fig:chem_model_comp} displays the marginal distributions for the par
 The first thing to note is that in subfigure (a) when we approximate the marginals for $\hat{k}_4^{\text{QEA}}$ the density $\hat{\pi}_2(\cdot|D,\mathcal{M}_2)$ is much more peaked than $\hat{\pi}_1(\cdot|D,\mathcal{M}_1)$. As we might expect the same is true in reverse in subfigure (b). What is interesting here is that for both parameters, the marginal distribution which assumes $\mathcal{M}_2$ assigns a small density value to the true value of the parameter, while the marginals which assume $\mathcal{M}_1$ assign a relatively high density to the truth. We also draw attention to the similarities between the constrained model and the full data model. In subfigure (a) these two marginals are peaked around a similar value, and in subfigure (b) the full data and constrained models almost exactly coincide. This supports the hypothesis that the constrained approach provides a more accurate approximation to the dynamics of the full system.
 
 \subsection{Gene Regulatory Networks}\label{sec:grn}
-In this example, we look at a model of a gene regulatory network (GRN) mechanism used by a particular cell to regulate the amount of a protein, $P$, present. In this model, we again have reactions occurring at particular rates, $k$, between four different species. Here there is a special species, $G$, representing the gene responsible for building the protein, of which there is only one at a time, and this species can either be turned on or off. When the gene is off we denote it as $G'$.
+In this example, we look at a model of a gene regulatory network (GRN) mechanism~\cite{kaern2005stochasticity,guido2006bottom,becskei2000engineering} used by a particular cell to regulate the amount of a protein, $P$, present. In this model, we again have reactions occurring at particular rates, $k_i$, between four different species. Here there is a special species, $G$, representing the gene responsible for building the protein, of which there is only one at a time, and this species can either be turned on or off. When the gene is off we denote it as $G'$.
 \begin{align}
 	P+P \xleftrightarrows[k_2]{k_1} D \quad & \quad G+D \xleftrightarrows[k_4]{k_3} G' \nonumber\\
 	G \xrightarrow{k_5} G+M \quad & \quad M\xrightarrow{k_6} M+P  \label{eqn:GRN_reactions} \\
@@ -1606,7 +1243,7 @@ In this example, we look at a model of a gene regulatory network (GRN) mechanism
 \end{align}
 The eight reactions are given in Equation~\eqref{eqn:GRN_reactions}. In addition to the gene, $G$, and protein, $P$, the system also involves molecules of mRNA, $M$, and dimers, $D$, which are two proteins joined together.
 
-In this example, similar to those found in ***citations***, protein is created by a molecules of mRNA at a rate $k_6$. The amount of protein in the cell is then governed by the rate of decay of $P$, and the number of mRNA molecules in the cell creating $P$. In turn the number of mRNA molecules is controlled by its own decay rate and whether or not the gene $G$, which produces the mRNA is active. The gene can be turned on and off depending on how many dimers are present in the system, which is related to how many protein molecules there are. This completes a feedback cycle whereby if the protein population gets too high then the gene will turn off and the rate of new protein formation will decrease, causing the level to drop and the gene to turn back on.
+In this example protein is created by a molecule of mRNA at a rate $k_6$. The amount of protein in the cell is then governed by the rate of decay of $P$, and the number of mRNA molecules in the cell creating $P$. In turn the number of mRNA molecules is controlled by its own decay rate and whether or not the gene $G$, which produces the mRNA, is active. The gene can be turned on and off depending on how many dimers are present in the system, which is related to how many protein molecules there are. This completes a feedback cycle whereby if the protein population gets too high then the gene will turn off and the rate of new protein formation will decrease, causing the level to drop and the gene to turn back on. Figure~\ref{fig:GRN_cycle} shows what happens to the molecules in the system as the gene turns on and off.
 
 \begin{figure}
 	\centering
@@ -1636,10 +1273,13 @@ In this example, similar to those found in ***citations***, protein is created b
 		\draw [arrows={-latex},decorate, decoration={zigzag, segment length=4, amplitude=.9,post=lineto, post length=2pt}] (GG) -- (HH);
 	\end{tikzpicture}
 	\caption{Diagram of the effects of molecule populations in a gene regulatory network.}
-	\label{fig:grn_cycle}
+	\label{fig:GRN_cycle}
 \end{figure}
 
-As in Section~\ref{sec:chem_multiscale} we use the constrained multiscale approach to model the system. The formulation here is slightly more complex. We define a fast subsystem which acts on the fast variables $\mathcal{F} = [P, D, G]$ and incorporates reactions $R_1$-$R_4$, 90\% of reactions which occur in a particular time frame are one of these four reactions.
+%As in Section~\ref{sec:chem_multiscale} we use the constrained multiscale approach to model the system.
+Due to the small scale of the system and the speed of the reactions, we are only able to measure the total amount of protein, $T$, and mRNA, $M$, while the number of dimers and whether or not the gene is switched on must be considered to be missing data. For this scenario, the likelihood function is intractable and so we must use a multiscale approximation of the system. Here we choose the constrained multiscale approximation due to its success in the previous example.
+
+The formulation here is slightly more complex. We define a fast subsystem which acts on the fast variables $\mathcal{F} = [P, D, G]$ and incorporates reactions $R_1$-$R_4$. For the true parameter values we have chosen, 90\% of reactions which occur in a particular time frame are one of these four reactions.
 \[
 	\text{Fast subsystem:} \quad P+P\xleftrightarrows[k_2]{k_1} D, \quad G+D\xleftrightarrows[k_4]{k_3} G'.
 \]
@@ -1647,10 +1287,11 @@ We also define the slow variables, $T = P+2D+2(1-G)$ and $M$ which are held cons
 
 When we observe a cell, we cannot distinguish between the fast species and so don't know which of the first four reactions are happening. Due to this, we observe how many of reactions $R_5$-$R_8$ occur for each combination of the two slow variables $\mathcal{S} = [T, M]$. Since we don't observe $P$ and $G$ for every reaction, the propensities must be altered to take this into account,
 \begin{align}
-	\hat{\alpha}_5 = k_5\mathbb{E}[G|T],\quad&\quad \alpha_6 = k_6M, \notag\\
-	\hat{\alpha}_7 = k_7\mathbb{E}[P|T], \quad&\quad \alpha_8 = k_8M.\label{eqn:grn_propensities}
+	\hat{\alpha}_5 = k_5\mathbb{E}[G|T=t],\quad&\quad \alpha_6 = k_6M, \notag\\
+	\hat{\alpha}_7 = k_7\mathbb{E}[P|T=t], \quad&\quad \alpha_8 = k_8M.\label{eqn:grn_propensities}
 \end{align}
-To calculate these expectations, we note that the fast subsystem is a deficiency zero system ***citations***, and is also reversible. i.e. The system has four complexes, 
+
+To calculate these expectations, we note that the fast subsystem is a deficiency zero system~\cite{anderson2010product}, and is also reversible. i.e. The system has four complexes, 
 \[
 	C_1 = P+P, \quad C_2 = D, \quad C_3 = G+D \quad \text{and} \quad  C_4 = G',
 \]
@@ -1658,18 +1299,18 @@ there are two linkage classes (or two sets of reversible reactions), and the spa
 \[
 	\text{span}\left\{\pm[-2, 1, 0, 0]^\top, \pm[0, -1, 0, -1]^\top\right\},
 \]
-hence the deficiency is $d = 4 - 2 - 2 = 0$. This means that the conditional probabilities have the closed form equation,
+hence the deficiency is $d = 4 - 2 - 2 = 0$. This means that, by \cite{anderson2010product}, the conditional probabilities have the closed form equation,
 \[
-	\mathbb{P}[\mathcal{F}|T] \propto \text{Poisson}(P_T;\bar{p})\text{Poisson}(D_T;\bar{d})\text{Poisson}(G_T;\bar{g})\text{Poisson}(1-G_T;1-\bar{g}),
+	\mathbb{P}[\mathcal{F}|T=t] \propto \text{Poisson}(P_t;\bar{p})\text{Poisson}(D_t;\bar{d})\text{Poisson}(G_t;\bar{g})\text{Poisson}(1-G_t;1-\bar{g}),
 \]
-from which we can calculate the expected values of $P$, $D$, and $G$. The fast variables $P_T$, $D_T$ and $G_T$ are constrained to the line defined by $T=P+2D+2(1-G)=t$. The concentrations $\bar{p}$, $\bar{d}$ and $\bar{g}$, must be calculated as the solution to the nonlinear system produced by examining the steady state behaviour of the fast subsystem,
+from which we can calculate the expected values of $P_t$, $D_t$, and $G_t$. The fast variables $P_t$, $D_t$ and $G_t$ are constrained to the line defined by $T=P+2D+2(1-G)=t$. The concentrations $\bar{p}$, $\bar{d}$ and $\bar{g}$, must be calculated as the solution to the nonlinear system produced by examining the steady state behaviour of the fast subsystem,
 \begin{align}
 	T &= p + 2d + 2(1-g), \notag\\
 	\frac{\text{d}p}{\text{d}t} &= -2k_1p^2+2k_2d = 0, \notag\\
 	\frac{\text{d}d}{\text{d}t} &= k_1p^2 - k_2d - k_3gd + k_4(1-g) = 0, \notag\\
 	\frac{\text{d}g}{\text{d}t} &= -k_3gd + k_4(1-g) = 0, \label{eqn:grn_nonlinear_system}
 \end{align}
-subject to $p \in [0, T]$.
+subject to $p \in [0, T]$, $g \in [0, 1]$, and $0 \leq d \leq \text{floor}(T/2)$.
 
 With these effective propensities, given in Equation~\eqref{eqn:grn_propensities}, we can calculate the posterior distribution as given in Equation~\eqref{eqn:chem_posterior}, again assigning Gamma priors to the eight reaction rates. We note that the reaction rates for the fast variables do not appear in the posterior density explicitly which only uses the propensities $\alpha_5$-$\alpha_8$, however they appear through the solution to the nonlinear system in Equation~\eqref{eqn:grn_nonlinear_system}.
 
@@ -1768,9 +1409,17 @@ Due to the numerical cost of calculating the full relative $L^2$ errors for this
 
 The first thing to note is that the first PAIS measurement happens after 2500 samples, whereas the first MH measurement occurs after 50 samples. This is due to the much larger ensemble size required to sample in higher dimensions. We believe that an ensemble size of 2500 is over-cautious in this example and we could have used a smaller ensemble size. We also think that the required ensemble size to sample from these posteriors is reduced by the use of the transport map. This is due to the way the tail behaviour is improved by the transformation.
 
-The second obvious feature of these convergence plots is that the PAIS algorithms outperform the MH algorithms by a large margin - roughly a reduction of two orders of magnitude in the relative error over the same number of samples. A less positive result is that for this example the PAIS-TRW algorithm has found a map which has prevented further convergence of the mean. This is likely because the one dimension of the transport map is sending proposals onto the negative real line and so all samples are being assigned a zero weight. This is behaviour which was anticipated, and it is always suggested that the transport map is constructed as a map $T\colon\mathbb{R}^d\rightarrow\mathbb{R}^d$ rather than $T\colon\mathcal{X}\rightarrow\mathbb{R}^d$ where $\mathcal{X}\subset\mathbb{R}^d$. Despite the large increase in the effective sample size observed between the PAIS-logRW and PAIS-logTRW algorithms, this improvement is  converted into an estimate which is twice as accurate after 1 million samples.
+The second obvious feature of these convergence plots is that the PAIS algorithms outperform the MH algorithms by a large margin - roughly a reduction of two orders of magnitude in the relative error over the same number of samples. A less positive result is that for this example the PAIS-TRW algorithm has found a map which has prevented further convergence of the mean. This is likely because one dimension of the transport map is sending proposals onto the negative real line and so all samples are being assigned a zero weight. This is behaviour which was anticipated, and it is always suggested that the transport map is constructed as a map $T\colon\mathbb{R}^d\rightarrow\mathbb{R}^d$ rather than $T\colon\mathcal{X}\rightarrow\mathbb{R}^d$ where $\mathcal{X}\subset\mathbb{R}^d$. The large increase in the effective sample size observed between the PAIS-logRW and PAIS-logTRW algorithms is converted into an estimate which is twice as accurate after 1 million samples.
 
 A similar pattern is seen in the MH algorithms, where the MH-TRW performs the worst, and the MH-logTRW algorithm performs the best, although only marginally.
+
+\section{Conclusions}
+
+In this chapter we have demonstrated the process of applying the PAIS algorithm to realistic modelling situations. We saw how the standard PAIS algorithm can perform well for multimodal distributions in Section~\ref{sec:app_mixture}, in this case we only needed a RW proposal distribution, but it is possible to use the LPAIS algorithm or transport map based proposals if the tails of the posterior are not well behaved.
+
+We have also seen how the transport map converts posteriors which are badly scaled, have complicated correlation structures and possibly have non-Gaussian tails, into posteriors which we can sample effectively. This was demonstrated for two chemical reaction networks in Sections~\ref{sec:chem_multiscale} and \ref{sec:grn}
+
+These algorithms, when compared with the standard MC toolbox, have consistently performed the best, in the last GRN example realising estimates with more than two orders of magnitude better accuracy.
 
 \bibliographystyle{siam}
 \bibliography{refs}
