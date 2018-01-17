@@ -1,0 +1,29 @@
+\begin{thebibliography}{1}
+
+\bibitem{el2012bayesian}
+{\sc T.~El~Moselhy and Y.~Marzouk}, {\em Bayesian inference with optimal maps},
+  Journal of Computational Physics, 231 (2012), pp.~7815--7850.
+
+\bibitem{girolami2011riemann}
+{\sc M.~Girolami and B.~Calderhead}, {\em {Riemann manifold langevin and
+  hamiltonian monte carlo methods}}, Journal of the Royal Statistical Society:
+  Series B (Statistical Methodology), 73 (2011), pp.~123--214.
+
+\bibitem{parno2015transport}
+{\sc M.~Parno}, {\em {Transport maps for accelerated Bayesian computation}},
+  PhD thesis, Massachusetts Institute of Technology, 2015.
+
+\bibitem{parno2014transport}
+{\sc M.~Parno and Y.~Marzouk}, {\em {Transport map accelerated Markov chain
+  Monte Carlo}}, arXiv preprint arXiv:1412.5492,  (2014).
+
+\bibitem{pinsker1960information}
+{\sc M.~Pinsker}, {\em Information and information stability of random
+  variables and processes},  (1960).
+
+\bibitem{reich2013nonparametric}
+{\sc S.~Reich}, {\em {A nonparametric ensemble transform method for Bayesian
+  inference}}, SIAM Journal on Scientific Computing, 35 (2013),
+  pp.~A2013--A2024.
+
+\end{thebibliography}
