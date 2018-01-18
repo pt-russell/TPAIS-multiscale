@@ -177,6 +177,8 @@ be constructed from importance samples which maps the posterior close
 to a reference Gaussian measure. In Section \ref{sec:TPAIS} we show
 how such a map can be incorporated into a sophisticated parallel MCMC
 infrastructure in order to accelerate mixing. In Section
+\ref{sec:conv} we seek to show the advantages of this approach through
+the analysis of test problems. In Section
 \ref{sec:multi} we consider how likelihoods can be approximated using
  multiscale methodologies in order to carry out inference for
 multiscale and/or partially observed stochastic reaction networks. In
@@ -359,7 +361,7 @@ to use polynomials of total order $p$,
 \[
 	\mathcal{J}_i^\text{TO} = \left\{\mathbf{j}:\|\mathbf{j}\|_1 \leq p, j_k = 0\ \forall k > i\right\},
 \]
-which is optimal in terms of the amount of information captured by the map about the target. The cardinality of $\mathcal{J}_i^\text{TO}$ is $M_i = {i+p \choose p}$ which increases rapidly in $d$ and $p$, where $i = 1, \dots, d$. Smaller optimisation problems can be produced by constructing subsets of $\mathcal{J}_i^\text{TO}$. These index sets are discussed
+which is optimal in terms of the amount of information captured by the map about the target. The cardinality of $\mathcal{J}_i^\text{TO}$ is $M_i = \binom{i+p}{p}$ which increases rapidly in $d$ and $p$, where $i = 1, \dots, d$. Smaller optimisation problems can be produced by constructing subsets of $\mathcal{J}_i^\text{TO}$. These index sets are discussed
 in~\cite{parno2014transport}. Increased information with a slower increase in the number of map parameters can be achieved with the composition of maps discussed in~\cite{parno2015transport}. Here we stick with polynomials of total order $p$ since we work with low dimensional problems with the PAIS algorithm.
 
 
@@ -484,11 +486,11 @@ these maps to propose new states. In \cite{parno2014transport} it was
 shown how approximate transport maps can be used to accelerate
 Metropolis-Hastings methods, with the map being periodically updated
 with the samples produced from the target measure. Convergence of this
-adaptation is shown in~\cite{parno2014transport}. In this section, we
-will discuss how similarly, these maps can be used to construct highly
+adaptation is shown in~\cite{parno2014transport}. In this Section, we
+will show how similarly, these maps can be used to construct highly
 efficient importance sampling schemes.
 
-In particular, we will show how we can use the Transport map derived in Equation~\eqref{eq:weighted_map_optim} to
+In particular, we will show how we can use the transport map derived in Equation~\eqref{eq:weighted_map_optim} to
 design a proposal scheme for the PAIS algorithm. In this case we have a choice in how to proceed; we
 propose new samples on reference space and resample on target space, or we both propose and resample on reference space, mapping onto target space to output the samples. The first option allows us to reuse much of the framework
 from the standard PAIS algorithm and in the numerics later we see that this performs better than
@@ -565,13 +567,21 @@ Initialise map $\bar{\gamma}^{(1)} = \iota$.\;
 \end{algorithm}
 \end{table}
 
-The second option, Algorithm~\ref{alg:TransportPAIS2}, is similar to the first except on Line~\ref{algline:TPAIS_resample} where rather than resampling in target space we resample in reference space. In reference space the dimensions are roughly uncorrelated, and the Gaussian marginals are easy to approximate with fewer ensemble members. This means that the resampling step will be more efficient in higher dimensions, which we discuss in Section~\ref{sec:TPAIS_higher_dim}.
+The second option, Algorithm~\ref{alg:TransportPAIS2}, is similar to
+the first except on Line~\ref{algline:TPAIS_resample} where rather
+than resampling in target space we resample in reference space. In
+reference space the dimensions are roughly uncorrelated, and the
+Gaussian marginals are easy to approximate with fewer ensemble
+members. This means that the resampling step will be more efficient in
+moderately higher dimensions, which we discuss in Section~\ref{sec:TPAIS_higher_dim}.
 
-\section[Convergence of transport MCMC]{Convergence of the transport proposal based MCMC algorithms}
+\section[Convergence of transport MCMC]{Convergence of the transport proposal based MCMC algorithms}\label{sec:conv}
 
-In this section we study the convergence of the transport based proposal distributions which we have described in Section~\ref{sec:transport_algs}. We follow a similar strategy to that in Chapter~\ref{sec:PAIS}. We begin by finding optimal values for the scaling parameters by performing a series of simulations with differing scaling parameters. We then produce 1 million samples from the target distribution with the optimal scaling parameter and an ensemble size of $M=150$. We take 32 repeats of this optimal simulation and present the geometric average of the convergence rates. This process is then repeated for each of the algorithms we have discussed, Algorithms~\ref{alg:TransportMH}, \ref{alg:TransportPAIS1}, \ref{alg:TransportPAIS2}.
-
-In this section we return to the Rosenbrock banana-shaped density which in Chapter~\ref{sec:LPAIS} we labelled $R_1$. This target density is
+In this Section we study the convergence of the transport based
+proposal distributions which we have described in
+Section~\ref{sec:TPAIS}.
+We take as a test problem the ubiquitous Rosenbrock banana-shaped
+density. This target density is given by
 \begin{equation}\label{eqn:R2_repeat}
 	\pi(\theta) = \frac{\sqrt{10}}{\pi}\exp\left\{ -(1 - \theta_1)^2 - 10(\theta_2 - \theta_1^2)^2 \right\}.
 \end{equation}
@@ -581,15 +591,19 @@ A contour plot of the target density is given in Figure~\ref{fig:R2_posterior}.
 \subfigure[Marginal density function for $\theta_1$.]{\includegraphics[width=0.31\textwidth]{"images/TPAIS/R2_marginal_1"}}
 \subfigure[Marginal density function for $\theta_2$.]{\includegraphics[width=0.31\textwidth]{"images/TPAIS/R2_marginal_2"}}
 \subfigure[Contour plot for Rosenbrock density.]{\includegraphics[width=0.31\textwidth]{images/TPAIS/R2_posterior}}
-\caption{Visualisation of the density of example $R_1$, as given in Equation~\eqref{eqn:R2_repeat}.}
+\caption{Visualisation of the Rosenbrock density as given in Equation~\eqref{eqn:R2_repeat}.}
 \label{fig:R2_posterior}
 \end{figure}
+This problem is challenging to sample from since it has a highly peaked and curved ridge, and is often used
+as a test problem in optimisation and MCMC communities.
 
 \subsection{Implementation details}
 
-We now demonstrate some properties of the transport maps we will be using in our MCMC algorithms. We draw 1 million samples from the density in \eqref{eqn:R2_repeat}, and use this sample in the framework of Section~\ref{sec:transport_implementation} to build a transport map. We use this map to push forward the original sample onto the reference space, where we will be able to see how well the map has performed at converting the original sample to a standard Gaussian. We then pull the sample back on to target space using the inverse map to check that our map is invertible and well behaved.
+Before looking at the performance of the MCMC algorithms, we demonstrate some properties of the transport maps we will be using in our MCMC algorithms. We draw 1 million samples from the density in \eqref{eqn:R2_repeat}, and use this sample in the framework of Section~\ref{sec:map} to build a transport map. We use this map to push forward the original sample onto the reference space, where we will be able to see how well the map has performed at converting the original sample to a standard Gaussian. We then pull the sample back on to target space using the inverse map to check that our map is invertible and well behaved.
 
-For this example, we use an index set of total order 3 with monomial basis functions. This results in a map of the form
+For this example, we use an index set of total order 3 with monomial
+basis functions. It is important that total order is an odd number,
+since otherwise the map will not be surjective. This results in a map of the form
 \[
 	T(\theta_1, \theta_2) = \begin{bmatrix} T_1(\theta_1) \\ T_2(\theta_1, \theta_2) \end{bmatrix},
 \]
@@ -601,7 +615,7 @@ where
 				 & \qquad \quad + \gamma_{2,7}\theta_1^2\theta_2 + \gamma_{2,8}\theta_2^2 + \gamma_{2,9}\theta_1\theta_2^2 +
 					 \gamma_{2,10}\theta_2^3.
 \end{align*}
-Clearly even with only basis functions of total order 3, we have a large number of unknowns in our optimisation problem, $\bar{\gamma} \in \mathbb{R}^{14}$. If we were to increase the dimension of $\theta$ further we would need to reduce the number of terms we include in the expansion by, for example, removing all the cross terms. This reduces the quality of our map but since we only require an approximate map we can afford to reduce the accuracy.
+Clearly even with only basis functions of total order 3, we have a large number of unknowns in our optimisation problem, $\bar{\gamma} \in \mathbb{R}^{14}$. If we were to increase the dimension of $\theta$ further we would need to reduce the number of terms we include in the expansion by, for example, removing all the ``cross'' terms. This reduces the quality of our map but since we only require an approximate map we can afford to reduce the accuracy.
 
 \begin{figure}[htpb]
 \centering
@@ -612,26 +626,38 @@ Clearly even with only basis functions of total order 3, we have a large number 
 \label{fig:R2_transport}
 \end{figure}
 
-Figure~\ref{fig:R2_transport} shows the efficiency of the transport map. Even though we have truncated the infinite expansion in the monomial basis down to 4 and 10 terms in respective dimensions, the push forward of the sample is still a unimodal distribution centred at the origin with standard deviation 1. As you move out into the tails of the reference density more non-Gaussian features form, but these are not too much of a problem when using a suitable proposal distribution. The pullback from reference space, in Figure~\ref{fig:R2_transport}, is an exact match of the original sample since we have not perturbed the sample in reference space. This inversion is well defined in the sampling region, although not necessarily outside.
+Figure~\ref{fig:R2_transport} shows the output of the approximate
+transport map. Even though we have truncated the infinite expansion in
+the monomial basis down to 4 and 10 terms in respective dimensions,
+the push forward of the sample is still a unimodal distribution
+centred at the origin with standard deviation 1. As you move out into
+the tails of the reference density more non-Gaussian features are
+clearly visible. However, overall, the push forward of the target
+density does not look a challenging one to sample from, with even
+relatively simple MCMC methods such as RWMH. The pullback from
+reference space, in Figure~\ref{fig:R2_transport}, is an exact match
+of the original sample since we have not perturbed the sample in
+reference space. This inversion is well defined in the sampling
+region, although not necessarily outside\cite{parno2014transport}.
 
-\begin{figure}[!h]
-\centering
-\includegraphics[width=0.8\textwidth]{images/TPAIS/zero_jacobian}
-\caption{An example transport map which does not allow exploration of the full target distribution, and has a non-invertible point.}
-\label{fig:TM_zero_jacobian}
-\end{figure}
+\subsection[Numerical results]{Numerical results for convergence of
+  transport map based algorithms on the Rosenbrock density}
 
-If we consider a map built from polynomials of total order $p=2$, it is clear that the map $\tilde{T}$ does not map onto $\mathbb{R}^d$, but on to a subset of it. Figure~\ref{fig:TM_zero_jacobian} illustrates this point. We see that in this dimension, the $\tilde{T}^{-1}$ will not map any proposal $r > 0.8$ to a point in the target space. The point at which no inverse exists for a point $r_1$ can be made arbitrarily far out in the tails of the posterior distribution, but will be finite. The point at which the Jacobian is zero is also a non-invertible point since the logarithm in the pullback becomes infinite. This means that (1) we will never sample from the tail of the target distribution which lies beyond this turning point, and (2) all points in reference space $r < 0.8$ have the possibility of being mapped to two distinct points in target space. We can choose to truncate our parameter space at this turning point which allows our map to be bijective, however we will not be able to sample from the true posterior. For this reason it is best to chose an index set where the maximum order is an odd number.
+We first find the optimal scaling parameters for the individual
+algorithms. This is done, as in ****CITE US**** by optimising for the effective sample size in
+the PAIS algorithm, and by tuning the relative $L^2$ error in the MH
+algorithm. There is currently no
+guidance on the best way of tuning the MH algorithm with transport map
+proposals although one might expect results similar to the standard MH
+results, especially if adaptation of the map is stopped after a given
+point. As in the PAIS algorithm, optimising for the effective sample size might be the best option.
 
-\subsection[Numerical results]{Numerical results for convergence of transport map based algorithms}
-
-We first find the optimal scaling parameters for the individual algorithms. This is done as before by optimising the effective sample size in the PAIS algorithm, and by tuning the relative $L^2$ error in the MH algorithm. There is currently no guidance on the best way of tuning the MH algorithm with transport map proposals although one might expect results similar to the standard MH results. As in the PAIS algorithm, the effective sample size might be the best option.
-
-\begin{table}[!h]
+\begin{table}[!ht]
 \centering
 \begin{tabular}{lrrr}
 \toprule
-	Statistic \quad / \quad Algorithm & \ref{alg:TransportMH} & \ref{alg:TransportPAIS1} & \ref{alg:TransportPAIS2}  \\ \cmidrule(lr){1-4}
+	Statistic \quad / \quad Algorithm & Transport M-H &
+                                                            Alg. \ref{alg:TransportPAIS1} & Alg. \ref{alg:TransportPAIS2}  \\ \cmidrule(lr){1-4}
 	$\delta_{L^2}$				 & 1.0e-0 & 1.1e-1 & 3.5e-1 \\
 	$\delta_{\text{ESS}}$				 & - & 1.0e-1 & 5.2e-1 \\ \cmidrule(lr){1-4}
 	Acc. rate							 & 0.23 & - & - \\
@@ -642,23 +668,63 @@ We first find the optimal scaling parameters for the individual algorithms. This
 \label{tab:R2_opt_scaling}
 \end{table}
 
-The optimal scaling parameters are given in Table~\ref{tab:R2_opt_scaling}. Here we see that the effective sample size is much lower than we see in the one-dimensional examples with the PAIS algorithms. However, in $R_1$ we are dealing with a much more complicated correlation structure, as well as a very slowly decaying tail in $\theta_2$. We have seen in Section~\ref{sec:LPAIS_R1} that the standard PAIS-RW required an ensemble size of $M=500$ to overcome the problems in this density, however the transport map transforms the tails to be more like those of a Gaussian which can be approximated well by a smaller ensemble size of $M=150$.
+The optimal scaling parameters are given in
+Table~\ref{tab:R2_opt_scaling}. Here we see that the effective sample
+size is much lower than we see in the one-dimensional examples with
+the PAIS algorithms. However, in the Rosenbrock density
+\eqref{eqn:R2_repeat} we are dealing with a much more complicated
+correlation structure, as well as a very slowly decaying tail in
+$\theta_2$. From our experiments, we have observed that the standard PAIS-RW required an ensemble size of $M=500$ to overcome the problems in this density, however the transport map transforms the tails to be more like those of a Gaussian which can be approximated well by a smaller ensemble size of $M=150$.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 \centering
 \subfigure[Comparison of the two Transport PAIS options.]{\includegraphics[width=0.45\textwidth]{images/TPAIS/R1_L2}}
 \subfigure[Comparison of Transport PAIS option (2) with the standard algorithms.]{\includegraphics[width=0.45\textwidth]{images/TPAIS/R1_L2_all}}
-\caption{Convergence of Algorithms~\ref{alg:TransportMH}, \ref{alg:TransportPAIS1}, \ref{alg:TransportPAIS2} for $R_1$. Ensemble size $M=150$, resampling performed using the AMR algorithm.}
+\caption{Convergence of Algorithms Transport M-H,
+  \ref{alg:TransportPAIS1}, \ref{alg:TransportPAIS2} for density \eqref{eqn:R2_repeat}. Ensemble size $M=150$, resampling performed using the AMR algorithm.}
 \label{fig:R2_l2_convergence}
 \end{figure}
 
 The convergence of the three algorithms is displayed in Figure~\ref{fig:R2_l2_convergence}. Figure (a) shows that the two variations of the transport based PAIS algorithms converge with similar rates. The second version, which performs the resampling stage in reference space rather than target space, has a slightly higher ESS, and is more stable than option (1). This version also has a property that we can exploit in Section~\ref{sec:TPAIS_higher_dim}.
 
-\section{Sampling in higher dimensions}\label{sec:TPAIS_higher_dim}
+
+%\section{Transport map-accelerated Parallel Adaptive Importance
+  %Sampling (TPAIS)}\label{sec:TPAIS}
+
+\section{Multiscale Methods for Stochastic Chemical Reaction
+  Networks}\label{sec:multi}
+In this Section, we discuss some recent advances in multiscale methods
+for stochastic reaction networks. Inverse problems arising in this
+area often lead to highly correlated and complex posterior
+distributions, which traditional MCMC methods can struggle to sample
+from. We will then go on to solve some inverse problems related to
+this in Section \ref{sec:num}.
+
+\section{Numerical Examples}\label{sec:num}
+
+\section{Discussion}\label{sec:conc}
+
+\subsection{Sampling in (moderately) higher
+  dimensions}\label{sec:TPAIS_higher_dim}
+One major problem with importance sampling schemes is the curse of
+dimensionality, which means that methods such as PAIS, and other PMC
+methods, can only be used for relatively low dimensional
+problems. Here, we will briefly discuss how transport maps could aid
+with making moderately higher dimensional problems accessible to this
+family of methods.
 
 Algorithm~\ref{alg:TransportPAIS2} allows us to decorrelate the dimensions of our random parameter on reference space, where we then can resample and map the resulting ensemble back onto target space. Since, on reference space, the dimensions are uncorrelated, we are able to resample in each dimension separately. Resampling in a single dimension allows for optimisations in resampling code, and also means that the resampler is not affected by the curse of dimensionality.
 
-If we can approximate the posterior well with our mixture and with the transport map, we should not be affected by the increase in dimension to the extent we have been with the standard PAIS-RW algorithm. In one dimension the ETPF algorithm can be implemented very efficiently. As described in~\cite{reich2013nonparametric}, the coupling matrix has all non-zero entries in a staircase pattern when the state space is ordered. We can exploit this knowledge to produce Algorithm~\ref{alg:ETPF_1d}. Which is much faster than using the simplex algorithm to minimise the associated cost function, and faster than the AMR algorithm.
+If we can approximate the posterior well with our mixture and with the
+transport map, we should not be affected by the increase in dimension
+to the extent we have been with the standard PAIS-RW algorithm. In one
+dimension the ETPF algorithm can be implemented very efficiently. As
+described in~\cite{reich2013nonparametric}, the coupling matrix has
+all non-zero entries in a staircase pattern when the state space is
+ordered. We can exploit this knowledge to produce
+Algorithm~\ref{alg:ETPF_1d}. Which is much faster than using the
+simplex algorithm to minimise the associated cost function, and faster
+than the AMR algorithm****CITE OUR OTHER PAPER****.
 
 \begin{table}[!htpb]
 \begin{algorithm}[H]
@@ -688,16 +754,6 @@ Return $y$.\;
 \end{algorithm}
 \end{table}
 
-
-%\section{Transport map-accelerated Parallel Adaptive Importance
-  %Sampling (TPAIS)}\label{sec:TPAIS}
-
-\section{Multiscale Methods for Stochastic Chemical Reaction
-  Networks}\label{sec:multi}
-
-\section{Numerical Examples}\label{sec:num}
-
-\section{Discussion}\label{sec:conc}
 
 \bibliographystyle{siam}
 \bibliography{bibliography}

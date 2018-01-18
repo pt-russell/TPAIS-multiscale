@@ -4,11 +4,6 @@
 {\sc T.~El~Moselhy and Y.~Marzouk}, {\em Bayesian inference with optimal maps},
   Journal of Computational Physics, 231 (2012), pp.~7815--7850.
 
-\bibitem{girolami2011riemann}
-{\sc M.~Girolami and B.~Calderhead}, {\em {Riemann manifold langevin and
-  hamiltonian monte carlo methods}}, Journal of the Royal Statistical Society:
-  Series B (Statistical Methodology), 73 (2011), pp.~123--214.
-
 \bibitem{parno2015transport}
 {\sc M.~Parno}, {\em {Transport maps for accelerated Bayesian computation}},
   PhD thesis, Massachusetts Institute of Technology, 2015.
