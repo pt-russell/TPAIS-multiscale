@@ -8,83 +8,72 @@
 \@writefile{toc}{\contentsline {section}{\numberline {2}Construction of transport maps in importance sampling}{1}}
 \citation{parno2014transport}
 \citation{parno2014transport}
-\newlabel{eq:pullback}{{2.1}{2}}
 \citation{pinsker1960information}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}The optimisation problem}{3}}
+\newlabel{eq:pullback}{{2.1}{2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}The optimisation problem}{2}}
 \newlabel{eq:gen_map_optim}{{2.2}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}The structure of the map}{3}}
+\newlabel{eqn:separable_jacobian}{{2.3}{3}}
 \citation{parno2014transport}
 \citation{parno2015transport}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}The structure of the map}{4}}
-\newlabel{eqn:separable_jacobian}{{2.3}{4}}
+\citation{parno2014transport}
 \newlabel{eq:map_defn}{{2.4}{4}}
-\newlabel{sec:transport_implementation}{{2.3}{5}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Implementation of the optimisation problem}{5}}
-\newlabel{eqn:TM_full_cost}{{2.5}{5}}
-\newlabel{eq:gauss_map_optim}{{2.6}{5}}
-\newlabel{eq:gamma_map_optim}{{2.7}{5}}
-\citation{parno2014transport}
-\newlabel{eq:blas_map_optim}{{2.8}{6}}
-\newlabel{eq:final_map_optim}{{2.9}{6}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Implementation of the optimisation problem in PAIS}{6}}
-\newlabel{eqn:TPAIS_objective}{{2.10}{6}}
-\newlabel{eq:weighted_map_optim}{{2.11}{6}}
+\newlabel{sec:transport_implementation}{{2.3}{4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Implementation of the optimisation problem}{4}}
+\newlabel{eqn:TM_full_cost}{{2.6}{4}}
+\newlabel{eqn:TPAIS_objective}{{2.7}{5}}
+\newlabel{eq:gamma_map_optim}{{2.8}{5}}
+\newlabel{eq:blas_map_optim}{{2.9}{5}}
 \citation{parno2014transport}
 \citation{parno2014transport}
-\citation{girolami2011riemann}
 \citation{parno2014transport}
-\citation{parno2014transport}
-\newlabel{eqn:TPAIS_hessian}{{2.12}{7}}
-\newlabel{sec:transport_algs}{{3}{7}}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Transport map MCMC}{7}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Transport map MH algorithms}{7}}
-\newlabel{alg:TransportMH}{{1}{8}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {1}{\ignorespaces MH algorithm with adaptive transport map\nobreakspace  {}\cite  {parno2014transport}}}{8}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Transport map PAIS algorithms}{8}}
-\newlabel{alg:TransportPAIS1}{{2}{9}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {2}{\ignorespaces PAIS algorithm with adaptive transport map. Option 1.}}{9}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Convergence of transport MCMC}{9}}
-\newlabel{eqn:R2_repeat}{{4.1}{9}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Implementation details}{9}}
-\newlabel{alg:TransportPAIS2}{{3}{10}}
-\newlabel{algline:TPAIS_resample}{{8}{10}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {3}{\ignorespaces PAIS algorithm with adaptive transport map. Option 2.}}{10}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces Visualisation of the density of example $R_1$, as given in Equation\nobreakspace  {}\textup  {\hbox {\mathsurround \z@ \normalfont  (\ignorespaces 4.1\hbox {}\unskip \@@italiccorr )}}.}}{10}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Marginal density function for $\theta _1$.}}}{10}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Marginal density function for $\theta _2$.}}}{10}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Contour plot for Rosenbrock density.}}}{10}}
-\newlabel{fig:R2_posterior}{{4.1}{10}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces Rosenbrock target density as described in Equation\nobreakspace  {}\textup  {\hbox {\mathsurround \z@ \normalfont  (\ignorespaces 4.1\hbox {}\unskip \@@italiccorr )}}.}}{11}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Original sample $\theta $ from RWMH algorithm.}}}{11}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Push forward of $\theta $ onto reference space.}}}{11}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Pull back of reference sample onto target space.}}}{11}}
-\newlabel{fig:R2_transport}{{4.2}{11}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.3}{\ignorespaces An example transport map which does not allow exploration of the full target distribution, and has a non-invertible point.}}{11}}
-\newlabel{fig:TM_zero_jacobian}{{4.3}{11}}
+\newlabel{eq:weighted_map_optim}{{2.10}{6}}
+\newlabel{eqn:TPAIS_hessian}{{2.11}{6}}
+\newlabel{sec:TPAIS}{{3}{6}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Transport map MCMC}{6}}
+\newlabel{alg:TransportPAIS1}{{1}{7}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {1}{\ignorespaces PAIS algorithm with adaptive transport map. Option 1.}}{7}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Convergence of transport MCMC}{7}}
+\newlabel{alg:TransportPAIS2}{{2}{8}}
+\newlabel{algline:TPAIS_resample}{{8}{8}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {2}{\ignorespaces PAIS algorithm with adaptive transport map. Option 2.}}{8}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces Visualisation of the density of example $R_1$, as given in Equation\nobreakspace  {}\textup  {\hbox {\mathsurround \z@ \normalfont  (\ignorespaces 4.1\hbox {}\unskip \@@italiccorr )}}.}}{8}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Marginal density function for $\theta _1$.}}}{8}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Marginal density function for $\theta _2$.}}}{8}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Contour plot for Rosenbrock density.}}}{8}}
+\newlabel{fig:R2_posterior}{{4.1}{8}}
+\newlabel{eqn:R2_repeat}{{4.1}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Implementation details}{8}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces Rosenbrock target density as described in Equation\nobreakspace  {}\textup  {\hbox {\mathsurround \z@ \normalfont  (\ignorespaces 4.1\hbox {}\unskip \@@italiccorr )}}.}}{9}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Original sample $\theta $ from RWMH algorithm.}}}{9}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Push forward of $\theta $ onto reference space.}}}{9}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Pull back of reference sample onto target space.}}}{9}}
+\newlabel{fig:R2_transport}{{4.2}{9}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.3}{\ignorespaces An example transport map which does not allow exploration of the full target distribution, and has a non-invertible point.}}{10}}
+\newlabel{fig:TM_zero_jacobian}{{4.3}{10}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Numerical results}{10}}
+\@writefile{lot}{\contentsline {table}{\numberline {4.1}{\ignorespaces Optimal scaling parameters for the transport map based algorithms applied to $R_1$.}}{10}}
+\newlabel{tab:R2_opt_scaling}{{4.1}{10}}
 \citation{reich2013nonparametric}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Numerical results}{12}}
-\@writefile{lot}{\contentsline {table}{\numberline {4.1}{\ignorespaces Optimal scaling parameters for the transport map based algorithms applied to $R_1$.}}{12}}
-\newlabel{tab:R2_opt_scaling}{{4.1}{12}}
-\newlabel{sec:TPAIS_higher_dim}{{5}{12}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Sampling in higher dimensions}{12}}
 \bibstyle{siam}
 \bibdata{bibliography}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.4}{\ignorespaces Convergence of Algorithms\nobreakspace  {}1\hbox {}, 2\hbox {}, 3\hbox {} for $R_1$. Ensemble size $M=150$, resampling performed using the AMR algorithm.}}{13}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Comparison of the two Transport PAIS options.}}}{13}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Comparison of Transport PAIS option (2) with the standard algorithms.}}}{13}}
-\newlabel{fig:R2_l2_convergence}{{4.4}{13}}
-\newlabel{alg:ETPF_1d}{{4}{13}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {4}{\ignorespaces ETPF algorithm in one dimension.}}{13}}
-\newlabel{sec:TPAIS}{{6}{13}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Transport map-accelerated Parallel Adaptive Importance Sampling (TPAIS)}{13}}
-\newlabel{sec:multi}{{7}{13}}
-\@writefile{toc}{\contentsline {section}{\numberline {7}Multiscale Methods for Stochastic Chemical Reaction Networks}{13}}
-\newlabel{sec:num}{{8}{13}}
-\@writefile{toc}{\contentsline {section}{\numberline {8}Numerical Examples}{13}}
-\newlabel{sec:conc}{{9}{13}}
 \bibcite{el2012bayesian}{1}
 \bibcite{girolami2011riemann}{2}
 \bibcite{parno2015transport}{3}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.4}{\ignorespaces Convergence of Algorithms\nobreakspace  {}\G@refundefinedtrue \text  {\normalfont  \bfseries  ??}\GenericWarning  {               }{LaTeX Warning: Reference `alg:TransportMH' on page 11 undefined}, 1\hbox {}, 2\hbox {} for $R_1$. Ensemble size $M=150$, resampling performed using the AMR algorithm.}}{11}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Comparison of the two Transport PAIS options.}}}{11}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Comparison of Transport PAIS option (2) with the standard algorithms.}}}{11}}
+\newlabel{fig:R2_l2_convergence}{{4.4}{11}}
+\newlabel{sec:TPAIS_higher_dim}{{5}{11}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Sampling in higher dimensions}{11}}
+\newlabel{sec:multi}{{6}{11}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Multiscale Methods for Stochastic Chemical Reaction Networks}{11}}
+\newlabel{sec:num}{{7}{11}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Numerical Examples}{11}}
+\newlabel{sec:conc}{{8}{11}}
+\@writefile{toc}{\contentsline {section}{\numberline {8}Discussion}{11}}
 \bibcite{parno2014transport}{4}
 \bibcite{pinsker1960information}{5}
 \bibcite{reich2013nonparametric}{6}
-\@writefile{toc}{\contentsline {section}{\numberline {9}Discussion}{14}}
+\newlabel{alg:ETPF_1d}{{3}{12}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {3}{\ignorespaces ETPF algorithm in one dimension.}}{12}}

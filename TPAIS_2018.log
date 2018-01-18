@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/MacPorts 2017_2) (preloaded format=pdflatex 2018.1.17)  17 JAN 2018 16:45
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/MacPorts 2017_2) (preloaded format=pdflatex 2018.1.17)  18 JAN 2018 15:55
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1012,110 +1012,124 @@ Package amsmath Warning: Foreign command \atopwithdelims;
 
 [4] [5] [6]
 
-LaTeX Warning: Reference `sec:adapt' on page 7 undefined on input line 482.
+LaTeX Warning: Reference `sec:transport_algs' on page 7 undefined on input line
+ 572.
 
 
-LaTeX Warning: Reference `sec:adapt' on page 7 undefined on input line 530.
+LaTeX Warning: Reference `sec:PAIS' on page 7 undefined on input line 572.
+
+
+LaTeX Warning: Reference `alg:TransportMH' on page 7 undefined on input line 57
+2.
 
 [7]
 
-LaTeX Warning: Reference `sec:PAIS' on page 8 undefined on input line 616.
+LaTeX Warning: Reference `sec:LPAIS' on page 8 undefined on input line 574.
 
-[8]
-
-LaTeX Warning: Reference `sec:LPAIS' on page 9 undefined on input line 618.
-
-<"images/TPAIS/R2_marginal_1".pdf, id=49, 421.575pt x 316.18124pt>
+<"images/TPAIS/R2_marginal_1".pdf, id=46, 421.575pt x 316.18124pt>
 File: "images/TPAIS/R2_marginal_1".pdf Graphic file (type pdf)
 
 <use "images/TPAIS/R2_marginal_1".pdf>
-Package pdftex.def Info: "images/TPAIS/R2_marginal_1".pdf used on input line 62
-5.
+Package pdftex.def Info: "images/TPAIS/R2_marginal_1".pdf used on input line 58
+1.
 (pdftex.def)             Requested size: 114.81805pt x 86.11305pt.
 
-<"images/TPAIS/R2_marginal_2".pdf, id=50, 421.575pt x 316.18124pt>
+<"images/TPAIS/R2_marginal_2".pdf, id=47, 421.575pt x 316.18124pt>
 File: "images/TPAIS/R2_marginal_2".pdf Graphic file (type pdf)
 
 <use "images/TPAIS/R2_marginal_2".pdf>
-Package pdftex.def Info: "images/TPAIS/R2_marginal_2".pdf used on input line 62
-6.
+Package pdftex.def Info: "images/TPAIS/R2_marginal_2".pdf used on input line 58
+2.
 (pdftex.def)             Requested size: 114.81805pt x 86.11305pt.
 
-<images/TPAIS/R2_posterior.pdf, id=51, 421.575pt x 316.18124pt>
+<images/TPAIS/R2_posterior.pdf, id=48, 421.575pt x 316.18124pt>
 File: images/TPAIS/R2_posterior.pdf Graphic file (type pdf)
 
 <use images/TPAIS/R2_posterior.pdf>
-Package pdftex.def Info: images/TPAIS/R2_posterior.pdf used on input line 627.
+Package pdftex.def Info: images/TPAIS/R2_posterior.pdf used on input line 583.
 (pdftex.def)             Requested size: 114.81805pt x 86.11305pt.
 
-Underfull \hbox (badness 1484) in paragraph at lines 627--627
+Underfull \hbox (badness 1484) in paragraph at lines 583--583
 []\OT1/cmr/m/n/8 (c) Con-tour plot for Rosen-
  []
 
-[9] [10 <./images/TPAIS/R2_marginal_1.pdf> <./images/TPAIS/R2_marginal_2.pdf> <
-./images/TPAIS/R2_posterior.pdf>]
-<"images/TPAIS/R2_transport_orig".pdf, id=93, 421.575pt x 316.18124pt>
+[8 <./images/TPAIS/R2_marginal_1.pdf> <./images/TPAIS/R2_marginal_2.pdf> <./ima
+ges/TPAIS/R2_posterior.pdf>]
+<"images/TPAIS/R2_transport_orig".pdf, id=87, 421.575pt x 316.18124pt>
 File: "images/TPAIS/R2_transport_orig".pdf Graphic file (type pdf)
 
 <use "images/TPAIS/R2_transport_orig".pdf>
 Package pdftex.def Info: "images/TPAIS/R2_transport_orig".pdf used on input lin
-e 652.
+e 608.
 (pdftex.def)             Requested size: 114.81805pt x 86.11305pt.
 
-Underfull \hbox (badness 2744) in paragraph at lines 652--652
+Underfull \hbox (badness 2744) in paragraph at lines 608--608
 []\OT1/cmr/m/n/8 (a) Orig-i-nal sam-ple $\OML/cmm/m/it/8 ^^R$ \OT1/cmr/m/n/8 fr
 om
  []
 
-<"images/TPAIS/R2_transport_ref".pdf, id=94, 421.575pt x 316.18124pt>
+<"images/TPAIS/R2_transport_ref".pdf, id=88, 421.575pt x 316.18124pt>
 File: "images/TPAIS/R2_transport_ref".pdf Graphic file (type pdf)
 
 <use "images/TPAIS/R2_transport_ref".pdf>
 Package pdftex.def Info: "images/TPAIS/R2_transport_ref".pdf used on input line
- 653.
+ 609.
 (pdftex.def)             Requested size: 114.81805pt x 86.11305pt.
 
-<images/TPAIS/R2_transport_pullback.pdf, id=95, 421.575pt x 316.18124pt>
+<images/TPAIS/R2_transport_pullback.pdf, id=89, 421.575pt x 316.18124pt>
 File: images/TPAIS/R2_transport_pullback.pdf Graphic file (type pdf)
 
 <use images/TPAIS/R2_transport_pullback.pdf>
 Package pdftex.def Info: images/TPAIS/R2_transport_pullback.pdf used on input l
-ine 654.
+ine 610.
 (pdftex.def)             Requested size: 114.81805pt x 86.11305pt.
 
-<images/TPAIS/zero_jacobian.pdf, id=96, 847.165pt x 470.75874pt>
+<images/TPAIS/zero_jacobian.pdf, id=90, 847.165pt x 470.75874pt>
 File: images/TPAIS/zero_jacobian.pdf Graphic file (type pdf)
 
 <use images/TPAIS/zero_jacobian.pdf>
-Package pdftex.def Info: images/TPAIS/zero_jacobian.pdf used on input line 663.
+Package pdftex.def Info: images/TPAIS/zero_jacobian.pdf used on input line 619.
 
 (pdftex.def)             Requested size: 296.30812pt x 164.65309pt.
- [11 <./images/TPAIS/R2_transport_orig.pdf> <./images/TPAIS/R2_transport_ref.pd
-f> <./images/TPAIS/R2_transport_pullback.pdf> <./images/TPAIS/zero_jacobian.pdf
->]
-
-LaTeX Warning: Reference `sec:LPAIS_R1' on page 12 undefined on input line 689.
-
-
-<images/TPAIS/R1_L2.pdf, id=136, 449.68pt x 338.26375pt>
-File: images/TPAIS/R1_L2.pdf Graphic file (type pdf)
-
-<use images/TPAIS/R1_L2.pdf>
-Package pdftex.def Info: images/TPAIS/R1_L2.pdf used on input line 693.
-(pdftex.def)             Requested size: 166.67154pt x 125.37756pt.
-
-<images/TPAIS/R1_L2_all.pdf, id=137, 449.68pt x 338.26375pt>
-File: images/TPAIS/R1_L2_all.pdf Graphic file (type pdf)
-
-<use images/TPAIS/R1_L2_all.pdf>
-Package pdftex.def Info: images/TPAIS/R1_L2_all.pdf used on input line 694.
-(pdftex.def)             Requested size: 166.67154pt x 125.37756pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[12] (./TPAIS_2018.bbl [13 <./images/TPAIS/R1_L2.pdf> <./images/TPAIS/R1_L2_all
-.pdf>]) [14] (./TPAIS_2018.aux)
+[9 <./images/TPAIS/R2_transport_orig.pdf> <./images/TPAIS/R2_transport_ref.pdf>
+ <./images/TPAIS/R2_transport_pullback.pdf>]
+
+LaTeX Warning: Reference `alg:TransportMH' on page 10 undefined on input line 6
+34.
+
+
+LaTeX Warning: Reference `sec:LPAIS_R1' on page 10 undefined on input line 645.
+
+
+[10 <./images/TPAIS/zero_jacobian.pdf>]
+<images/TPAIS/R1_L2.pdf, id=133, 449.68pt x 338.26375pt>
+File: images/TPAIS/R1_L2.pdf Graphic file (type pdf)
+
+<use images/TPAIS/R1_L2.pdf>
+Package pdftex.def Info: images/TPAIS/R1_L2.pdf used on input line 649.
+(pdftex.def)             Requested size: 166.67154pt x 125.37756pt.
+
+<images/TPAIS/R1_L2_all.pdf, id=134, 449.68pt x 338.26375pt>
+File: images/TPAIS/R1_L2_all.pdf Graphic file (type pdf)
+
+<use images/TPAIS/R1_L2_all.pdf>
+Package pdftex.def Info: images/TPAIS/R1_L2_all.pdf used on input line 650.
+(pdftex.def)             Requested size: 166.67154pt x 125.37756pt.
+
+
+LaTeX Warning: Reference `alg:TransportMH' on page 11 undefined on input line 6
+51.
+
+
+LaTeX Warning: Reference `alg:TransportMH' on page 11 undefined on input line 6
+51.
+
+(./TPAIS_2018.bbl [11 <./images/TPAIS/R1_L2.pdf> <./images/TPAIS/R1_L2_all.pdf>
+]) [12] (./TPAIS_2018.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -1125,13 +1139,13 @@ LaTeX Warning: There were undefined references.
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 24326 strings out of 494099
- 464532 string characters out of 6155351
- 543091 words of memory out of 5000000
- 27300 multiletter control sequences out of 15000+600000
+ 24323 strings out of 494099
+ 464481 string characters out of 6155351
+ 538049 words of memory out of 5000000
+ 27297 multiletter control sequences out of 15000+600000
  12988 words of font info for 48 fonts, out of 8000000 for 9000
  430 hyphenation exceptions out of 8191
- 54i,20n,54p,10458b,7051s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 54i,20n,54p,10458b,7048s stack positions out of 5000i,500n,10000p,200000b,80000s
 </opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/
 cmbx10.pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx7
 .pfb></opt/local/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx8.pfb><
@@ -1153,10 +1167,10 @@ l/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti7.pfb></opt/local/shar
 e/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti8.pfb></opt/local/share/texm
 f-texlive/fonts/type1/public/amsfonts/symbols/msbm10.pfb></opt/local/share/texm
 f-texlive/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
-Output written on TPAIS_2018.pdf (14 pages, 451259 bytes).
+Output written on TPAIS_2018.pdf (12 pages, 442263 bytes).
 PDF statistics:
- 238 PDF objects out of 1000 (max. 8388607)
- 171 compressed objects within 2 object streams
+ 231 PDF objects out of 1000 (max. 8388607)
+ 166 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  58 words of extra memory for PDF output out of 10000 (max. 10000000)
 

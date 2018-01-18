@@ -203,13 +203,14 @@ distribution such as a Gaussian centred at the previous state. Proposed states c
 Proposing new states in this way allows us to make large steps around complex probability distributions.
 It is also feasible in this framework to assume that the reference density is close enough to a standard Gaussian that we can efficiently propose moves using a proposal distribution which is independent of the current state, e.g. choose $q(\theta) = \mathcal{N}(0,I_n)$.
 
-In this Section we outline the methodology in \cite{parno2014transport} for coupling the target,
+In this Section we outline the methodology in
+\cite{parno2014transport} for approximately coupling the target,
 $\mu_{\theta}$, with the reference distribution, $\mu_r$, and
 show how the map can be constructed using a weighted sample
 and hence how we can incorporate the map into importance sampling schemes.
 
 \begin{dfn}[(Exact) Transport Map $T$]
-	An (exact) transport map $T$ is a function $T\colon
+	A transport map $T$ is a function $T\colon
         \mathcal{X}\rightarrow\mathbb{R}^d$ such that the {\it
           pullback} of the reference measure with density $\phi(\cdot)$,
 	\begin{equation}\label{eq:pullback}
@@ -221,68 +222,69 @@ and hence how we can incorporate the map into importance sampling schemes.
 	\]
 \end{dfn}
 
-There are infinitely many such maps, a subset of which will be
-invertible. In the case that we have an exact invertible map,
-$T\in\mathcal{T}$ where $\mathcal{T}$ is the space of all invertible
-maps, we are able to draw a sample from $\pi_r = \phi$, the density of
-the reference distribution, which could be picked to be the
-standardised Gaussian distribution for example, and map these samples back
-onto target space using $T^{-1}$. These proposed samples are then distributed according to the target distribution.
+% In the case that we have an invertible map,
+% $T\in\mathcal{T}$ where $\mathcal{T}$ is the space of all invertible
+% maps, we are able to draw a sample from $\pi_r = \phi$, the density of
+% the reference distribution, which could be picked to be the
+% standardised Gaussian distribution for example, and map these samples back
+% onto target space using $T^{-1}$. These proposed samples are then distributed according to the target distribution.
 
 \begin{dfn}[Target and Reference Space]
 	The transport map pushes a particle from a {\it target space} $\mathcal{X}$, that is a subset of $\mathbb{R}^d$ equipped with a target measure $\mu_{\theta}$, onto a {\it reference space}, $R$, again a subset of $\mathbb{R}^d$ equipped with the reference measure $\mu_r$.
 \end{dfn}
 
-On target space, the proposal density is induced by the pullback of $\phi$ through $T^{-1}$.
+Armed with such a map, independent samples can be made of the target
+measure, using the pullback of the reference density $\phi$ through $T^{-1}$.
 Clearly the pullback only exists when $T$ is monotonic, i.e. has a positive definite Jacobian, and has continuous first derivatives.
-Not all maps satisfy these conditions, so we define a smaller space of maps, $\mathcal{T}^\uparrow \subset \mathcal{T}$ which contains all feasible maps.
-An exact map $T$ is not necessarily in $\mathcal{T}^\uparrow$, so we
-are motivated to formulate an optimisation problem to find the map $T
+Not all maps satisfy these conditions, so we define a smaller space of
+maps, $\mathcal{T}^\uparrow \subset \mathcal{T}$ which contains all
+feasible maps. This space does not necessarily contain an exact
+coupling between target and reference space, and so we are motivated to formulate an optimisation problem to find the map $\tilde{T}
 \in \mathcal{T}^\uparrow$ which most closely maps the target density
 to the reference density.
 
-We attempt to find the deterministic coupling of two continuous
-probability distributions, $(\mu_\theta, \hat{\mu_r})$, such that
-$\hat{\mu_r} = T\mu_\theta$ where the distance between $\mu_r$ (the
-desired reference measure) and $\hat{\mu_r}$ (the achieved reference
-measure) is minimised, for $T \in \mathcal{T}^\uparrow$. As in
-\cite{parno2014transport} we aim to minimise the Kullback-Liebler (KL)
-divergence between the density of $\mu_{\theta}$ and the pullback of
-the density of $\mu_{r}$, i.e. the distance between $\pi(\theta)$ and
-$\tilde{\pi}(\theta)$. For two absolutely continuous measures with
-densities $\pi_1$ and $\pi_2$ respectively, the KL
-divergence is given by
-\[D_\text{KL}(\pi_1\|\pi_2) = 
-		\mathbb{E}_{\pi_1}\left[\log\left(\frac{\pi_1(\theta)}{\pi_2(\theta)}\right)\right].\]
-The KL divergence is not itself a norm, since
-it is not symmetric, i.e. $D_\text{KL}(\pi_1\|\pi_2) \neq
-D_\text{KL}(\pi_2\|\pi_1)$ in general. However, it is still a useful
-measure of the similarity of two probability distributions, not least since the
-square root of the KL-divergence is an upperbound to the Hellinger
-distance metric.
+% We attempt to find the deterministic coupling of two continuous
+% probability distributions, $(\mu_\theta, \hat{\mu_r})$, such that
+% $\hat{\mu_r} = T\mu_\theta$ where the distance between $\mu_r$ (the
+% desired reference measure) and $\hat{\mu_r}$ (the achieved reference
+% measure) is minimised, for $T \in \mathcal{T}^\uparrow$. As in
+% \cite{parno2014transport} we aim to minimise the Kullback-Liebler (KL)
+% divergence between the density of $\mu_{\theta}$ and the pullback of
+% the density of $\mu_{r}$, i.e. the distance between $\pi(\theta)$ and
+% $\tilde{\pi}(\theta)$. For two absolutely continuous measures with
+% densities $\pi_1$ and $\pi_2$ respectively, the KL
+% divergence is given by
+% \[D_\text{KL}(\pi_1\|\pi_2) = 
+% 		\mathbb{E}_{\pi_1}\left[\log\left(\frac{\pi_1(\theta)}{\pi_2(\theta)}\right)\right].\]
+% The KL divergence is not itself a norm, since
+% it is not symmetric, i.e. $D_\text{KL}(\pi_1\|\pi_2) \neq
+% D_\text{KL}(\pi_2\|\pi_1)$ in general. However, it is still a useful
+% measure of the similarity of two probability distributions, not least since the
+% square root of the KL-divergence is an upperbound to the Hellinger
+% distance metric.
 
-As in previous work in \cite{parno2014transport}, when we optimise the cost function
-\[
-	C(T) = D_\text{KL}(\pi\|\tilde{\pi}),
-\]
-to ensure invertibility we restrict the map to be lower triangular, i.e. $\tilde{T} \in \mathcal{T}^{\ltri}\subset\mathcal{T}^\uparrow$. This lower triangular map has the form,
+As in previous work in \cite{parno2014transport}, we can ensure
+invertibility if we restrict the map to be lower triangular, i.e. $\tilde{T} \in \mathcal{T}^{\ltri}\subset\mathcal{T}^\uparrow$. This lower triangular map has the form,
 \[
 	T(\theta_1, \dots, \theta_n) = \begin{bmatrix} T_1(\theta_1) \\ T_2(\theta_1, \theta_2) \\ \vdots \\
 		T_n(\theta_1, \dots, \theta_n) \end{bmatrix},
 \]
-where $T_i\colon \mathbb{R}^i \to \mathbb{R}$. We assume that the target and reference probability densities are absolutely continuous on
-$\mathbb{R}^d$. Under this formulation we are guaranteed a unique invertible map $\tilde{T}$ with the property that
-\[
-	\tilde{T}\mu_{\theta} \approx \mu_r.
-\]
-Relaxing the equality constraint to finding the approximate map
-$\tilde{T} \in \mathcal{T}^{\ltri}$ which minimises $C(T)$, gives us a
-practical route to finding a good candidate map.
+where $T_i\colon \mathbb{R}^i \to \mathbb{R}$. % We assume that the target and reference probability densities are absolutely continuous on
+% $\mathbb{R}^d$. Under this formulation, with appropriate
+% regularisation (which will be detailed later), we are guaranteed a unique invertible map $\tilde{T}$ with the property that
+% \[
+% 	\tilde{T}\mu_{\theta} \approx \mu_r.
+% \]
+% % Relaxing the equality constraint to finding the approximate map
+% % $\tilde{T} \in \mathcal{T}^{\ltri}$ which minimises $C(T)$, gives us a
+% % practical route to finding a good candidate map.
 
 \subsection{The optimisation problem}
-
-With these constraints in mind we formulate the optimisation problem explicitly. The cost function
-is chosen to be the Kullback-Leibler divergence between the posterior density and the pullback density,
+Our aim is now to find the lower triangular map $\tilde{T} \in
+\mathcal{T}^{\ltri}$ such that the difference between target
+density and the pullback of the reference density is minimised. As in
+\cite{parno2014transport}, we choose the cost function
+to be the Kullback-Leibler (KL) divergence between the posterior density and the pullback density,
 \[
 	D_\text{KL}(\pi\|\tilde{\pi}) =
 		\mathbb{E}_\pi\left[\log\left(\frac{\pi(\theta)}{\tilde{\pi}(\theta)}\right)\right].
@@ -304,17 +306,17 @@ To find the best coupling, $\tilde{T} \in \mathcal{T}^{\ltri}$, we solve the opt
 	\tilde{T} = \arg\min_{T \in \mathcal{T}^{\smallltri}} \mathbb{E}_\pi\left[-\log\pi_r(T(\theta)) -
 		\log\left|J_T(\theta)\right|\right]
 \]
-which has a unique solution since the cost function is convex.
-
-We also include a regularisation term which is required for reasons which will become clear later. The optimisation problem now takes the form
+which has a unique solution since the cost function is convex. We also include a regularisation term, which is required for reasons which will become clear later. The optimisation problem now takes the form
 \begin{equation}\label{eq:gen_map_optim}
 	\tilde{T} = \arg\min_{T\in\mathcal{T}^{\smallltri}} \left[
 		 \mathbb{E}_\pi\left[-\log\pi_r(T(\theta)) -
 		\log\left|J_T(\theta)\right|\right] + \beta\mathbb{E}(T(\theta)- \theta)^2 \right].
 \end{equation}
-This parameter $\beta$ does not need to be tuned, experimentation has shown that the choice
-$\beta=1$ is sufficient for most problems. The form of the penalisation term promotes maps which are
-closer to the identity.
+The parameter $\beta>0$ does not need to be tuned, as experimentation has shown that the choice
+$\beta=1$ is sufficient for most problems. This expectation can be
+approximated by using an MCMC approximation. The form of the penalisation term promotes maps which are
+closer to the identity, and so prevents overfitting when the quality
+or size of the current sample from the posterior is not sufficient.
 
 \subsection{The structure of the map}
 
@@ -333,11 +335,9 @@ of the map in more detail. The lower triangular structure of the map not only gu
 \]
 since $\partial_{\theta_n} \tilde{T}_k(\theta) = 0$ for all $n > k$. This lower triangular structure means that the determinant of the Jacobian is a product of the diagonal elements which, when we take logs, becomes
 \begin{equation}\label{eqn:separable_jacobian}
-	\log\left|J_{\tilde{T}}(\theta)\right| = \sum\limits_{i=1}^d \! \log \partial_{\theta_i} \tilde{T}_i(\theta).
+	\log\left|J_{\tilde{T}}(\theta)\right| = \sum\limits_{i=1}^d \! \log \partial_{\theta_i} \tilde{T}_i(\theta),
 \end{equation}
-Here we note that this term is separable in terms of the dimension $i$.
-
-%Inverting $T$ is simplified by the lower triangular structure in the sense that in each dimension, $i$, we need only invert a univariate polynomial. This simplification comes about because we invert each dimension of the map independently, beginning with $T_1$ which is a function of only $\theta_1$. Finding the root of $T_1(\theta_1) = r_1$, gives us the value of $\theta_1$ which we can then use to find the root of $T_2(\theta_2;\theta_1) = r_2$, and so on. These roots, $r_1,\dots,r_d$, are restricted to be real since $\mathcal{X} \subset \mathbb{R}^d$, which allows us to find the unique point, $\theta$, which corresponds to the point $r$.
+where we note that this term is separable in terms of the dimension $i$.
 
 Inverting $\tilde{T}$ at a point $r$ is simplified by the lower triangular structure of the map. The map component $\tilde{T}_1(\theta)$ is a univariate polynomial in $\theta_1$, so we can find the inverse of this function by solving the equation $T_1(\theta_1) = r_1$. This inversion tells us the value of $\theta_1$, which means the next component is again a univariate polynomial, $T_2(\theta_2; \theta_1)=r_2$. We can then perform $d$ root finding problems instead of a full $d$ dimensional non-linear solve.
 
@@ -346,7 +346,7 @@ We require that the first derivatives of the map are continuous, which is easy t
 	\tilde{T}_i(\theta; \gamma_i) = \sum\limits_{\mathbf{j}\in\mathcal{J}_i} \!
 \gamma_{i,\mathbf{j}}\psi_\mathbf{j}(\theta).
 \end{equation}
-The parameter $\gamma_i$ is a vector of coefficients in $\mathbb{R}^{M_i}$. Each component of $\gamma_i$ corresponds to a basis function
+The parameter $\gamma_i \in \mathbb{R}^{M_i}$ is a vector of coefficients. Each component of $\gamma_i$ corresponds to a basis function
 $\psi_\mathbf{j}$, indexed by the multi-index $\mathbf{j} \in \mathbb{N}_0^d$. These multi-indices are elements of the multi-index set $\mathcal{J}_i$. A multi-index defines a product of univariate polynomials in $\theta_k$,
 \[
 	\psi_\mathbf{j}(\theta) = \prod\limits_{k=1}^i \! \varphi_{j_k}(\theta_k), \quad \text{for} \quad \mathbf{j} \in \mathcal{J}_i,
@@ -365,19 +365,31 @@ in~\cite{parno2014transport}. Increased information with a slower increase in th
 
 \subsection{Implementation of the optimisation problem}\label{sec:transport_implementation}
 
-We now discuss how we can evaluate Equation~\eqref{eq:gen_map_optim} using a sample from the target distribution. We first reformulate the expectation in the cost functional in terms of a MC estimator,
+We now discuss how we can evaluate the cost function in
+Equation~\eqref{eq:gen_map_optim}. In \cite{parno2014transport}, this
+expectation is approximated using an MCMC estimator, such that
 \begin{align}
 	C(T) &= \mathbb{E}_\pi\left[ -\log\pi_r(T(\theta)) - \log|J_T(\theta)|\right] +
 			\beta\mathbb{E}(T(\theta)-\theta)^2 \notag \\
 		&\approx \frac{1}{K}\sum\limits_{i=1}^d \! \sum\limits_{k=1}^K \left[-\log\pi_r(T_i(\theta^{(k)})) -
-			\log\left|\frac{\partial T_i}{\partial \theta_i}(\theta^{(k)})\right| + \beta(T_i(\theta^{(k)})-\theta^{(k)})^2\right]. \label{eqn:TM_full_cost}
+			\log\left|\frac{\partial T_i}{\partial \theta_i}(\theta^{(k)})\right| + \beta(T_i(\theta^{(k)})-\theta^{(k)})^2\right]. 
 \end{align}
-Optimisation of this cost function results in a map from $\pi$ to some reference density $\pi_r$. By choosing the reference density to be a Gaussian density, we can simplify this expression greatly. Substitution of the Gaussian density into Equation~\eqref{eqn:TM_full_cost} leads to
-\begin{equation}\label{eq:gauss_map_optim}
-	C(T) = \frac{1}{K}\sum\limits_{i=1}^d \! \sum\limits_{k=1}^K \left[\frac{1}{2}
-		T_i^2(\theta^{(k)}) - \log\frac{\partial T_i}{\partial \theta_i}(\theta^{(k)}) +
-		\beta(T_i(\theta^{(k)})-\theta^{(k)})^2\right].
+Here we diverge from previous work, as we aim to build a map from
+samples from an importance sampling scheme. Such samples no longer
+carry equal weight, and as such the Monte Carlo estimator becomes
+\begin{equation}\label{eqn:TM_full_cost}
+	C(T) = \frac{1}{\bar{w}}\sum\limits_{i=1}^d \! \sum\limits_{k=1}^K
+		w_k \left[-\log\pi_r(T_i(\theta^{(k)})) -
+			\log\left|\frac{\partial T_i}{\partial \theta_i}(\theta^{(k)})\right| + \beta(T_i(\theta^{(k)})-\theta^{(k)})^2\right],
 \end{equation}
+where $w_k$ are the weights associated with each sample $\theta^{(k)}$, and $\bar{w}$ is the sum of
+all these weights. Optimisation of this cost function results in a map from $\pi$ to some reference density $\pi_r$. By choosing the reference density to be a Gaussian density, we can simplify this expression greatly. Substitution of the Gaussian density into Equation~\eqref{eqn:TM_full_cost} leads to
+\begin{equation}\label{eqn:TPAIS_objective}
+	C(T) = \frac{1}{\bar{w}}\sum\limits_{i=1}^d \! \sum\limits_{k=1}^K
+		w_k\left[\frac{1}{2}T_i^2(\theta^{(k)}) - \log\frac{\partial
+		T_i}{\partial\theta_i}(\theta^{(k)}) + \beta(T_i(\theta^{(k)})-\theta^{(k)})^2\right],
+\end{equation}
+
 Note that since we assume that the map is monotonic, the derivatives of each component are
 positive and so this functional is always finite. In practice it is infeasible to enforce this condition across the whole parameter space. We instead enforce this condition by ensuring that the derivatives are positive at each sample point. This means that when we sample away from these support points while in reference space, it is possible to enter a region of space where the map is not monotonic.
 
@@ -385,8 +397,8 @@ We now return to the structure of the map components given in Equation~\eqref{eq
 fixed, the optimisation problem in \eqref{eq:gen_map_optim} is really over the map components $\bar{\gamma} = (\gamma_1, \dots,
 \gamma_d)$ where $\gamma_i \in \mathbb{R}^{M_i}$. Note that $C(T)$ is the sum of $d$ expectations, and these expectations each only concern one dimension. Therefore we can rewrite \eqref{eq:gen_map_optim} as $d$ separable optimisation problems.
 \begin{align}\label{eq:gamma_map_optim}
-	&\arg\min_{\gamma_i\in\mathbb{R}^{M_i}} \frac{1}{K}\sum\limits_{k=1}^K
-		\left[\frac{1}{2}T_i^2(\theta^{(k)}; \gamma_i) - \log\frac{\partial T_i}{\partial\theta_i}(\theta^{(k)}; \gamma_i) + \beta(T_i(\theta^{(k)};
+	&\arg\min_{\gamma_i\in\mathbb{R}^{M_i}} \frac{1}{\bar{w}}\sum\limits_{k=1}^K
+		w_k \left[\frac{1}{2}T_i^2(\theta^{(k)}; \gamma_i) - \log\frac{\partial T_i}{\partial\theta_i}(\theta^{(k)}; \gamma_i) + \beta(T_i(\theta^{(k)};
 		\gamma_i)-\theta^{(k)})^2\right], \\
 	&\text{subject to} \quad \frac{\partial T_i}{\partial\theta_i}(\theta^{(k)};
 		\gamma_i) > 0 \ \text{for all}\ k=1,\dots,K,\ i=1,\dots,d.
@@ -406,32 +418,39 @@ for all $\mathbf{j}
 \]
 so \eqref{eq:gamma_map_optim} becomes
 \begin{align}\label{eq:blas_map_optim}
-	&\arg\min_{\gamma_i\in\mathbb{R}^{M_i}} \frac{1}{2}(F_i\gamma_i)^\top(F_i\gamma_i) -
-		c^\top\log(G_i\gamma_i) + \beta\sum\limits_{k=1}^K \!
-		(F_i\gamma_i-\theta^{(k)})^\top(F_i\gamma_i-\theta^{(k)}), \\
+	&\arg\min_{\gamma_i\in\mathbb{R}^{M_i}}
+          \frac{1}{2}(F_i\gamma_i)^\top W (F_i\gamma_i) -
+		{\bf w}^\top\log(G_i\gamma_i) + \frac{\beta}{\bar{w}}\sum\limits_{k=1}^K \!
+		w_k(F_i\gamma_i-\theta^{(k)})^\top(F_i\gamma_i-\theta^{(k)}), \\
 	&\text{subject to} \quad G_i\gamma_i > 0. \notag
 \end{align}
-In this expression, the vector $c$ is a $K\times 1$ vector of ones, and $\log(G_i\gamma_i)$ is to be
-evaluated element-wise. As the Monte Carlo simulations advance, new rows can be appended to the
-$F_i$ and $G_i$ matrices, and $F_i^\top F_i$ can be efficiently updated via the addition of rank-1 matrices.
+In this expression, the vector ${\bf w} = [w_1, w_2, \ldots,
+w_K]^\top$ is the vector of the weights, $W$ is the diagonal matrix $W
+= \text{diag}(w)$ and $\log(G_i\gamma_i)$ is to be
+evaluated element-wise. As more importance samples are made, new rows can be appended to the
+$F_i$ and $G_i$ matrices, and $F_i^\top W F_i$ can be efficiently updated via the addition of rank-1 matrices.
 
 The regularisation term in Equation~\eqref{eq:blas_map_optim} can be approximated using Parseval's identity,
 \[
-	\sum\limits_{k=1}^K \! (F_i\gamma_i-\theta^{(k)})^\top(F_i\gamma_i-\theta^{(k)}) \approx
+	\frac{1}{\bar{w}}\sum\limits_{k=1}^K \! w_k
+        (F_i\gamma_i-\theta^{(k)})^\top(F_i\gamma_i-\theta^{(k)})
+        \xrightarrow[K \to \infty]{}
 		\int_{\mathbb{R}^n} |T(\theta)-\theta|^2 \text{d}\mu_\theta =
 		\sum\limits_{\mathbf{j}\in\mathcal{J}_i^\text{TO}} (\gamma_{i,\mathbf{j}}-\iota_\mathbf{j})^2,
 \]
 where $\iota$ is the vector of coefficients for the identity map. This is of course only true when
 the polynomial family $\mathcal{P}(\theta)$ is chosen to be orthonormal with respect to $\mu_\theta$; however this
-approximation prevents the map from collapsing onto a Dirac when the expectation is badly approximated by a small number of samples. If we do not normalise the MC estimator by $K$, we can allow this regularisation term to be dominated by the rest of the cost function as $K$ increases.
+approximation prevents the map from collapsing onto a Dirac when the expectation is badly approximated by a small number of samples.% If we do not normalise the MC estimator by $K$, we can allow this regularisation term to be dominated by the rest of the cost function as $K$ increases.
 
 These simplifications result in the efficiently implementable, regularised optimisation problem for
-computing the map coefficients,
-\begin{align}\label{eq:final_map_optim}
-	&\arg\min_{\gamma_i\in\mathbb{R}^{M_i}} \frac{1}{2}\gamma_i^\top F_i^\top F_i\gamma_i -
-		c^\top\log(G_i\gamma_i) + \beta\|\gamma_i-\iota\|^2, \\
-	&\text{subject to} \quad G_i\gamma_i > 0. \notag
+computing the map coefficients, 
+\begin{align}\label{eq:weighted_map_optim}
+	&\arg\min_{\gamma_i\in\mathbb{R}^{M_i}} \frac{1}{2\bar{w}}\gamma_i^\top F_i^\top WF_i\gamma_i -
+		\frac{w^\top}{\bar{w}}\log(G_i\gamma_i) + \beta\|\gamma_i-\iota\|^2, \\
+	&\text{subject to} \quad G_i\gamma_i > 0, \notag
 \end{align}
+%where additionally we have introduced a factor of $\frac{1}{K}$ to the
+%regularisation term to prevent over-smoothing as the number of samples increases.
 This optimisation problem can be efficiently solved using Newton iterations. It is suggested
 in~\cite{parno2014transport} that this method usually converges in around 10-15 iterations, and we
 have seen no evidence that this is not a reasonable estimate. When calculating the map several times
@@ -439,28 +458,7 @@ during a Monte Carlo run, using previous guesses of the optimal map to seed the 
 results in much faster convergence, usually taking only a couple of iterations to satisfy the stopping
 criteria.
 
-\subsection{Implementation of the optimisation problem in PAIS}
-
-In the PAIS algorithm, we use weighted samples to approximate the posterior rather than equally weighted samples. Fortunately, the majority of the derivation of this cost function follows unchanged. We look at the importance sampling Monte Carlo estimate of $C(T)$, compared with
-Equation~\eqref{eq:gauss_map_optim},
-\begin{equation}\label{eqn:TPAIS_objective}
-	C(T) = \frac{1}{\bar{w}}\sum\limits_{i=1}^d \! \sum\limits_{k=1}^K
-		w_k\left[\frac{1}{2}T_i^2(\theta^{(k)}) - \log\frac{\partial
-		T_i}{\partial\theta_i}(\theta^{(k)}) + \beta(T_i(\theta^{(k)})-\theta^{(k)})^2\right],
-\end{equation}
-here $w_k$ are the weights associated with each sample $\theta^{(k)}$, and $\bar{w}$ is the sum of
-all these weights. This necessitates a minor alteration to the optimisation problem in
-Equation~\eqref{eq:final_map_optim},
-\begin{align}\label{eq:weighted_map_optim}
-	&\arg\min_{\gamma_i\in\mathbb{R}^{M_i}} \frac{1}{2\bar{w}}\gamma_i^\top F_i^\top WF_i\gamma_i -
-		\frac{w^\top}{\bar{w}}\log(G_i\gamma_i) + \frac{\beta}{K}\|\gamma_i-\iota\|^2, \\
-	&\text{subject to} \quad G_i\gamma_i > 0. \notag
-\end{align}
-We introduce a diagonal matrix $W = \text{diag}(w)$, where $w = (w_1,\dots,w_K)^\top$ into the log of the reference density, and replace the ones vector, $c$, with $w$. Analogously to the unweighted case, we include a $1/K$ to the regularisation term so that it has less influence as we obtain more samples. If we allowed this regularisation term to exert influence at all updates we would converge to a suboptimal map. We should converge to the same optimal map with a weighted sample as we do with an unweighted sample since we are trying to approximate the same expectation. The weights are strictly
-positive resulting in a positive definite matrix $W$. This means that the Hessian of the objective
-function is still positive definite, and so the optimisation problem remains convex. It is important in implementation to ensure that any weights which are numerically zero are dealt with to ensure this positive definiteness.
-
-This optimisation problem can be efficiently solved using the Newton optimisation algorithm. The Hessian takes the
+The Hessian takes the
 form
 \begin{equation}\label{eqn:TPAIS_hessian}
 	HC_i(\gamma_i) = \frac{1}{\bar{w}}\left[F_i^\top WF_i + G_i^\top
@@ -474,73 +472,23 @@ identity matrix. The first derivative of $C_i(T)$ is
 \]
 again $[G_i\gamma_i]^{-1}$ is taken element-wise.
 
-\section[Transport map MCMC]{Using the transport map to propose states in MCMC algorithms}\label{sec:transport_algs}
 
-Given samples from the target distribution, we have demonstrated how to construct an approximate transport map from the
-target measure to a reference measure. We now consider how to implement an MCMC algorithm which uses
-these maps to propose new states. These algorithms fit into the adaptive framework described in
-Section~\ref{sec:adapt} since we use the full history of the chain when updating the map, and this update changes the shape of our proposal
-distribution. Convergence of this adaptation is shown in~\cite{parno2014transport}.
 
-\subsection{Transport map MH algorithms}
+\section[Transport map MCMC]{Transport map usage in PAIS
+  and other PMC algorithms}\label{sec:TPAIS}
 
-As introduced in~\cite{parno2014transport}, a MH algorithm using the transport map to propose new
-states can be designed, as given in Algorithm~\ref{alg:TransportMH}. These algorithms
-map a sample from the target onto the reference space, a new state is then efficiently
-proposed using a Gaussian kernel and is mapped back onto target space. This can
-result in rapid mixing, where step size and direction are now a function of the current particles location in state space, similar to the ideas of Riemann manifold Hamiltonian Monte Carlo~\cite{girolami2011riemann}.
+Given importance samples from the target distribution, we have demonstrated how to construct an approximate transport map from the
+target measure to a reference measure. We now consider how to
+implement an importance sampling-based MCMC algorithm which uses
+these maps to propose new states. In \cite{parno2014transport} it was
+shown how approximate transport maps can be used to accelerate
+Metropolis-Hastings methods, with the map being periodically updated
+with the samples produced from the target measure. Convergence of this
+adaptation is shown in~\cite{parno2014transport}. In this section, we
+will discuss how similarly, these maps can be used to construct highly
+efficient importance sampling schemes.
 
-\begin{table}
-\begin{algorithm}[H]
-\DontPrintSemicolon
-\BlankLine
-Initialise state $\theta^{(1)} = \theta_0$.\;
-Initialise map $\bar{\gamma}^{(1)} = \iota$.\;
-\For{$k \leftarrow 1, \dots, L-1$}{
-	Compute $r = \tilde{T}(\theta^{(k)}; \bar{\gamma}^{(k)})$.\;
-	Sample $r' \sim q_r(\cdot; r)$.\;
-	Invert $\theta' = \tilde{T}^{-1}(r'; \bar{\gamma}^{(k)})$.\;
-	Calculate:
-	\[
-		\alpha = 1 \wedge
-			\frac{\pi(\theta')}{\pi(\theta^{(k)})}\frac{q_r(r|r')|J_{\tilde{T}}(\theta^{(k)};
-			\bar{\gamma}^{(k)})|}{q_r(r'|r)|J_{\tilde{T}}(\theta';\bar{\gamma}^{(k)})|}.
-	\]
-
-	Sample $u \sim U[0,1]$.\;
-	Set $\theta^{(k+1)}$ to $\theta'$ with probability $\alpha$, otherwise $\theta^{(k+1)} =
-		\theta^{(k)}$.
-
-	\eIf{$k\ \text{mod}\ K_U = 0$ and $k < K_\text{stop}$}{
-		\For{$i \leftarrow 1, \dots, n$}{
-			Solve \eqref{eq:final_map_optim} with $\{\theta^{(1)}, \dots, \theta^{(k+1)}\}$ and
-				update $\gamma_i^{(k+1)}$.\;
-		}
-	}{
-		$\bar{\gamma}^{(k+1)} = \bar{\gamma}^{(k)}$.\;
-	}
-}
-\caption{MH algorithm with adaptive transport map~\cite{parno2014transport}\label{alg:TransportMH}}
-\end{algorithm}
-\end{table}
-
-Initially we begin with the identity map, $\iota$, while we build enough samples to produce an approximate
-map. For simplicity, we update the map at uniform intervals of $K_U$ iterations, given an initial
-burn-in phase. In order to satisfy the conditions for adaptive algorithms to be ergodic, discussed
-in Section~\ref{sec:adapt}, this adaptive phase must come to an end. It is sensible to stop
-adaptation once the map has sufficiently converged, e.g. when updates do not change the coefficients, $\gamma$,
-above some tolerance, or as suggested by~\cite{parno2014transport} when the variance of $D_\text{KL}(\pi\|\tilde{\pi})$ is sufficiently close to zero.
-
-Once the map is sufficiently converged, we can decide whether we would like to continue using a local proposal distribution, or whether to use a distribution which is independent of the current state. An independent proposal is more efficient
-if the reference space is close to Gaussian; however, if it is not then certain regions of the target
-space could be less likely to be visited than in a standard MH algorithm. A compromise can be found by randomly selecting which kernel to sample from, i.e. the proposal distribution
-\[
-	q(x, \cdot) = p\mathcal{N}(x, \Sigma)+(1-p)\mathcal{N}(0,\text{I}), \quad p \in [0, 1].
-\]
-
-\subsection{Transport map PAIS algorithms}
-
-In a similar way, we can use the Transport map derived in Equation~\eqref{eq:weighted_map_optim} to
+In particular, we will show how we can use the Transport map derived in Equation~\eqref{eq:weighted_map_optim} to
 design a proposal scheme for the PAIS algorithm. In this case we have a choice in how to proceed; we
 propose new samples on reference space and resample on target space, or we both propose and resample on reference space, mapping onto target space to output the samples. The first option allows us to reuse much of the framework
 from the standard PAIS algorithm and in the numerics later we see that this performs better than
@@ -577,7 +525,15 @@ Initialise map $\bar{\gamma}^{(1)} = \iota$.\;
 \end{algorithm}
 \end{table}
 
-The first option is given in Algorithm~\ref{alg:TransportPAIS1}. We denote the ensembles of states in target space $\theta^{(k)} = \{\theta^{(k)}_1,\dots,\theta^{(k)}_M\}$, and the states in the reference space, $r = \{r_1,\dots,r_M\}$, where $M$ is the ensemble size. Similarly, the proposal states are denoted $r' = \{r'_1,\dots,r'_M\}$ and $(w^{(k)}, \hat{\theta}^{(k)}) = \{(w^{(k)}_1, \hat{\theta}^{(k)}_1),\dots,(w^{(k)}_M, \hat{\theta}^{(k)}_M)\}$, where these pairs are the states which we consider to be our sample from the target distribution. As in the standard version of the PAIS algorithm we use the deterministic mixture weights.
+The first option is given in Algorithm~\ref{alg:TransportPAIS1}. We
+denote the ensembles of states in target space $\theta^{(k)} =
+\{\theta^{(k)}_1,\dots,\theta^{(k)}_M\}$, and the states in the
+reference space, $r = \{r_1,\dots,r_M\}$, where $M$ is the ensemble
+size. Similarly, the proposal states are denoted $r' =
+\{r'_1,\dots,r'_M\}$ and $(w^{(k)}, \hat{\theta}^{(k)}) =
+\{(w^{(k)}_1, \hat{\theta}^{(k)}_1),\dots,(w^{(k)}_M,
+\hat{\theta}^{(k)}_M)\}$, where these pairs are the states which
+together form our sample from the target distribution. As in the standard version of the PAIS algorithm we use the deterministic mixture weights.
 
 \begin{table}
 \begin{algorithm}[H]
@@ -733,8 +689,8 @@ Return $y$.\;
 \end{table}
 
 
-\section{Transport map-accelerated Parallel Adaptive Importance
-  Sampling (TPAIS)}\label{sec:TPAIS}
+%\section{Transport map-accelerated Parallel Adaptive Importance
+  %Sampling (TPAIS)}\label{sec:TPAIS}
 
 \section{Multiscale Methods for Stochastic Chemical Reaction
   Networks}\label{sec:multi}
