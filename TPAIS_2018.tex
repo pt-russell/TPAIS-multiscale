@@ -172,7 +172,9 @@ approximations of the posterior than others.
 %Stochastic reaction networks
 %Multiscale approximations, QSSA/QEA, CMA
 
-In Section \ref{sec:map} we show how an appropriate transport map can
+In Section \ref{sec:PAIS}, we will briefly reintroduce Parallel
+Adaptive Importance Sampling (PAIS), a variant of Population Monte
+Carlo (PMC) which incorporates state of the art resamplers. In Section \ref{sec:map} we show how an appropriate transport map can
 be constructed from importance samples which maps the posterior close
 to a reference Gaussian measure. In Section \ref{sec:TPAIS} we show
 how such a map can be incorporated into a sophisticated parallel MCMC
@@ -187,6 +189,100 @@ to demonstrate the increased efficiency of the described sampling
 methodologies, as well as investigating the posterior approximations
 discussed in the previous section. We conclude with a discussion in
 Section \ref{sec:conc}.
+
+\section{Parallel Adaptive Importance Sampling}\label{sec:PAIS}
+PAIS****CITE**** is a variant of PMC****CITE****, which is a family of methods which are based
+on importance sampling. In importance sampling, we attempt to
+characterise a target density through sampling from that
+density. However, the target density $\pi$ itself is often too complex to sample
+from directly, so we instead sample from a
+proposal density $\chi$. Each sample $\theta^{(k)} \sim \chi$ is then weighted by
+$w_k = \frac{\pi(\theta^{(k)})}{\chi(\theta^{(k)})}$, to take account of the bias of
+sampling from a different distribution to $\pi$. Monte Carlo estimates
+using a sample of size $N$
+of a function $f$ with respect to $\pi$ can then be made through the
+formula
+\[\mathbb{E}_\pi(f) \approx \frac{1}{\bar{w}} \sum_{k=1}^N
+  w_kf(\theta^(k)).\]
+This method works well when $\pi$ and $\chi$ are close, but can be
+excruciatingly slow when they are not. The idea behind PMC methods is
+to construct a good proposal distribution, either from the entire
+history of the algorithm up to the current point, or to use the
+current state of a whole ensemble of $M$ particles in the system.
+
+In PAIS, the proposal distribution $\chi$ is chosen to be the equally
+weighted mixture of any choice of MCMC proposal kernel, evaluated at
+each of the current particles in the system. If $\theta^{(k)} = [\theta_1^{(k)},
+\theta_2^{(k)}, \ldots, \theta_M^{(k)}]^\top$ is the current state of the
+ensemble, and we wish to use an MCMC proposal density $q(\cdot ;
+\cdot, \beta)$ then 
+\[\chi^{(k)} = \frac{1}{M} \sum_{i=1}^M q(\cdot ; \theta_i^{(k)}.\]
+Often the variance of the MCMC proposal kernels can be tuned using
+their respective algorithmic parameters $\beta$. Good values for these
+algorithmic parameters can be
+found by optimising for the effective sample size of the importance
+sample that is produced (see ***CITE*** for more details).
+
+If the ensemble is large enough, and the chain has entered
+probabilistic stationarity, then the current state of the ensemble is
+a good rough discrete approximation of the target density, and in turn
+$\chi^{(k)}$ is close enough to $\pi$ to produce an efficient importance
+sample $\{\hat{\theta}^{(k)},w^{(k)}\}$. It can be advantageous to use stratified sampling of the
+mixture in order to
+ensure that the sample made is as representative as possible of the
+target density, i.e.
+\[ \hat{\theta}_i^{(k)} \sim q(\cdot ; \theta_i^{(k)}\]
+for each $i = 1,2,\ldots,M$. We now have a weighted sample, and it
+would be inadvisable to use an equally weighted mixture of proposal
+distributions from each of these points. Therefore, before starting
+the next iteration, the importance sample
+$\{\hat{\theta}^{(k)},w^{(k)}\}$ is resampled to produce an equally
+weighted sample, ready for the next iteration of the algorithm. In
+PAIS, a state-of-the-art resampler is used, which uses optimal
+transport methods to find the equally weighted discrete sample which
+best represents the statistics of the importance
+sample***CITE****. For larger ensemble sizes $M$ this can become
+expensive, in which case a greedy approximation of this algorithm, the
+Approximate Multinomial Resampler (AMR) can be
+implemented***CITE****. The output of the resampler is then denoted
+$\theta^{(k+1)}$ and the algorithm is ready for the next
+iteration. The importance samples $\{\hat{\theta}^{(k)},w^{(k)}\}$ The PAIS is summarised in Algorithm \ref{alg:PAIS}.
+
+\begin{table}[!h]
+\centering
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\BlankLine
+	Initialise $\theta^{(1)} \sim \mu_0$.\;
+	\For{$k=1,\ldots,N$}{
+		Sample $\hat{\theta}_i^{(k)} \sim q(\cdot; \theta_j^{(k)}, \beta)$, for $i = 1,\dots, M$.\label{algline:PAIS_propose}\;
+		Calculate $w^{(k)} = (w_1^{(k)}, \ldots, w_M^{(k)})^\top$, where
+			\[
+				w^{(k)}_i = \frac{\mu(\hat{\theta}^{(k)}_i)}{\chi^{(k)}(\hat{\theta}^{(k)}_i; \theta^{(k)}, \beta)}.
+			\]
+		\label{algline:PAIS_weights}
+
+		Resample $\theta^{(k+1)} \leftarrow \| w^{(k)}\|_1^{-1}\sum_{j=1}^M w_j^{(k)}\delta_{\hat{\theta}_j^{(k)}}(\cdot)$.\label{algline:PAIS_resample}\;
+	}
+	Output $\{(w^{(n)}, \hat{\theta}^{(n)}\}_{n=1}^N$.
+\caption{The PAIS Algorithm.\label{alg:PAIS}}
+\end{algorithm}
+\end{table}
+
+One problem with the PAIS and other PMC methods can become apparent if
+the target density has very strong correlations in its structure, in
+particular if that correlation is not global but only local. In this
+case, unless the proposal densities $q$ are informed by this local
+structure, the mixture distribution proposal may not well approximate
+$\pi$ without a very large large ensemble size $M$, which can become
+inhibitively expensive. Some methods have been proposed ****CITE****
+which use samples local to each particle to inform local covariance
+structure.
+
+In this paper, we investigate the use of transport maps to learn local
+covariances across the whole of the domain, in order to stabilise
+PMC-type methods, and make these methods more applicable to a wider
+range of more challenging inference problems.
 
 \section{Construction of transport maps in importance sampling} \label{sec:map}
 %Follow the other papers, show adaptation(s)
