@@ -286,7 +286,10 @@ range of more challenging inference problems.
 
 \section{Construction of transport maps in importance sampling} \label{sec:map}
 %Follow the other papers, show adaptation(s)
-
+In this Section, we describe the construction of transport maps which
+allow for the simplification of complex posterior distributions in
+order to allow for improved sampling, in particular for methods based
+on importance sampling.
 In~\cite{el2012bayesian} the transport map was introduced to provide a transformation from the prior
 distribution to the posterior distribution, the idea being that one could draw a moderately sized
 sample from the prior distribution and use this sample to approximate a map onto the target space.
@@ -794,9 +797,667 @@ for stochastic reaction networks. Inverse problems arising in this
 area often lead to highly correlated and complex posterior
 distributions, which traditional MCMC methods can struggle to sample
 from. We will then go on to solve some inverse problems related to
-this in Section \ref{sec:num}.
+this in Section \ref{sec:num}, using the transport map versions of the
+PAIS algorithm, as described in Section \ref{sec:TPAIS}.
+
+We consider chemical reaction networks of $N_s$ chemical species $\{S_j\}_{j=1}^{N_s}$,
+with population numbers given by $X(t) = [X_1(t), X_2(t), \ldots, X_{N_s}(t)]^\top \in
+\mathbb{N}_0^{N_s}$ reacting in a small reactor, through $N_r$ different reaction
+channels. When population numbers of one or more of the chemical
+species in the reactor is small, as is the case with chemical
+reactions occurring within living cells, the sporadic and discrete way
+in which reactions occur can not be well modelled by deterministic
+continuous models, such as ODEs. In such a situation, we may wish to
+model the dynamics through a discrete stochastic model, such as a
+continuous time Markov chain.
+
+For each reaction $R_j$, for $j = 1,2,\ldots N_r$, there is a
+propensity or hazard function $\alpha_j(X(t)$ which indicates how
+likely that reaction is to fire, defined by
+\[\alpha_j(X(t)) = \lim_{dt \to 0} \mathbb{P}(\text{Reaction $R_j$ in
+    the time interval  } \quad s \in [t, t+ dt] ).\] If a system
+satsifies what is called \emph{mass action kinetics}, then the form of
+the function $\alpha_j$ is determined, up to a rate constant, by the
+reactants involved in that reaction:
+\begin{equation}\label{eq:MAK}
+\alpha_j(X) = k_j \prod_{m=1}^{N_s} \prod_{n=0}^{\nu_{j,m} -1} (X_m - n),
+\end{equation}
+where $\nu_{j,m}$ is the $m$th component of the stoichiometric vector
+$\nu_j$, $X_m$ is the $m$th component of the state vector $X$, and the
+$k_j$ are rate constants.
+
+Following each reaction $R_j$ there is an instantaneous change in the
+current state, as the reactants of the reaction are consumed, and the
+products produced. This is modelled by a change in the state vector
+$X(t) = X(t) + \nu_j$ where $\nu_j$ is that stochiometric vector for
+reaction $R_j$.
+
+The model can be represented as the following expression involving
+$N_r$ different unit rate Poisson
+processes****CITE ANDERSON ET AL**** $Y_j$, given by:
+\begin{equation}\label{eq:RTC}
+X(t) = X(0) + \sum_{j=1}^{N_r} \nu_j \int_0^t \alpha_j(X(s)) ds.
+\end{equation}
+
+The master equation for this model is only solvable in certain
+situations, for example monomolecular networks****CITE****, or for
+steady-state solutions certain deficiency
+zero networks****CITE*****. Trajectories for this system can be
+sampled exactly, for instance using the Gillespie SSA***CITE***, or
+its variants\cite{gillespie2007stochastic}****CITE****. However, if the system is stiff, i.e. there
+are some reactions which are firing many times on a timescale for
+which others are unlikely to fire at all, then trajectories can become
+prohibitively expensive to simulate, since these methods simulate
+every single reaction event with the same cost. In such a system, one
+might employ multiscale methods in order to approximate trajectories
+at a lower cost than the exact algorithms.
+
+One common approach is to induce the quasi-steady-state approximation
+QSSA. This approximation makes the assumption that fast reactions
+enter quasi-equillibrium on a timescale which is negligible with
+respect to the timescale on which the slow dynamics in the system are
+evolving. This amounts to taking the assymptotic limit that the
+propensities of the ``slow'' reaction channels are equal to zero. This
+allows us to sample approximate trajectories of the slow reactions
+without the need to compute many fast reaction events.
+
+This approach can work well when there is a large timescale gap
+between the fast and slow reactions in a system, but where the
+timescale gap is less pronounced, it can lead to significant
+errors***cite cotter erban errors paper***. Another approach is the
+constrained multiscale method (CMA)***CITE***, based in part on the
+equation-free approach to multiscale computations***CITE
+YANNIS****. This approach also assumes quasi-equillibrium in the
+system, but takes into account the effect that the slow reactions can
+have on the invariant distribution of the fast variables in the
+system. For a more detailed description of this method, please refer
+to the literature***CITATIONS***.
+
+Multiscale methods are not only of use when forward evaluations of the
+dynamics are costly, but can also be of use where we attempt to solve
+an inverse problem where the fast variables are unobservable. One
+approach in this situation would be to integrate over all possible
+trajectories of the fast variables, but this would almost always be
+prohibitively expensive. Another approach would be to use an
+appropriate multiscale approximation, so that the effective dynamics
+of the slow variables can be approximate without the need to consider
+the rapid fluctuations of the fast variables in the system.
+
+\subsection{Likelihoods arising from stochastic reaction networks}
+Suppose that we are able to exactly observe the number of molecules of
+each chemical species in a system which satisfies mass action
+kinetics, and which can be well approximated by
+\eqref{eq:RTC}. Suppose that we wish to be able to infer the value of
+the rate constants of each reaction from these observations. Even with no observational noise, since the dynamics
+of the system are stochastic, this still leads to a Bayesian inverse
+problem where we can only infer a joint probability distributions on the
+reaction parameters.
+
+Suppose that we are in state $X(t) = X_0$. There are two independent
+univariate random variables which decide when and what the next
+reaction in the system is. There is the $j$th waiting time $\tau_j$ to the
+next reaction, which is given by an exponential random variable
+\[\tau_j \sim \exp \left ( \frac{1}{\alpha_0(X(t))} \right ),\]
+where $\alpha_0(X(t)) =\sum_{i}^{N_r} \alpha_i(X(t))$ is the total
+propensity in the system. The second is a multinomial random variable $r_j$
+which dictates which reaction has occurred during the $j$th reaction,
+which takes the value
+$r \in \{1,2,\ldots,N_r\}$ with probability
+\[\mathbb{P}(r = i) = \frac{\alpha_i(X(t))}{\alpha_0(X(t))}.\]
+As such, in order to compute the likelihood of a particular trajectory
+given a possible realisation of the reaction parameters, it is
+sufficient to have access to the total time spent in each state, and
+the frequency of each reaction which led to leaving each state.
+
+From this formulation, we see that the random variables $(\tau_j, r_j)$ only depend on the states $\mathbf{X}(t_{j-1})$ and so are Markovian. This conditional independence means that we can group events together by what state the system was in when the event happened. We define two new random variables which depend on a state $\mathbf{Y} \in \mathcal{S}$, first the total time spent in state $\mathbf{Y}$,
+\[
+	T(\mathbf{Y}) = \sum\limits_{j=1}^M \tau_j\; \text{I}(\mathbf{X}(t_{j-1}) = \mathbf{Y}).
+\]
+This random variable, $T(\mathbf{Y})$, is a sum of exponentially
+distributed random variable, each with the rate $\alpha_0(\mathbf{Y};\mathbf{k})$, and hence follows the Gamma distribution,
+\begin{equation}\label{eqn:chem_time_dist}
+	T(\mathbf{Y}) \sim \text{Gamma}\left(\alpha=K(\mathbf{Y}),~\beta = \alpha_0(\mathbf{Y}; \mathbf{k})\right),
+\end{equation}
+where $K(\mathbf{Y}) = \sum\limits_{j=1}^M \text{I}(\mathbf{X}(t_{j-1}) = \mathbf{Y})$.
+
+Similarly, we can define the reactions which occurred when the system was in state $\mathbf{Y}$ as $\mathbf{r}(\mathbf{Y}) = [r_1(\mathbf{Y}), \ldots, r_{N_r}(\mathbf{Y})]^\top$ where
+\[
+	r_i(\mathbf{Y}) = \sum\limits_{j=1}^M \text{I}(r_j = i \textbf{ and }\mathbf{X}(t_{j-1}) = \mathbf{Y}).
+\]
+Here all the random variables $r_j$ follow the same multinomial distribution, and so
+\begin{equation}\label{eqn:chem_react_dist}
+	\mathbf{r}(\mathbf{Y}) \sim \text{Multinomial}(K(\mathbf{Y}),~\mathbf{p}(\mathbf{Y})). 
+\end{equation}
+The random variables defined in Equations~\eqref{eqn:chem_time_dist} and \eqref{eqn:chem_react_dist} are sufficient statistics for the posterior distribution $\pi(\mathbf{k}|D)$. With these definitions we define two new structures
+\[
+	\mathbf{T} = [T(\mathbf{Y}_1), \dots, T(\mathbf{Y}_K)]^\top, \quad \text{and} \quad \mathbf{R} = [\mathbf{r}(\mathbf{Y}_1), \dots, \mathbf{r}(\mathbf{Y}_K)]^\top,
+\]
+where $K = |\mathcal{S}|$, the number of states in $\mathcal{S}$, and each state $\mathbf{Y}_i \in \mathcal{S}$ has been enumerated. We use these structures to define shorter notation,
+\[
+	\mathbf{T}_i = T(\mathbf{Y}_i), \quad \mathbf{R}_{ij} = r_j(\mathbf{Y}_i), \quad \text{and} \quad \mathbf{K}_i = K(\mathbf{Y}_i).
+\]
+
+To construct the posterior distribution for the reaction rates, $\mathbf{k}$, in the chemical system, we formulate the likelihood using the sufficient statistics derived in the previous section. Due to the non-negativity of these reaction rates, we assign a Gamma prior distribution to each rate. Given the distributions in Equations~\eqref{eqn:chem_time_dist} and~\eqref{eqn:chem_react_dist} for our data, the likelihood of observing the data $\mathbf{R}$ and $\mathbf{T}$ is
+\[
+	\ell(\mathbf{R}, \mathbf{T}|\mathbf{k}) \propto \prod\limits_{i=1}^K \text{Multi}(\mathbf{r}(\mathbf{Y}_i); \mathbf{K}_i, \mathbf{p}(\mathbf{Y}_i))\text{Gamma}(\mathbf{T}_i; \mathbf{K}_i, \alpha_0(\mathbf{Y}_i)),
+\]
+where again $\mathbf{Y}_i \in \mathcal{S}$ and the propensities
+$\alpha_i$ and probabilities $p_i$ depend on the reaction rates
+$\mathbf{k} = [k_1, k_2, \ldots k_{N_r}]^\top$ through the concept of
+mass action kinetics given in \eqref{eq:MAK}.
+
+Our choice of Gamma prior distributions with hyper-parameters $(a_i, b_i)$ results in the posterior distribution of the form
+\begin{align}
+	\pi(\mathbf{k}|\mathbf{R}, \mathbf{T}) &\propto \ell(\mathbf{R}, \mathbf{T}|\mathbf{k})
+	\prod_{i=1}^{N_r} \! \text{Gamma}(k_i; a_i, b_i) \notag \\
+		&\propto \exp\Bigg\{\sum\limits_{i=1}^K \Bigg[
+				\mathbf{K}_i\log \alpha_0(\mathbf{Y}_i; \mathbf{k}) - \mathbf{T}_i\alpha_0(\mathbf{Y}_i; \mathbf{k}) %\notag \\
+%		& \qquad\qquad\qquad
+				+\sum_{j=1}^{N_r} \mathbf{R}_{ij}\log\mathbf{p}_j(\mathbf{Y}_i; \mathbf{k})
+			\Bigg]  \notag\\
+		&	\qquad\qquad\qquad{} + \sum_{i=1}^{N_r} ((a_i-1)\log k_i - b_ik_i)\Bigg\}. \label{eqn:chem_posterior}
+\end{align}
+
+\subsection{Approximation of likelihoods in multiscale chemical
+  networks}
+Suppose now that we are only observing the slower variables in a
+multiscale chemical system of this type. Suppose that $n_r < N_r$ is the number of slow
+reactions in the system, and the slow reactions are given by $\{R_{s_1},
+R_{s_2}, \ldots R_{s_{n_r}} \} \subset \{R_1, R_2, \ldots , R_{N_r}
+\}$. The propensities of the slow
+reactions $\alpha_{s_i}$ may depend on the value of the fast variables which is
+unknown. However, the invariant distribution of the fast variables
+conditioned on the slow variables in the system can be approximated
+using a multiscale method, such as the QSSA or the CMA, as described
+briefly in Section \ref{sec:multi}. Once the approximations have been
+made, we arrive at approximate \emph{effective} propensities $\bar{\alpha}_{s_i}$, which
+have been averaged over the computed invariant distributions of the
+fast variables. Then the approximate effective dynamics on the slow variable $S(t)$ are given by 
+\begin{equation}\label{eq:RTCS}
+S(t) = S(0) + \sum_{j=1}^{n_r} \nu_{s_j} \int_0^t \bar{\alpha}_{s_j}(S(s)) ds.
+\end{equation}
+
+In turn, the approximate posterior distribution on the reaction
+parameters $\mathbf{k}$ is then given by
+\begin{align}
+	\pi(\mathbf{k}|\mathbf{R}, \mathbf{T}) &\propto \ell(\mathbf{R}, \mathbf{T}|\mathbf{k})
+	\prod_{i=1}^{N_r} \! \text{Gamma}(k_i; a_i, b_i) \notag \\
+		&\propto \exp\Bigg\{\sum\limits_{i=1}^K \Bigg[
+				\mathbf{K}_i\log \alpha_0(\mathbf{Y}_i; \mathbf{k}) - \mathbf{T}_i\alpha_0(\mathbf{Y}_i; \mathbf{k}) %\notag \\
+%		& \qquad\qquad\qquad
+				+\sum_{j=1}^{N_r} \mathbf{R}_{ij}\log\mathbf{p}_j(\mathbf{Y}_i; \mathbf{k})
+			\Bigg]  \notag\\
+		&	\qquad\qquad\qquad{} + \sum_{i=1}^{N_r} ((a_i-1)\log k_i - b_ik_i)\Bigg\}. \label{eq:Apos}
+\end{align}
 
 \section{Numerical Examples}\label{sec:num}
+In this section we look at two examples of chemical systems to
+demonstrate the effectiveness of the Bayesian approach we have
+proposed, along with the transport PAIS algorithms for sampling the
+challenging posterior distribution on the reaction parameters that
+arise. 
+
+% The first example will only contain at most mono-molecular reactions,
+% i.e. reactions which convert one species into another species at a
+% particular rate. As shown in~\cite{jahnke2007solving} these systems
+% have a Poisson invariant distributions on the populations, given by
+% \begin{equation}\label{eqn:mono_stat_dist}
+% 	\mathbb{P}(X_1=x_1, \ldots, X_n=x_n) = \left(\prod_{i=1}^n \! \frac{\bar{c}_i^{x_i}}{x_i!}\right)\exp\left(-\sum_i^n \! \bar{c}_i\right),
+% \end{equation}
+% where $x_i \in \mathbb{N}$ and $\bar{c}_i$ are the complex balances or the concentration of chemical $X_i$ according to the solution of a steady state approximation of the system. We make use of this distribution to formulate posteriors for the chemical reaction rates using the constrained multiscale approach, as in~\cite{cotter2016constrained}.
+
+%%%%%
+
+\subsection{A Multiscale Chemical System}\label{sec:chem_multiscale}
+
+First we consider a simple multiscale example involving two chemical
+species $S_1$ and $S_2$ involved in only zeroth and first order reactions:
+\begin{equation}\label{eqn:full_system}
+	\emptyset \xrightarrow{k_1} S_1 \xleftrightarrows[k_3]{k_2} S_2 \xrightarrow{k_4} \emptyset.
+\end{equation}
+Each arrow represents a reaction from a reactant to a product, with
+some rate constant $k_i$, and where mass action kinetics is
+assumed. The parameters $k_i$ are non-negative, and $\mathbf{k} =
+[k_1,\dots,k_4]^\top \in \mathbb{R}_+^4 = \mathcal{X}$. We denote the
+population count of
+species $S_i$ by $X_i \in \mathbb{N}_0$. We assume that we are in a
+parameter regime such that the reactions $R_2\colon S_1\rightarrow S_2$ and $R_3\colon S_2\rightarrow S_1$ occur
+more frequently than the other reactions, $R_1\colon \emptyset \rightarrow S_1$, and $R_4\colon S_2 \rightarrow \emptyset$. Notice that both
+chemical species are involved in fast reactions. However, the quantity
+$S = X_1 + X_2$, is conserved by both of the fast reactions,
+and as such, this is the slowly changing quantity in this system.
+
+We assume that we are only able to observe
+the slow variable $S(t)$. 
+The effective dynamics of $S$ can be approximated by a system of only
+two reactions:
+\begin{equation}\label{eqn:QSSA_system}
+	\emptyset \xrightarrow{\alpha_1(S)} S \xrightarrow{\bar{\alpha}_4(S)} \emptyset.
+\end{equation}
+The effective propensity $\bar{\alpha}_4(S)$ can be  approximated through
+application of a multiscale approximation, as detailed in Section
+\ref{sec:multi}, and in more detail in ****CITE****. Under the QEA,
+this is given by
+\[
+	\bar{\alpha}_4^{\text{QEA}}(s) = \frac{k_2k_4s}{k_2+k_3}.
+\]
+Similarly, the analysis of the constrained system as discussed in~\cite{cotter2016constrained} yields the effective propensity
+\begin{equation}\label{eqn:chem_CMA_rate}
+	\bar{\alpha}_4^{\text{CMA}}(s) = \mathbb{E}_{\text{CMA}}\left[k_4X_2|S=s\right] = \frac{k_2k_4s}{k_2+k_3+k_4}.
+\end{equation}
+
+Our observations are uninformative about the reaction rates $k_2, k_3$, and $k_4$, as there
+is a sub-manifold $\mathcal{M} \subset \mathcal{X}$ along which the effective rate
+$\hat{k}_4$ is invariant, leading to a highly ill-posed inverse
+problem. This type of problem is notoriously difficult to
+sample from using standard MH algorithms, as the algorithms quickly
+gravitate towards the manifold $\mathcal{M}$ but then
+exploration around $\mathcal{M}$ is slow.
+
+We aim to recover three different posterior distributions. In the
+first, which is of the form \eqref{eqn:chem_posterior} we assume that we can fully and exactly observe the whole state
+vector for the whole of the observation time window. In the second and
+third, the observations are restricted to observations of the slow
+variable $S = X_1 + X_2$. In these two examples, we approximate the
+posterior using \eqref{eq:Apos} with QEA and CMA approximations of the
+effective dynamics respectively.
+
+In all three cases, we find the posterior distribution for $\mathbf{k} \in \mathcal{X}$. These four parameters are assigned Gamma prior distributions,
+\[
+	k_i \sim \text{Gamma}(\cdot; \alpha_i, \beta_i), \quad \text{for} \quad i = 1, \dots, 4.
+\]
+The hyper-parameters corresponding to each of these prior distributions are given in Table~\ref{tab:multiscale_priors}. These priors are the same for each of the three posterior distributions.
+
+\begin{table}
+\centering
+\begin{tabular}{|l|R{2em}R{2em}R{2em}R{2em}|}
+	\hline
+	parameter/dimension & 1 & 2 & 3 & 4 \\ \hline
+	$\alpha_i$ & 150 & 5 & 5 & 3 \\
+	$\beta_i$ & 15/9 & 5/12 & 5/12 & 1 \\ \hline
+\end{tabular}
+\caption{Hyper-parameters in the prior distributions for the multiscale problem described in Section~\ref{sec:chem_multiscale}.}
+\label{tab:multiscale_priors}
+\end{table}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.9\textwidth]{"images/Applications/CMA_posterior"}
+\caption{Posterior for the constrained multiscale problem outlined in Section~\ref{sec:chem_multiscale}.}
+\label{fig:chem_CMA_posterior}
+\end{figure}
+
+Figure~\ref{fig:chem_CMA_posterior} shows how this posterior looks
+when we use the CMA to model the effective degradation propensity $\bar{\alpha}_4$.
+
+We consider several different algorithms for sampling from these
+distributions. First we implement both the PAIS and MH algorithms with
+a Gaussian proposal distribution. In the case of the PAIS algorithm,
+this is a Gaussian mixture proposal distribution, and in the MH
+algorithm this is equivalent to a vanilla random walk. The proposal distribution uses a covariance matrix which has been constructed using the sample covariance of a sample produced using a standard RWMH algorithm. We also compare the PAIS and MH algorithms when using a transport map proposal distribution. This proposal method was discussed in detail in Chapter~\ref{sec:TPAIS}.
+
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\pgfmathsetseed{1}
+
+		\node[inner sep=1.5cm,outer sep=0] (A) at (0,0) {$\mathcal{X}$};
+		\node[inner sep=1.5cm,outer sep=0] (B) at (5,0) {$R$};
+
+		\draw (A) \irregularcircle{1cm}{2.5mm};
+		\draw (B) \irregularcircle{1cm}{0.5mm};
+
+		\draw [->] (A) -- (B);
+
+		\node at (2.5,1) {$T\colon\mathcal{X}\rightarrow R$};
+
+		\node at (0,-1.5) {$\mathbf{k}\in\mathcal{X}\subset\mathbb{R}_+^d$};
+		\node at (5,-1.5) {$r\in R\subset\mathbb{R}^d$};
+	\end{tikzpicture}
+	\caption{Couplings between parameter space and reference when using the transport map proposal method to propose moves on parameter space.}
+	\label{fig:chem_coupling}
+\end{figure}
+
+Figure~\ref{fig:chem_coupling} shows how we define a bijective map,
+$\hat{T}$, between parameter space $\mathcal{X}$ and a reference space
+$R$. When using the transport map proposal distribution, we prefix the proposal method with a T, e.g. MH-RW (RWMH) and MH-TRW, as well as PAIS-RW and PAIS-TRW. In practice we cannot ensure that the approximate map $\tilde{T}$
+is uniquely invertible over the whole of $R$ and so $\tilde{T}$ is not
+truly bijective. This leads to problems for our strictly positive
+state space, $\mathcal{X} \subset \mathbb{R}_+^d$, since proposals in
+$R$ do not necessarily map back onto $\mathcal{X}$. This motivates the
+use of an intermediate space. 
+
+We also consider how these algorithms perform when they are applied to
+the log of the reaction rates. We choose to use this log
+transformation since it converts our strictly positive parameter
+space, $\mathcal{X}$, into an intermediate space $\mathcal{Y} \subset
+\mathbb{R}^d$. This allows us to define $T$ between two subsets of
+$\mathbb{R}^d$, which means that even if $\tilde{T}$ is not uniquely
+invertible in some region of $R$, all possibilities are valid
+proposals. It also reduces the work required of the map, which since
+we use only a finite dimensional approximation, can improve
+performance and stability. As before, the proposal distributions are labelled with a T for transport map and when using the intermediate space we prepend `log' to the proposal method, e.g. MH-logRW and MH-logTRW, with, PAIS-logRW and PAIS-logTRW.
+
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\pgfmathsetseed{1}
+
+		\node[inner sep=1.5cm,outer sep=0] (A) at (0,0) {$\mathcal{X}$};
+		\node[inner sep=1.5cm,outer sep=0] (B) at (5,0) {$\mathcal{Y}$};
+		\node[inner sep=1.5cm,outer sep=0] (C) at (10,0) {$R$};
+
+		\draw (A) \irregularcircle{1cm}{2.5mm};
+		\draw (B) \irregularcircle{1cm}{1.1mm};
+		\draw (C) \irregularcircle{1cm}{0.5mm};
+
+		\draw [->] (A) -- (B);
+		\draw [->] (B) -- (C);
+
+		\node at (2.5,1) {$\log\colon\mathcal{X}\rightarrow\mathcal{Y}$};
+		\node at (7.5,1) {$T\colon\mathcal{Y}\rightarrow R$};
+
+		\node at (0,-1.5) {$\mathbf{k}\in\mathcal{X}\subset\mathbb{R}_+^d$};
+		\node at (5,-1.5) {$X\in\mathcal{Y}\subset\mathbb{R}^d$};
+		\node at (10,-1.5) {$r\in R \subset\mathbb{R}^d$};
+	\end{tikzpicture}
+	\caption{Couplings between parameter space, an intermediate space and reference space when using the transport map proposal method to propose moves on a log space.}
+	\label{fig:chem_log_coupling}
+\end{figure}
+
+Figure~\ref{fig:chem_log_coupling} displays the composition of maps when we include this intermediate space $\mathcal{Y}$. Every proposal in $R$ results in a valid proposal on $\mathcal{X}$. The inclusion of this additional map means that we must again alter our importance weight definition to reflect the pullback from $R$ through $\mathcal{Y}$. The weight is now
+\[
+	w_i(\theta) = \frac{\pi(\theta|\mathbf{R},\mathbf{T})}{\chi(\tilde{T}\circ\log(\theta)|\tilde{T}\circ\log(\theta^{(i-1)}))|J_{\tilde{T}\circ\log}(\theta)|},
+\]
+where $\theta$ is a proposed new state, $\theta^{(i-1)}$ is the ensemble of states from the previous iteration, and $J_{\tilde{T}\circ\log}(\theta)$ is the Jacobian of the composition of the two maps. This Jacobian is straightforward to calculate,
+\[
+	|J_{\tilde{T}\circ\log}(\theta')| = |J_{\tilde{T}}(\log(\theta'))||J_{\log}(\theta')|,
+\]
+where the first determinant is as we saw in the previous chapter, and the second is
+\[
+	|J_{\log}(\theta')| = \prod\limits_{i=1}^d \frac{1}{\theta'_i}.
+\]
+
+% choices made in transport map
+For this problem, we continue to use monomials in each dimension in our transport map construction. We use polynomials of total order $p=3$ as the basis functions, i.e.
+\[
+	T_i(\theta) = \sum_{\mathbf{j}\in\mathcal{J}^{\text{TO}}_i(p)} \gamma_{i,\mathbf{j}}\psi_{\mathbf{j}}(\theta) \quad \text{where} \quad \psi_\mathbf{j}(\theta) = \prod\limits_{k=1}^i \theta_k^{j_k},
+\]
+and
+\[
+	\mathcal{J}^{\text{TO}}_i(p) = \{\mathbf{j} \in \mathbb{N}^d_0\ |\ \|\mathbf{j}\|_1 \leq p, \ \text{and}\ j_k = 0\ \forall k > i\}.
+\]
+
+% choice of resampler?
+We will use the AMR***CITE*** resampler with an ensemble size of
+$M=500$. This increase in ensemble size in comparison with previous
+example in Section \ref{sec:conv} is to allow for the increase in parameter dimension.
+
+% analysis method
+To measure the convergence of the sampling methods in this section, we
+will compare the convergence of the mean of each parameter. We
+approximate $\mathbb{E}(\mathbf{k})$ using 2.4 billion samples from
+the MH-RW algorithm. We do this for each of the eight algorithms we
+have so far discussed. Convergence is shown only for the CMA
+approximation of the posterior \eqref{eq:Apos} with effective rate for
+the degradation of $S$ given by \eqref{eqn:chem_CMA_rate}, but we
+expect very similar results for the other posterior distributions discussed.
+
+\begin{table}[!h]
+\centering
+\begin{tabular}{rrrrrr}
+\toprule
+	\multicolumn{1}{l}{Algorithm} & \multicolumn{3}{c}{MH} & \multicolumn{2}{c}{PAIS} \\ \cmidrule(lr){2-4} \cmidrule(lr){5-6}
+	& & $\delta_\%$ & & $\delta_{\text{ESS}}$ & ESS \\ \midrule
+	RW & & 5.5e-3 & & 1.0e-0 & 9.0e-3 \\
+	TRW & & 1.2e-0 & & 4.0e-1 & 1.2e-3 \\
+	logRW & & 1.7e-1 & & 1.2e-0 & 6.0e-2 \\
+	logTRW & & 2.7e-2 & & 1.5e-1 & 3.5e-1 \\
+\bottomrule
+\end{tabular}
+\caption{Optimal scaling parameters for the MH and PAIS algorithms applied to the constrained multiscale problem in Section~\ref{sec:chem_multiscale}. MH parameters optimised by acceptance rate, and PAIS parameters optimised using effective sample size.}
+\label{tab:chem_multiscale_scaling}
+\end{table}
+
+The optimal scaling parameters for the proposal distributions are given in Table~\ref{tab:chem_multiscale_scaling}. We note that for MH-TRW and PAIS-TRW the scaling parameter is near to 1, particularly for MH-RW, this is what we should expect since the proposal is made on a reference space which should be near to $\mathcal{N}_d(0, \text{I})$. The same should be true for the MH-logTRW and PAIS-logTRW algorithms since these have the same target reference space, however the optimal scaling parameters here are much smaller. We see that the ESS is higher for the algorithms which sample on $\mathcal{Y}$, and we expect that convergence will be fastest for the PAIS-logTRW algorithm.
+
+\begin{figure}[!htb]
+\centering
+\subfigure[Sampling algorithms on $\mathcal{X}$.]{\includegraphics[width=0.495\textwidth]{"images/Applications/CMA_L2_param_space"}}
+\subfigure[Sampling algorithms on $\mathcal{Y}$.]{\includegraphics[width=0.495\textwidth]{"images/Applications/CMA_L2_log_space"}}
+\caption{Convergence of the constrained multiscale example described in Section~\ref{sec:chem_multiscale}.}
+\label{fig:chem_multiscale_L2}
+\end{figure}
+
+Convergence of the eight algorithms for this example is shown in Figure~\ref{fig:chem_multiscale_L2}. We first note the poor performance of the MH based algorithms, each of them taking roughly 10,000 samples to begin converging. Only the MH-TRW is at all competitive with the PAIS algorithms. During the simulation interval, the MH-TRW algorithm has not settled down to the expected $\mathcal{O}(1/\sqrt{N})$ rate which means that the estimate is still biased by the long burn-in time. As we have seen in previous examples, the burn-in time for the PAIS algorithm is negligible.
+
+The PAIS variants with RW and TRW proposals perform similarly on both sample spaces. When sampling on $\mathcal{X}$ the transport map is not quite as efficient, largely due to the difficulties discussed in the previous section i.e. many proposals are made which do result in negative reaction rates. Sampling on $\mathcal{Y}$ leads to more comparable Monte Carlo errors, with the logTRW being apparently slightly less stable. This proposal method becomes more stable as we increase either the ensemble size, or the number of iterations between updates of the transport map, $T$. Overall we see the smallest Monte Carlo errors for a given amount of computational effort coming from the PAIS-logTRW algorithm.
+
+\begin{figure}[!htb]
+\centering
+\subfigure[Reference space mapped to by $\hat{T}$.]{\includegraphics[width=0.495\textwidth]{"images/Applications/CMA_ref_space_MHTRW"}}
+\subfigure[Reference space mapped to by $T\circ\log$.]{\includegraphics[width=0.495\textwidth]{"images/Applications/CMA_ref_space_MHlogTRW"}}
+\caption{Reference space for the problem described in Section~\ref{sec:multiscale_posterior} found using the TRW and logTRW proposal distributions. Components are linked by the relation $r_i = T_i'(k_i)$ in (a) and $r_i = T_i\circ\log(k_i)$ in (b).}
+\label{fig:chem_reference_spaces}
+\end{figure}
+
+We now look at the proposal distributions of the transport map accelerated algorithms. In Figure~\ref{fig:chem_reference_spaces}, we see the reference spaces found by; in (a) mapping the posterior through the map $\hat{T}$, and in (b) by mapping the posterior through $T\circ\log$. For the most part, each of these marginal distributions can be recognised as a Gaussian. However, with the exception of $\mathbb{P}(r_2,r_3)$, we would not consider them to be close to a standardised $\mathcal{N}(0, \text{I})$ distribution. Before thinking that the transport map has not helped us to find a `nicer' space on which to propose new values we should consider that the dimensions are now (1) largely uncorrelated, and (2) the variances in each dimension are much more similar than they are in Figure~\ref{fig:chem_CMA_posterior}.
+
+Particularly in Figure~\ref{fig:chem_reference_spaces} (b) we see that $\text{var}(r_1)$ and $\text{var}(r_4)$ are much smaller than $\text{var}(r_2)$ and $\text{var}(r_3)$. To combat this we have a number of choices, we might wish to use two different scaling parameters to match these scales, which would require knowledge of the reference space before beginning sampling. We could alternatively use a proposal distribution such as in the LPAIS algorithm to adaptively learn this at each iteration. Another option is to increase the total order of our index set. For these numerics we have chosen $p=3$, but we know that we can obtain reference spaces which are closer to $\mathcal{N}_d(0, \text{I})$ by choosing a larger $p$.
+
+\subsubsection{Comparison of the Constrained and QEA approaches}
+
+The convergence analysis has been performed for the constrained approach to this multiscale system. We now look at the differences between the constrained and QEA posterior distributions. Recall that the approaches differed only in the form of the effective degradation rate $\hat{k}_4$,
+\[
+	\hat{k}_4^{\text{QEA}}(s) = \frac{k_2k_4s}{k_2+k_3} \quad \text{and} \quad \hat{k}_4^{\text{CMA}}(s) = \frac{k_2k_4s}{k_2+k_3+k_4}.
+\]
+This difference in the denominator causes a shift in the parameters as can be seen in Figure~\ref{fig:chem_diff}. The figure shows the difference in posteriors,
+\begin{equation}\label{eqn:chem_diff}
+	\text{diff}(\mu^{\text{CMA}}, \mu^{\text{QEA}}) = \pi^{\text{CMA}}(\mathbf{k}|\mathbf{R},\mathbf{T}) - \pi^{\text{QEA}}(\mathbf{k}|\mathbf{R},\mathbf{T}).
+\end{equation}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.9\textwidth]{"images/Applications/Diff_CMA_QEA"}
+\caption{Difference between the CMA and QEA posteriors as defined in Equation~\eqref{eqn:chem_diff}.}
+\label{fig:chem_diff}
+\end{figure}
+
+Since the two posteriors have been approximated using an MCMC sample, there is a significant amount of noise, particularly in the tails of the distributions We can see that the differences in the marginals for $k_1, k_2,$ and $k_3$ are relatively small and the differences are largely positive. These positive differences tell us that the constrained approach claims to be more informative about the values of these first three parameters. However the marginal for $k_4$ varies by a significant amount and is more negative. This means that the mean estimates for $k_4$ differ by a large amount, the posterior for the QEA is most peaked.
+
+% compare solution with full data.
+We now consider how we should interpret the information given by these models. The QEA assumption tells us that we cannot observe the parameters $k_2$, $k_3$ and $k_4$ independently from the reduced data set, but we can observe the quantity $\hat{k}_4^{\text{QEA}} = k_2k_4/(k_2+k_3)$. Similarly, the constrained approach tells us that we are able to observe the quantity $\hat{k}_4^{\text{CMA}} = k_2k_4/(k_2+k_3+k_4)$. To validate our inferences on $k_2$, $k_3$ and $k_4$ we would like to discover which model is most accurate and informative about these parameters, and which model gives us results which are most similar to what we can obtain from the full model, with all reactions observed.
+
+A conventional way to compare two models under a Bayesian framework is to calculate the Bayes factors~\cite{chen2012monte}. The Bayes factor, $B_{1,2}$, between two models, $\mathcal{M}_1$ and $\mathcal{M}_2$, can be interpreted as a ratio of the normalisation constants of the posterior distributions given each model,
+\[
+	B_{1,2} = \frac{\mathbb{P}(D|\mathcal{M}_1)}{\mathbb{P}(D|\mathcal{M}_2)}, \quad \text{where} \quad \mathbb{P}(D|\mathcal{M}_k) = \int_\mathcal{X} \mathbb{P}(D|\theta_k,\mathcal{M}_k)\mathbb{P}(\theta_k|\mathcal{M}_k) \, \text{d}\theta_k.
+\]
+Under the PAIS framework, it is straightforward to calculate these factors using the Monte Carlo estimator for the normalisation constants. From~\cite{robert2013monte} these normalisation constants take the form
+\[
+	Z_k \approx \hat{Z}_k\frac{1}{NM}\sum_{i=1}^N\sum_{j=1}^M w_j^{(i)}(\mathcal{M}_k),
+\]
+where $w_j^{(i)}(\mathcal{M}_k)$ is the weight under model $\mathcal{M}_k$ corresponding to the $j$-th ensemble member on the $i$-th iteration. Hence, $B_{1,2} \approx \hat{Z}_1/\hat{Z}_2$. We can compare more than two models in this way by selecting the model with the largest marginal distribution as the best model.
+
+We now label the constrained model as $\mathcal{M}_1$, the model arising from the QEA as $\mathcal{M}_2$, and the full data model as $\mathcal{M}_0$. Under $\mathcal{M}_1$, the parameter $\theta_1 = (k_1, \hat{k}_4^{\text{CMA}})^\top$, and under $\mathcal{M}_2$, the parameter $\theta_2 = (k_1, \hat{k}_4^{\text{QEA}})^\top$. The full model $\mathcal{M}_0$ observes all four parameters $\theta_0 = (k_1, k_2, k_3, k_4)^\top$. The marginal densities for the data, evaluated at the observed data, given the models are displayed in Table~\ref{tab:chem_Bayes_marginals}.
+
+\begin{table}[!htb]
+\centering
+\begin{tabular}{rr}
+	\toprule
+	$k$ & \quad $\mathbb{P}(D = (\mathbf{R},\mathbf{T})^\top|\mathcal{M}_k)$ \\ \cmidrule(lr){1-2}
+	0 & 6.8e-3 \\
+	1 & 3.2e-3 \\
+	2 & 1.7e-3 \\ \bottomrule
+\end{tabular}
+\caption{Marginal distributions for the data $(\mathbf{R},\mathbf{T})^\top$ for each model considered in Section~\ref{sec:multiscale_posterior}.}
+\label{tab:chem_Bayes_marginals}
+\end{table}
+
+Computing the Bayes factors from Table~\ref{tab:chem_Bayes_marginals} we see that we should of course prefer the model in which we observe all reactions perfectly, however this model is not significantly better than the CMA model ($B_{0,1} = 2.09 < 3.2$, ~\cite{kass1995bayes}). Again the constrained model is not substantially more attractive than the QEA model when we consider the Bayes factor $B_{1,2} = 1.96 < 3.2$. The Bayes factor $B_{0,2} = 4.1 > 3.2$ does tell us that we should significantly prefer the full model to the QEA approximation of the posterior. These Bayes factors present a weak argument that that the constrained model provides us with a better description of the data than the QEA model. We can also present this information graphically, which might provide us with a greater justification for preferring the constrained approximation of the posterior.
+
+\begin{figure}[!htb]
+\centering
+\subfigure[Marginal for $\hat{k}_4^{\text{QEA}}$.]{\includegraphics[width=0.495\textwidth]{"images/Applications/QEA_approx_marginal"}}
+\subfigure[Marginal for $\hat{k}_4^{\text{CMA}}$.]{\includegraphics[width=0.495\textwidth]{"images/Applications/CMA_approx_marginal"}}
+\caption{Comparison of the approximate marginal densities for the `observable parameter' $\hat{k}_4$ under models $\mathcal{M}_1$ and $\mathcal{M}_2$. Marginals for these two parameters are approximated using samples which have been produced by targeting the three densities $\pi_i = \mathbb{P}(\theta_i|D,\mathcal{M}_i)$ for $i = 0, 1, 2$.}
+\label{fig:chem_model_comp}
+\end{figure}
+
+Figure~\ref{fig:chem_model_comp} displays the marginal distributions for the parameters $\hat{k}_4^{\text{QEA}}$ and $\hat{k}_4^{\text{CMA}}$. For each of these two observable parameters we obtain approximations for three marginal distributions, $\pi_i(\cdot|D, \mathcal{M}_i)$, $i = 0, 1, 2$. Each of these approximations has been produced by marginalising a sample drawn from the full posterior $\pi_i(\mathbf{k}|D, \mathcal{M}_i)$ defined in terms of the respective model $\mathcal{M}_i$. In other words, to calculate $\hat{\pi}_1(\hat{k}_4^{\text{QEA}}|D)$, we first draw a sample using the PAIS algorithm targeting the posterior density $\pi_1(\mathbf{k}|D,\mathcal{M}_1)$. We then calculate $\theta^{(j)} = k_2^{(j)}k_4^{(j)}/(k_2^{(j)}+k_3^{(j)})$ for each sample produced. Finally we produce a histogram from this sample $\theta^{(j)}$.
+
+The first thing to note is that in subfigure (a) when we approximate the marginals for $\hat{k}_4^{\text{QEA}}$ the density $\hat{\pi}_2(\cdot|D,\mathcal{M}_2)$ is much more peaked than $\hat{\pi}_1(\cdot|D,\mathcal{M}_1)$. As we might expect the same is true in reverse in subfigure (b). What is interesting here is that for both parameters, the marginal distribution which assumes $\mathcal{M}_2$ assigns a small density value to the true value of the parameter, while the marginals which assume $\mathcal{M}_1$ assign a relatively high density to the truth. We also draw attention to the similarities between the constrained model and the full data model. In subfigure (a) these two marginals are peaked around a similar value, and in subfigure (b) the full data and constrained models almost exactly coincide. This supports the hypothesis that the constrained approach provides a more accurate approximation to the dynamics of the full system.
+
+\subsection{Gene Regulatory Networks}\label{sec:grn}
+In this example, we look at a model of a gene regulatory network (GRN) mechanism~\cite{kaern2005stochasticity,guido2006bottom,becskei2000engineering} used by a particular cell to regulate the amount of a protein, $P$, present. In this model, we again have reactions occurring at particular rates, $k_i$, between four different species. Here there is a special species, $G$, representing the gene responsible for building the protein, of which there is only one at a time, and this species can either be turned on or off. When the gene is off we denote it as $G'$.
+\begin{align}
+	P+P \xleftrightarrows[k_2]{k_1} D \quad & \quad G+D \xleftrightarrows[k_4]{k_3} G' \nonumber\\
+	G \xrightarrow{k_5} G+M \quad & \quad M\xrightarrow{k_6} M+P  \label{eqn:GRN_reactions} \\
+	P \xrightarrow{k_7} \emptyset \quad & \quad M \xrightarrow{k_8} \emptyset \nonumber
+\end{align}
+The eight reactions are given in Equation~\eqref{eqn:GRN_reactions}. In addition to the gene, $G$, and protein, $P$, the system also involves molecules of mRNA, $M$, and dimers, $D$, which are two proteins joined together.
+
+In this example protein is created by a molecule of mRNA at a rate $k_6$. The amount of protein in the cell is then governed by the rate of decay of $P$, and the number of mRNA molecules in the cell creating $P$. In turn the number of mRNA molecules is controlled by its own decay rate and whether or not the gene $G$, which produces the mRNA, is active. The gene can be turned on and off depending on how many dimers are present in the system, which is related to how many protein molecules there are. This completes a feedback cycle whereby if the protein population gets too high then the gene will turn off and the rate of new protein formation will decrease, causing the level to drop and the gene to turn back on. Figure~\ref{fig:GRN_cycle} shows what happens to the molecules in the system as the gene turns on and off.
+
+\begin{figure}
+NEW FIGURE HERE
+\end{figure}
+
+%As in Section~\ref{sec:chem_multiscale} we use the constrained multiscale approach to model the system.
+Due to the small scale of the system and the speed of the reactions, we are only able to measure the total amount of protein, $T$, and mRNA, $M$, while the number of dimers and whether or not the gene is switched on must be considered to be missing data. For this scenario, the likelihood function is intractable and so we must use a multiscale approximation of the system. Here we choose the constrained multiscale approximation due to its success in the previous example.
+
+The formulation here is slightly more complex. We define a fast subsystem which acts on the fast variables $\mathcal{F} = [P, D, G]$ and incorporates reactions $R_1$-$R_4$. For the true parameter values we have chosen, 90\% of reactions which occur in a particular time frame are one of these four reactions.
+\[
+	\text{Fast subsystem:} \quad P+P\xleftrightarrows[k_2]{k_1} D, \quad G+D\xleftrightarrows[k_4]{k_3} G'.
+\]
+We also define the slow variables, $T = P+2D+2(1-G)$ and $M$ which are held constant by these fast reactions.
+
+When we observe a cell, we cannot distinguish between the fast species and so don't know which of the first four reactions are happening. Due to this, we observe how many of reactions $R_5$-$R_8$ occur for each combination of the two slow variables $\mathcal{S} = [T, M]$. Since we don't observe $P$ and $G$ for every reaction, the propensities must be altered to take this into account,
+\begin{align}
+	\hat{\alpha}_5 = k_5\mathbb{E}[G|T=t],\quad&\quad \alpha_6 = k_6M, \notag\\
+	\hat{\alpha}_7 = k_7\mathbb{E}[P|T=t], \quad&\quad \alpha_8 = k_8M.\label{eqn:grn_propensities}
+\end{align}
+
+To calculate these expectations, we note that the fast subsystem is a deficiency zero system~\cite{anderson2010product}, and is also reversible. i.e. The system has four complexes, 
+\[
+	C_1 = P+P, \quad C_2 = D, \quad C_3 = G+D \quad \text{and} \quad  C_4 = G',
+\]
+there are two linkage classes (or two sets of reversible reactions), and the space spanned by the stoichiometries is two dimensional,
+\[
+	\text{span}\left\{\pm[-2, 1, 0, 0]^\top, \pm[0, -1, 0, -1]^\top\right\},
+\]
+hence the deficiency is $d = 4 - 2 - 2 = 0$. This means that, by \cite{anderson2010product}, the conditional probabilities have the closed form equation,
+\[
+	\mathbb{P}[\mathcal{F}|T=t] \propto \text{Poisson}(P_t;\bar{p})\text{Poisson}(D_t;\bar{d})\text{Poisson}(G_t;\bar{g})\text{Poisson}(1-G_t;1-\bar{g}),
+\]
+from which we can calculate the expected values of $P_t$, $D_t$, and $G_t$. The fast variables $P_t$, $D_t$ and $G_t$ are constrained to the line defined by $T=P+2D+2(1-G)=t$. The concentrations $\bar{p}$, $\bar{d}$ and $\bar{g}$, must be calculated as the solution to the nonlinear system produced by examining the steady state behaviour of the fast subsystem,
+\begin{align}
+	T &= p + 2d + 2(1-g), \notag\\
+	\frac{\text{d}p}{\text{d}t} &= -2k_1p^2+2k_2d = 0, \notag\\
+	\frac{\text{d}d}{\text{d}t} &= k_1p^2 - k_2d - k_3gd + k_4(1-g) = 0, \notag\\
+	\frac{\text{d}g}{\text{d}t} &= -k_3gd + k_4(1-g) = 0, \label{eqn:grn_nonlinear_system}
+\end{align}
+subject to $p \in [0, T]$, $g \in [0, 1]$, and $0 \leq d \leq \text{floor}(T/2)$.
+
+With these effective propensities, given in Equation~\eqref{eqn:grn_propensities}, we can calculate the posterior distribution as given in Equation~\eqref{eqn:chem_posterior}, again assigning Gamma priors to the eight reaction rates. We note that the reaction rates for the fast variables do not appear in the posterior density explicitly which only uses the propensities $\alpha_5$-$\alpha_8$, however they appear through the solution to the nonlinear system in Equation~\eqref{eqn:grn_nonlinear_system}.
+
+\subsubsection{Target Distribution}
+
+As in the previous chemical system example we use the target distribution as defined in Equation~\eqref{eqn:chem_posterior}. The application here is slightly more involved as discussed previously in Section~\ref{sec:grn}. We have an eight dimensional parameter space, with one reaction rate corresponding to one of eight reactions. The first four reactions, $R_1$-$R_4$, are combined into a fast subsystem for which we do not observe the time or identifier for which reaction has fired. We instead use the constrained multiscale approach to approximate what has happened in this subsystem between occurrences of the slow reactions firing (reactions $R_5$-$R_8$). For this reason, we apply the form in Equation~\eqref{eqn:chem_posterior} to reactions $R_5$-$R_8$, and allow the rates for reactions $R_1$-$R_4$ to implicitly influence the posterior density through the effective propensities, $\hat{\alpha}_5$ and $\hat{\alpha}_7$.
+
+As we mentioned earlier, for this problem we only consider the CMA's approximation to the system dynamics.
+
+The priors for this problem were chosen to be fairly uninformative with respect to the likelihood function for each reaction rate. A list of the hyper-parameters corresponding to each Gamma prior can be found in Table~\ref{tab:grn_priors}.
+
+\begin{table}[!h]
+\centering
+\begin{tabular}{|l|R{1.8em}|R{1.8em}|R{1.8em}|R{1.8em}|R{1.8em}|R{1.8em}|R{1.8em}|R{1.8em}|}
+	\hline
+	Dimension $i$ & 1 & 2& 3& 4 & 5 & 6 & 7 & 8 \\ \hline
+	$\alpha_i$ & 2 & 100 & 100 & 3 & 3 & 3 & 2 & 2\\ \hline
+	$\beta_i$ &50 & 0.02 & 1 & 1 & 0.6 & 1 & 50 & 50 \\ \hline
+\end{tabular}
+\caption{Hyper parameters for the Gamma priors on each of the reaction rates in the GRN example in Section~\ref{sec:grn}.}
+\label{tab:grn_priors}
+\end{table}
+
+\begin{figure}[htb]
+\centering
+\makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]{"images/Applications/GRN_posterior"}}%
+\caption{Marginal densities of the posterior distribution for the GRN example in Section~\ref{sec:grn}.}
+\label{fig:GRN_posterior}
+\end{figure}
+
+The one- and two-dimensional marginal distributions for the full posterior distribution are displayed in Figure~\ref{fig:GRN_posterior}. The posterior does not contain many interesting correlation structures, however several dimensions have leptokurtic tails which are difficult for the standard PAIS algorithm to sample from. The marginal densities also vary over very different scales, which might require us to use a variant of the LPAIS algorithm.
+
+\subsubsection{Implementation}
+
+%% proposal methods
+%For the posterior distribution in \eqref{eqn:chem_QEA_posterior}, we consider several proposal methods. First we implement both the PAIS and MH algorithms with a Gaussian proposal distribution. In the case of the PAIS algorithm, this is a Gaussian mixture proposal distribution. The proposal distribution uses a covariance matrix which has been constructed using the sample covariance of a sample produced using a standard RWMH algorithm. We also compare the PAIS and MH algorithms when using a transport map proposal distribution. This proposal method was discussed in detail in Chapter~\ref{sec:TransportPAIS}.
+%
+%
+%Figure~\ref{fig:chem_coupling} shows how we define a bijective map, $\hat{T}$, between parameter space $\mathcal{X}$ and a reference space $R$. In practice we cannot ensure that the approximate map $\tilde{T}'$ is uniquely invertible over the whole of $R$ and so $\tilde{T}'$ is not truly bijective. This leads to problems for our strictly positive state space, $\mathcal{X} \subset \mathbb{R}_+^d$, since proposals in $R$ do not necessarily map back on to $\mathcal{X}$. This motivates the use of a third intermediate space. When using the transport map proposal distribution, we prefix the proposal method with a T, e.g. MH-RW (RWMH) and MH-TRW, as well as PAIS-RW and PAIS-TRW.
+%
+%We also consider how these algorithms perform when they are applied to the log of the reaction rates. We choose to use this log transformation since it converts our strictly positive parameter space, $\mathcal{X}$, into an intermediate space $\mathcal{Y} \subset \mathbb{R}^d$. This allows us to define $T$ between two subsets of $\mathbb{R}^d$, which means that even if $\tilde{T}$ is not uniquely invertible in some region of $R$, all possibilities are valid proposals. As before, the proposal distributions are labelled with a T for transport map and when using the intermediate space we prepend `log' to the proposal method, e.g. MH-logRW and MH-logTRW, with, PAIS-logRW and PAIS-logTRW.
+We apply the eight RW and logRW proposal distributions, with and without transport map acceleration, which were discussed in Section~\ref{sec:chem_multiscale} to this posterior. Again the intermediate log space is required so that our transport map is a function $T\colon\mathbb{R}^d\rightarrow\mathbb{R}^d$, rather than a map from $\mathbb{R}_+^d$ to $\mathbb{R}^d$.
+
+%% choices made in transport map
+%For this problem, we continue to use monomials in each dimension in our transport map construction. We use polynomials of total order $p=4$ as the basis functions, i.e.
+%\[
+%	T_i(\theta) = \sum_{\mathbf{j}\in\mathcal{J}^{\text{TO}}_i(p)} \gamma_{i,\mathbf{j}}\psi_{\mathbf{j}}(\theta) \quad \text{where} \quad \psi_\mathbf{j}(\theta) = \prod\limits_{k=1}^i \theta_k^{j_k},
+%\]
+%and
+%\[
+%	\mathcal{J}^{\text{TO}}_i(p) = \{\mathbf{j} \in \mathbb{N}^d_0\ |\ \|\mathbf{j}\|_1 \leq p, \ \text{and}\ j_k = 0\ \forall k > i\}.
+%\]
+%Since $\mathcal{X}$ is four-dimensional, this yeilds a total of 125 map coefficients across the four index sets. This number can be reduced by using smaller index sets as discussed in~\cite{parno2014transport}.
+The transport map setup has not changed from the previous example. However, due to the scaling of the weight we have had to be more careful about which samples we use to build our map. We require that the objective function $C(T)$, from Equation~\eqref{eqn:TPAIS_objective} is convex, which requires that the second derivative, given in Equation~\eqref{eqn:TPAIS_hessian}, is positive definite. This positive definite property depends on all weights in our sample being strictly positive, which is not always possible on a computer. For this reason we filter out any samples from the optimisation problem where the weight is a numeric zero. This does not affect the validity of the map since a weight zero would not contribute to the expectation, and we do not require (and could not enforce) an exact map.
+
+In all eight algorithms we adapt the proposal variances during the burn-in phase of the algorithms to avoid behaviour like that seen in Example~\ref{sec:ex_W1} where we needed a huge ensemble size to approximate the posterior with our mixture of isotropic Gaussian kernels.
+
+%% choice of resampler?
+%As with the mixture model in Section~\ref{sec:app_mixture}, we will use the AMR resampler with an ensemble size of $M=500$. This increase in ensemble size from Chapter~\ref{sec:PAIS} compensates for the increase in parameter dimension.
+We again use the AMR resampler, this time with an ensemble size of $M=2500$. The increase in ensemble size again compensates for the increase in dimension (from four to eight parameters.)
+
+%% analysis method
+%To measure the convergence of the sampling methods in this section, we will compare the convergence of the mean of each parameter. We approximate $\mathbb{E}(\mathbf{k})$ using 2.4 billion samples from the MH-RW algorithm.
+As in the previous chemical reaction example, we measure convergence of the algorithms only through the convergence of the mean, for computational ease. We use the sample Mahalanobis distance, with `true' covariance and `true' mean built from a sample of size 2.4 billion using the MH-RW algorithm.
+
+\subsubsection{Convergence results}
+
+The scaling parameter selection is done by optimising the acceptance rate for the MH algorithms, and optimising the effective sample size for the PAIS algorithms. The optimal parameters are given in Table~\ref{tab:grn_scaling_parameters}.
+
+\begin{table}[!h]
+	\centering
+	\begin{tabular}{lrrrrrrrr}
+	\toprule
+		 & \multicolumn{4}{c}{MH} & \multicolumn{4}{c}{PAIS} \\ \cmidrule(lr){2-5} \cmidrule(lr){6-9}
+		& RW & logRW & TRW & log-TRW & RW & logRW & TRW & log-TRW \\ \midrule
+		$\beta_{\%}^*$	 	& 1.0e-1 & 3.9e-1 & 1.0e-0 &6.0e-1 & - & - & - & - \\
+		$\beta_{\text{ESS}}^*$	& - 	        & -           & -            & -            & 1.0e-0 & 1.3e-0 & 8.0e-1 & 5.0e-1 \\
+		ESS/$M$		 		& - 	        & -           & -            & -            & 3.5e-4 & 4.7e-2 & 4.8e-2 & 1.6e-1  \\
+	\bottomrule
+	\end{tabular}
+	\caption{Scaling parameters for the sampling algorithms applied to the GRN example in Section~\ref{sec:grn}.}
+	\label{tab:grn_scaling_parameters}
+\end{table}
+
+From the effective sample sizes shown in Table~\ref{tab:grn_scaling_parameters} we can see the improvement to the efficiency of the algorithm both by proposing on the log space, and by transforming the parameter space into something closer to Gaussian.
+
+Due to the numerical cost of calculating the full relative $L^2$ errors for this posterior, we quantify the convergence speeds of these algorithms using the sample Mahalanobis distance between the sample mean and the `true' mean. This convergence analysis is shown in Figure~\ref{fig:grn_L2}.
+
+\begin{figure}[!htb]
+\centering
+\subfigure[Sampling algorithms on $\mathcal{X}$.]{\includegraphics[width=0.495\textwidth]{"images/Applications/GRN_convergence"}}
+\subfigure[Sampling algorithms on $\mathcal{Y}$.]{\includegraphics[width=0.495\textwidth]{"images/Applications/GRN_convergence_log"}}
+\caption{Convergence of the GRN example described in Section~\ref{sec:grn}.}
+\label{fig:grn_L2}
+\end{figure}
+
+The first thing to note is that the first PAIS measurement happens after 2500 samples, whereas the first MH measurement occurs after 50 samples. This is due to the much larger ensemble size required to sample in higher dimensions. We believe that an ensemble size of 2500 is over-cautious in this example and we could have used a smaller ensemble size. We also think that the required ensemble size to sample from these posteriors is reduced by the use of the transport map. This is due to the way the tail behaviour is improved by the transformation.
+
+The second obvious feature of these convergence plots is that the PAIS algorithms outperform the MH algorithms by a large margin - roughly a reduction of two orders of magnitude in the relative error over the same number of samples. A less positive result is that for this example the PAIS-TRW algorithm has found a map which has prevented further convergence of the mean. This is likely because one dimension of the transport map is sending proposals onto the negative real line and so all samples are being assigned a zero weight. This is behaviour which was anticipated, and it is always suggested that the transport map is constructed as a map $T\colon\mathbb{R}^d\rightarrow\mathbb{R}^d$ rather than $T\colon\mathcal{X}\rightarrow\mathbb{R}^d$ where $\mathcal{X}\subset\mathbb{R}^d$. The large increase in the effective sample size observed between the PAIS-logRW and PAIS-logTRW algorithms is converted into an estimate which is twice as accurate after 1 million samples.
+
+A similar pattern is seen in the MH algorithms, where the MH-TRW performs the worst, and the MH-logTRW algorithm performs the best, although only marginally.
 
 \section{Discussion}\label{sec:conc}
 

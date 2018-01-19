@@ -1,8 +1,49 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
+
+\bibitem{anderson2010product}
+{\sc D.~Anderson, G.~Craciun, and T.~Kurtz}, {\em Product-form stationary
+  distributions for deficiency zero chemical reaction networks}, Bulletin of
+  mathematical biology, 72 (2010), pp.~1947--1970.
+
+\bibitem{becskei2000engineering}
+{\sc A.~Becskei and L.~Serrano}, {\em Engineering stability in gene networks by
+  autoregulation}, Nature, 405 (2000), p.~590.
+
+\bibitem{chen2012monte}
+{\sc M.~Chen, Q.~Shao, and J.~Ibrahim}, {\em {Monte Carlo methods in Bayesian
+  computation}}, Springer Science \& Business Media, 2012.
+
+\bibitem{cotter2016constrained}
+{\sc S.~Cotter}, {\em {Constrained approximation of effective generators for
+  multiscale stochastic reaction networks and application to conditioned path
+  sampling}}, Journal of Computational Physics, 323 (2016), pp.~265--282.
 
 \bibitem{el2012bayesian}
 {\sc T.~El~Moselhy and Y.~Marzouk}, {\em Bayesian inference with optimal maps},
   Journal of Computational Physics, 231 (2012), pp.~7815--7850.
+
+\bibitem{gillespie2007stochastic}
+{\sc D.~Gillespie}, {\em Stochastic simulation of chemical kinetics}, Annu.
+  Rev. Phys. Chem., 58 (2007), pp.~35--55.
+
+\bibitem{guido2006bottom}
+{\sc N.~Guido, X.~Wang, D.~Adalsteinsson, D.~McMillen, J.~Hasty, C.~Cantor,
+  T.~Elston, and J.~Collins}, {\em A bottom-up approach to gene regulation},
+  Nature, 439 (2006), p.~856.
+
+\bibitem{jahnke2007solving}
+{\sc T.~Jahnke and W.~Huisinga}, {\em Solving the chemical master equation for
+  monomolecular reaction systems analytically}, Journal of Mathematical
+  Biology, 54 (2007), pp.~1--26.
+
+\bibitem{kaern2005stochasticity}
+{\sc M.~Kaern, T.~Elston, W.~Blake, and J.~Collins}, {\em Stochasticity in gene
+  expression: from theories to phenotypes}, Nature reviews. Genetics, 6 (2005),
+  p.~451.
+
+\bibitem{kass1995bayes}
+{\sc R.~Kass and A.~Raftery}, {\em Bayes factors}, Journal of the American
+  Statistical Association, 90 (1995), pp.~773--795.
 
 \bibitem{parno2015transport}
 {\sc M.~Parno}, {\em {Transport maps for accelerated Bayesian computation}},
@@ -20,5 +61,9 @@
 {\sc S.~Reich}, {\em {A nonparametric ensemble transform method for Bayesian
   inference}}, SIAM Journal on Scientific Computing, 35 (2013),
   pp.~A2013--A2024.
+
+\bibitem{robert2013monte}
+{\sc C.~Robert and G.~Casella}, {\em Monte {C}arlo statistical methods},
+  Springer New York, 2004.
 
 \end{thebibliography}

@@ -4,45 +4,45 @@ The top-level auxiliary file: TPAIS_2018.aux
 The style file: siam.bst
 Database file #1: bibliography.bib
 Warning--empty journal in pinsker1960information
-You've used 5 entries,
+You've used 15 entries,
             2030 wiz_defined-function locations,
-            529 strings with 4403 characters,
-and the built_in function-call counts, 1505 in all, are:
-= -- 149
-> -- 47
+            599 strings with 5950 characters,
+and the built_in function-call counts, 5061 in all, are:
+= -- 490
+> -- 215
 < -- 0
-+ -- 19
-- -- 14
-* -- 111
-:= -- 238
-add.period$ -- 5
-call.type$ -- 5
-change.case$ -- 21
++ -- 86
+- -- 70
+* -- 384
+:= -- 791
+add.period$ -- 15
+call.type$ -- 15
+change.case$ -- 77
 chr.to.int$ -- 0
-cite$ -- 6
-duplicate$ -- 76
-empty$ -- 115
-format.name$ -- 14
-if$ -- 315
+cite$ -- 16
+duplicate$ -- 244
+empty$ -- 361
+format.name$ -- 70
+if$ -- 1074
 int.to.chr$ -- 0
-int.to.str$ -- 5
-missing$ -- 4
-newline$ -- 18
-num.names$ -- 10
-pop$ -- 18
+int.to.str$ -- 15
+missing$ -- 16
+newline$ -- 48
+num.names$ -- 30
+pop$ -- 71
 preamble$ -- 1
-purify$ -- 17
+purify$ -- 65
 quote$ -- 0
-skip$ -- 65
+skip$ -- 212
 stack$ -- 0
-substring$ -- 113
-swap$ -- 32
+substring$ -- 329
+swap$ -- 106
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 20
+type$ -- 56
 warning$ -- 1
-while$ -- 16
-width$ -- 6
-write$ -- 44
+while$ -- 54
+width$ -- 17
+write$ -- 132
 (There was 1 warning)
