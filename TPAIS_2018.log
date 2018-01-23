@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/MacPorts 2017_2) (preloaded format=pdflatex 2018.1.17)  19 JAN 2018 16:54
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/MacPorts 2017_2) (preloaded format=pdflatex 2018.1.17)  23 JAN 2018 16:48
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -939,18 +939,18 @@ Package: amssymb 2013/01/14 v3.01 AMS font symbols
 (./TPAIS_2018.aux)
 \openout1 = `TPAIS_2018.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 141.
-LaTeX Font Info:    ... okay on input line 141.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 141.
-LaTeX Font Info:    ... okay on input line 141.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 141.
-LaTeX Font Info:    ... okay on input line 141.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 141.
-LaTeX Font Info:    ... okay on input line 141.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 141.
-LaTeX Font Info:    ... okay on input line 141.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 141.
-LaTeX Font Info:    ... okay on input line 141.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 142.
+LaTeX Font Info:    ... okay on input line 142.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 142.
+LaTeX Font Info:    ... okay on input line 142.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 142.
+LaTeX Font Info:    ... okay on input line 142.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 142.
+LaTeX Font Info:    ... okay on input line 142.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 142.
+LaTeX Font Info:    ... okay on input line 142.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 142.
+LaTeX Font Info:    ... okay on input line 142.
 
 (/opt/local/share/texmf-texlive/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -985,12 +985,12 @@ e
 \AtBeginShipoutBox=\box72
 
 ABD: EveryShipout initializing macros
-LaTeX Font Info:    Try loading font information for U+msa on input line 197.
+LaTeX Font Info:    Try loading font information for U+msa on input line 198.
 
 (/opt/local/share/texmf-texlive/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 197.
+LaTeX Font Info:    Try loading font information for U+msb on input line 198.
 
 (/opt/local/share/texmf-texlive/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -1010,7 +1010,7 @@ File: "images/TPAIS/R2_marginal_1".pdf Graphic file (type pdf)
 
 <use "images/TPAIS/R2_marginal_1".pdf>
 Package pdftex.def Info: "images/TPAIS/R2_marginal_1".pdf used on input line 69
-0.
+1.
 (pdftex.def)             Requested size: 114.81805pt x 86.11305pt.
 
 <"images/TPAIS/R2_marginal_2".pdf, id=49, 421.575pt x 316.18124pt>
@@ -1018,22 +1018,22 @@ File: "images/TPAIS/R2_marginal_2".pdf Graphic file (type pdf)
 
 <use "images/TPAIS/R2_marginal_2".pdf>
 Package pdftex.def Info: "images/TPAIS/R2_marginal_2".pdf used on input line 69
-1.
+2.
 (pdftex.def)             Requested size: 114.81805pt x 86.11305pt.
 
 <images/TPAIS/R2_posterior.pdf, id=50, 421.575pt x 316.18124pt>
 File: images/TPAIS/R2_posterior.pdf Graphic file (type pdf)
 
 <use images/TPAIS/R2_posterior.pdf>
-Package pdftex.def Info: images/TPAIS/R2_posterior.pdf used on input line 692.
+Package pdftex.def Info: images/TPAIS/R2_posterior.pdf used on input line 693.
 (pdftex.def)             Requested size: 114.81805pt x 86.11305pt.
 
-Underfull \hbox (badness 1484) in paragraph at lines 692--692
+Underfull \hbox (badness 1484) in paragraph at lines 693--693
 []\OT1/cmr/m/n/8 (c) Con-tour plot for Rosen-
  []
 
 
-Overfull \hbox (0.92085pt too wide) in paragraph at lines 701--702
+Overfull \hbox (0.92085pt too wide) in paragraph at lines 702--703
  \OT1/cmr/bx/n/10 5.1. Im-ple-men-ta-tion de-tails.[] \OT1/cmr/m/n/10 Be-fore l
 ook-ing at the per-for-mance of the MCMC
  []
@@ -1045,10 +1045,10 @@ File: "images/TPAIS/R2_transport_orig".pdf Graphic file (type pdf)
 
 <use "images/TPAIS/R2_transport_orig".pdf>
 Package pdftex.def Info: "images/TPAIS/R2_transport_orig".pdf used on input lin
-e 721.
+e 722.
 (pdftex.def)             Requested size: 114.81805pt x 86.11305pt.
 
-Underfull \hbox (badness 2744) in paragraph at lines 721--721
+Underfull \hbox (badness 2744) in paragraph at lines 722--722
 []\OT1/cmr/m/n/8 (a) Orig-i-nal sam-ple $\OML/cmm/m/it/8 ^^R$ \OT1/cmr/m/n/8 fr
 om
  []
@@ -1058,7 +1058,7 @@ File: "images/TPAIS/R2_transport_ref".pdf Graphic file (type pdf)
 
 <use "images/TPAIS/R2_transport_ref".pdf>
 Package pdftex.def Info: "images/TPAIS/R2_transport_ref".pdf used on input line
- 722.
+ 723.
 (pdftex.def)             Requested size: 114.81805pt x 86.11305pt.
 
 <images/TPAIS/R2_transport_pullback.pdf, id=91, 421.575pt x 316.18124pt>
@@ -1066,32 +1066,31 @@ File: images/TPAIS/R2_transport_pullback.pdf Graphic file (type pdf)
 
 <use images/TPAIS/R2_transport_pullback.pdf>
 Package pdftex.def Info: images/TPAIS/R2_transport_pullback.pdf used on input l
-ine 723.
+ine 724.
 (pdftex.def)             Requested size: 114.81805pt x 86.11305pt.
- [10]
-<images/TPAIS/R1_L2.pdf, id=96, 449.68pt x 338.26375pt>
+ [10] [11 <./images/TPAIS/R2_transport_orig.pdf> <./images/TPAIS/R2_transport_r
+ef.pdf> <./images/TPAIS/R2_transport_pullback.pdf>] <images/TPAIS/R1_L2.pdf, id
+=117, 449.68pt x 338.26375pt>
 File: images/TPAIS/R1_L2.pdf Graphic file (type pdf)
 
 <use images/TPAIS/R1_L2.pdf>
-Package pdftex.def Info: images/TPAIS/R1_L2.pdf used on input line 780.
+Package pdftex.def Info: images/TPAIS/R1_L2.pdf used on input line 784.
 (pdftex.def)             Requested size: 166.67154pt x 125.37756pt.
 
-<images/TPAIS/R1_L2_all.pdf, id=97, 449.68pt x 338.26375pt>
+<images/TPAIS/R1_L2_all.pdf, id=118, 449.68pt x 338.26375pt>
 File: images/TPAIS/R1_L2_all.pdf Graphic file (type pdf)
 
 <use images/TPAIS/R1_L2_all.pdf>
-Package pdftex.def Info: images/TPAIS/R1_L2_all.pdf used on input line 781.
+Package pdftex.def Info: images/TPAIS/R1_L2_all.pdf used on input line 785.
 (pdftex.def)             Requested size: 166.67154pt x 125.37756pt.
- [11 <./images/TPAIS/R2_transport_orig.pdf> <./images/TPAIS/R2_transport_ref.pd
-f> <./images/TPAIS/R2_transport_pullback.pdf>]
-[12 <./images/TPAIS/R1_L2.pdf> <./images/TPAIS/R1_L2_all.pdf>]
-Overfull \hbox (5.76976pt too wide) in paragraph at lines 842--854
+ [12 <./images/TPAIS/R1_L2.pdf> <./images/TPAIS/R1_L2_all.pdf>]
+Overfull \hbox (5.76976pt too wide) in paragraph at lines 846--858
 \OT1/cmr/m/n/10 actly, for in-stance us-ing the Gille-spie SSA***CITE***, or it
 s vari-ants [6]****CITE****.
  []
 
 [13] [14]
-Overfull \hbox (1.06116pt too wide) in paragraph at lines 963--976
+Overfull \hbox (1.06116pt too wide) in paragraph at lines 967--980
  \OT1/cmr/bx/n/10 6.2. Ap-prox-i-ma-tion of like-li-hoods in mul-ti-scale chem-
 i-cal net-works.[] \OT1/cmr/m/n/10 Sup-
  []
@@ -1105,34 +1104,38 @@ File: "images/Applications/CMA_posterior".pdf Graphic file (type pdf)
 
 <use "images/Applications/CMA_posterior".pdf>
 Package pdftex.def Info: "images/Applications/CMA_posterior".pdf used on input 
-line 1085.
+line 1112.
 (pdftex.def)             Requested size: 333.3431pt x 240.22182pt.
- [17 <./images/Applications/CMA_posterior.pdf>]
-Overfull \hbox (7.63562pt too wide) in paragraph at lines 1163--1164
+
+Overfull \hbox (7.63562pt too wide) in paragraph at lines 1165--1168
  [][] 
  []
 
-[18] [19]
-<"images/Applications/CMA_L2_param_space".pdf, id=175, 647.41875pt x 381.425pt>
+[17] [18 <./images/Applications/CMA_posterior.pdf>]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+<"images/Applications/CMA_L2_param_space".pdf, id=171, 647.41875pt x 381.425pt>
 File: "images/Applications/CMA_L2_param_space".pdf Graphic file (type pdf)
 <use "images/Applications/CMA_L2_param_space".pdf>
 Package pdftex.def Info: "images/Applications/CMA_L2_param_space".pdf used on i
-nput line 1226.
+nput line 1260.
 (pdftex.def)             Requested size: 183.33813pt x 108.01466pt.
 
-<"images/Applications/CMA_L2_log_space".pdf, id=176, 649.42625pt x 381.425pt>
+<"images/Applications/CMA_L2_log_space".pdf, id=172, 649.42625pt x 381.425pt>
 File: "images/Applications/CMA_L2_log_space".pdf Graphic file (type pdf)
 
 <use "images/Applications/CMA_L2_log_space".pdf>
 Package pdftex.def Info: "images/Applications/CMA_L2_log_space".pdf used on inp
-ut line 1227.
+ut line 1261.
 (pdftex.def)             Requested size: 183.33813pt x 107.6771pt.
-
+ [19]
 <"images/Applications/CMA_ref_space_MHTRW".pdf, id=177, 786.94pt x 567.11874pt>
 File: "images/Applications/CMA_ref_space_MHTRW".pdf Graphic file (type pdf)
 <use "images/Applications/CMA_ref_space_MHTRW".pdf>
 Package pdftex.def Info: "images/Applications/CMA_ref_space_MHTRW".pdf used on 
-input line 1238.
+input line 1276.
 (pdftex.def)             Requested size: 183.33813pt x 132.122pt.
 
 <"images/Applications/CMA_ref_space_MHlogTRW".pdf, id=178, 786.94pt x 567.11874
@@ -1140,39 +1143,39 @@ pt>
 File: "images/Applications/CMA_ref_space_MHlogTRW".pdf Graphic file (type pdf)
  <use "images/Applications/CMA_ref_space_MHlogTRW".pdf>
 Package pdftex.def Info: "images/Applications/CMA_ref_space_MHlogTRW".pdf used 
-on input line 1239.
+on input line 1277.
 (pdftex.def)             Requested size: 183.33813pt x 132.122pt.
 
 
 LaTeX Warning: Reference `sec:multiscale_posterior' on page 20 undefined on inp
-ut line 1240.
+ut line 1278.
 
 
 LaTeX Warning: Reference `sec:multiscale_posterior' on page 20 undefined on inp
-ut line 1240.
+ut line 1278.
 
 [20 <./images/Applications/CMA_L2_param_space.pdf> <./images/Applications/CMA_L
 2_log_space.pdf>]
-<"images/Applications/Diff_CMA_QEA".pdf, id=214, 786.94pt x 567.11874pt>
+<"images/Applications/Diff_CMA_QEA".pdf, id=213, 786.94pt x 567.11874pt>
 File: "images/Applications/Diff_CMA_QEA".pdf Graphic file (type pdf)
 
 <use "images/Applications/Diff_CMA_QEA".pdf>
 Package pdftex.def Info: "images/Applications/Diff_CMA_QEA".pdf used on input l
-ine 1261.
+ine 1311.
 (pdftex.def)             Requested size: 333.3431pt x 240.22182pt.
  [21 <./images/Applications/CMA_ref_space_MHTRW.pdf> <./images/Applications/CMA
-_ref_space_MHlogTRW.pdf>]
+_ref_space_MHlogTRW.pdf>] [22 <./images/Applications/Diff_CMA_QEA.pdf>]
 
-LaTeX Warning: Reference `sec:multiscale_posterior' on page 22 undefined on inp
-ut line 1292.
+LaTeX Warning: Reference `sec:multiscale_posterior' on page 23 undefined on inp
+ut line 1359.
 
-[22 <./images/Applications/Diff_CMA_QEA.pdf>]
+
 <"images/Applications/QEA_approx_marginal".pdf, id=253, 514.92375pt x 382.42876
 pt>
 File: "images/Applications/QEA_approx_marginal".pdf Graphic file (type pdf)
  <use "images/Applications/QEA_approx_marginal".pdf>
 Package pdftex.def Info: "images/Applications/QEA_approx_marginal".pdf used on 
-input line 1300.
+input line 1376.
 (pdftex.def)             Requested size: 183.33813pt x 136.16287pt.
 
 <"images/Applications/CMA_approx_marginal".pdf, id=254, 514.92375pt x 382.42876
@@ -1180,50 +1183,42 @@ pt>
 File: "images/Applications/CMA_approx_marginal".pdf Graphic file (type pdf)
  <use "images/Applications/CMA_approx_marginal".pdf>
 Package pdftex.def Info: "images/Applications/CMA_approx_marginal".pdf used on 
-input line 1301.
+input line 1377.
 (pdftex.def)             Requested size: 183.33813pt x 136.16287pt.
  [23 <./images/Applications/QEA_approx_marginal.pdf> <./images/Applications/CMA
 _approx_marginal.pdf>]
-
-LaTeX Warning: Reference `fig:GRN_cycle' on page 24 undefined on input line 131
-9.
-
-[24] [25]
-<"images/Applications/GRN_posterior".pdf, id=301, 1067.99pt x 759.83875pt>
+[24]
+<"images/Applications/GRN_posterior".pdf, id=297, 1067.99pt x 759.83875pt>
 File: "images/Applications/GRN_posterior".pdf Graphic file (type pdf)
 
 <use "images/Applications/GRN_posterior".pdf>
 Package pdftex.def Info: "images/Applications/GRN_posterior".pdf used on input 
-line 1385.
+line 1479.
 (pdftex.def)             Requested size: 444.45935pt x 316.21996pt.
- [26 <./images/Applications/GRN_posterior.pdf>]
-
-LaTeX Warning: Reference `sec:ex_W1' on page 27 undefined on input line 1415.
-
-
-Overfull \hbox (11.88072pt too wide) in paragraph at lines 1431--1440
+ [25 <./images/Applications/GRN_posterior.pdf>]
+Overfull \hbox (11.88072pt too wide) in paragraph at lines 1514--1523
  [][] 
  []
 
 
-<"images/Applications/GRN_convergence".pdf, id=315, 649.42625pt x 380.42125pt>
+<"images/Applications/GRN_convergence".pdf, id=312, 649.42625pt x 380.42125pt>
 File: "images/Applications/GRN_convergence".pdf Graphic file (type pdf)
 
 <use "images/Applications/GRN_convergence".pdf>
 Package pdftex.def Info: "images/Applications/GRN_convergence".pdf used on inpu
-t line 1450.
+t line 1537.
 (pdftex.def)             Requested size: 183.33813pt x 107.39374pt.
 
-<"images/Applications/GRN_convergence_log".pdf, id=316, 649.42625pt x 381.425pt
+<"images/Applications/GRN_convergence_log".pdf, id=313, 649.42625pt x 381.425pt
 >
 File: "images/Applications/GRN_convergence_log".pdf Graphic file (type pdf)
  <use "images/Applications/GRN_convergence_log".pdf>
 Package pdftex.def Info: "images/Applications/GRN_convergence_log".pdf used on 
-input line 1451.
+input line 1538.
 (pdftex.def)             Requested size: 183.33813pt x 107.6771pt.
- [27] (./TPAIS_2018.bbl
-[28 <./images/Applications/GRN_convergence.pdf> <./images/Applications/GRN_conv
-ergence_log.pdf>]) [29] (./TPAIS_2018.aux)
+ [26] (./TPAIS_2018.bbl
+[27 <./images/Applications/GRN_convergence.pdf> <./images/Applications/GRN_conv
+ergence_log.pdf>]) [28] (./TPAIS_2018.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -1233,10 +1228,10 @@ LaTeX Warning: There were undefined references.
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 24516 strings out of 494099
- 469316 string characters out of 6155351
- 541454 words of memory out of 5000000
- 27479 multiletter control sequences out of 15000+600000
+ 24512 strings out of 494099
+ 469232 string characters out of 6155351
+ 541460 words of memory out of 5000000
+ 27475 multiletter control sequences out of 15000+600000
  12988 words of font info for 48 fonts, out of 8000000 for 9000
  430 hyphenation exceptions out of 8191
  54i,21n,54p,10458b,7056s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1264,10 +1259,10 @@ ive/fonts/type1/public/amsfonts/cm/cmti7.pfb></opt/local/share/texmf-texlive/fo
 nts/type1/public/amsfonts/cm/cmti8.pfb></opt/local/share/texmf-texlive/fonts/ty
 pe1/public/amsfonts/symbols/msbm10.pfb></opt/local/share/texmf-texlive/fonts/ty
 pe1/public/amsfonts/symbols/msbm7.pfb>
-Output written on TPAIS_2018.pdf (29 pages, 840541 bytes).
+Output written on TPAIS_2018.pdf (28 pages, 835646 bytes).
 PDF statistics:
- 444 PDF objects out of 1000 (max. 8388607)
- 319 compressed objects within 4 object streams
+ 441 PDF objects out of 1000 (max. 8388607)
+ 317 compressed objects within 4 object streams
  0 named destinations out of 1000 (max. 500000)
  108 words of extra memory for PDF output out of 10000 (max. 10000000)
 
