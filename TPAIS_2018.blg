@@ -3,46 +3,51 @@ Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: TPAIS_2018.aux
 The style file: siam.bst
 Database file #1: bibliography.bib
+Repeated entry---line 1748 of file bibliography.bib
+ : @article{douc2007minimum
+ :                         ,
+I'm skipping whatever remains of this entry
+Warning--empty journal in gibson1998efficient
 Warning--empty journal in pinsker1960information
-You've used 15 entries,
+You've used 29 entries,
             2030 wiz_defined-function locations,
-            599 strings with 5950 characters,
-and the built_in function-call counts, 5061 in all, are:
-= -- 490
-> -- 215
+            685 strings with 8597 characters,
+and the built_in function-call counts, 10313 in all, are:
+= -- 1014
+> -- 451
 < -- 0
-+ -- 86
-- -- 70
-* -- 384
-:= -- 791
-add.period$ -- 15
-call.type$ -- 15
-change.case$ -- 77
++ -- 182
+- -- 149
+* -- 782
+:= -- 1580
+add.period$ -- 29
+call.type$ -- 29
+change.case$ -- 157
 chr.to.int$ -- 0
-cite$ -- 16
-duplicate$ -- 244
-empty$ -- 361
-format.name$ -- 70
-if$ -- 1074
+cite$ -- 31
+duplicate$ -- 497
+empty$ -- 715
+format.name$ -- 149
+if$ -- 2207
 int.to.chr$ -- 0
-int.to.str$ -- 15
-missing$ -- 16
-newline$ -- 48
-num.names$ -- 30
-pop$ -- 71
+int.to.str$ -- 29
+missing$ -- 29
+newline$ -- 90
+num.names$ -- 57
+pop$ -- 140
 preamble$ -- 1
-purify$ -- 65
+purify$ -- 132
 quote$ -- 0
-skip$ -- 212
+skip$ -- 448
 stack$ -- 0
-substring$ -- 329
-swap$ -- 106
+substring$ -- 681
+swap$ -- 229
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 56
-warning$ -- 1
-while$ -- 54
-width$ -- 17
-write$ -- 132
-(There was 1 warning)
+type$ -- 112
+warning$ -- 2
+while$ -- 105
+width$ -- 31
+write$ -- 255
+(There was 1 error message)

@@ -1,30 +1,88 @@
 \begin{thebibliography}{10}
 
+\bibitem{anderson2016product}
+{\sc D.~Anderson and S.~Cotter}, {\em Product-form stationary distributions for
+  deficiency zero networks with non-mass action kinetics}, {Bulletin of
+  Mathematical Biology}, 78 (2016), pp.~2390--2407.
+
 \bibitem{anderson2010product}
 {\sc D.~Anderson, G.~Craciun, and T.~Kurtz}, {\em Product-form stationary
   distributions for deficiency zero chemical reaction networks}, Bulletin of
   mathematical biology, 72 (2010), pp.~1947--1970.
 
+\bibitem{anderson2007modified}
+{\sc David~F Anderson}, {\em A modified next reaction method for simulating
+  chemical systems with time dependent propensities and delays}, The Journal of
+  chemical physics, 127 (2007), p.~214107.
+
+\bibitem{anderson2011continuous}
+{\sc David~F Anderson and Thomas~G Kurtz}, {\em Continuous time markov chain
+  models for chemical reaction networks}, in Design and analysis of
+  biomolecular circuits, Springer, 2011, pp.~3--42.
+
 \bibitem{becskei2000engineering}
 {\sc A.~Becskei and L.~Serrano}, {\em Engineering stability in gene networks by
   autoregulation}, Nature, 405 (2000), p.~590.
 
+\bibitem{cao2004efficient}
+{\sc Yang Cao, Hong Li, and Linda Petzold}, {\em Efficient formulation of the
+  stochastic simulation algorithm for chemically reacting systems}, The journal
+  of chemical physics, 121 (2004), pp.~4059--4067.
+
+\bibitem{cappe2012population}
+{\sc O.~Capp{\'e}, A.~Guillin, J.~Marin, and C.~Robert}, {\em {Population Monte
+  Carlo}}, Journal of Computational and Graphical Statistics,  (2012).
+
 \bibitem{chen2012monte}
 {\sc M.~Chen, Q.~Shao, and J.~Ibrahim}, {\em {Monte Carlo methods in Bayesian
   computation}}, Springer Science \& Business Media, 2012.
+
+\bibitem{cotter2015parallel}
+{\sc C.~Cotter, S.~Cotter, and P.~Russell}, {\em {Parallel Adaptive Importance
+  Sampling}}, arXiv preprint arXiv:1508.01132,  (2015).
 
 \bibitem{cotter2016constrained}
 {\sc S.~Cotter}, {\em {Constrained approximation of effective generators for
   multiscale stochastic reaction networks and application to conditioned path
   sampling}}, Journal of Computational Physics, 323 (2016), pp.~265--282.
 
+\bibitem{cotter2011constrained}
+{\sc S.~Cotter, K.~Zygalakis, I.~Kevrekidis, and R.~Erban}, {\em A constrained
+  approach to multiscale stochastic simulation of chemically reacting systems},
+  The Journal of Chemical Physics, 135 (2011), p.~094102.
+
+\bibitem{cotter2016error}
+{\sc Simon~L Cotter and Radek Erban}, {\em Error analysis of diffusion
+  approximation methods for multiscale systems in reaction kinetics}, SIAM
+  Journal on Scientific Computing, 38 (2016), pp.~B144--B163.
+
+\bibitem{douc2007minimum}
+{\sc R.~Douc, A.~Guillin, J.~Marin, and C.~Robert}, {\em Minimum variance
+  importance sampling via population monte carlo}, ESAIM: Probability and
+  Statistics, 11 (2007), pp.~427--447.
+
 \bibitem{el2012bayesian}
 {\sc T.~El~Moselhy and Y.~Marzouk}, {\em Bayesian inference with optimal maps},
   Journal of Computational Physics, 231 (2012), pp.~7815--7850.
 
+\bibitem{erban2006gene}
+{\sc Radek Erban, Ioannis~G Kevrekidis, David Adalsteinsson, and Timothy~C
+  Elston}, {\em Gene regulatory networks: A coarse-grained, equation-free
+  approach to multiscale computation}, The Journal of chemical physics, 124
+  (2006), p.~084106.
+
+\bibitem{gibson1998efficient}
+{\sc Michael~A Gibson and Jehoshua Bruck}, {\em An efficient algorithm for
+  generating trajectories of stochastic gene regulation reactions},  (1998).
+
+\bibitem{gillespie1977exact}
+{\sc D.~Gillespie}, {\em Exact stochastic simulation of coupled chemical
+  reactions}, The Journal of Physical Chemistry, 81 (1977), pp.~2340--2361.
+
 \bibitem{gillespie2007stochastic}
-{\sc D.~Gillespie}, {\em Stochastic simulation of chemical kinetics}, Annu.
-  Rev. Phys. Chem., 58 (2007), pp.~35--55.
+\leavevmode\vrule height 2pt depth -1.6pt width 23pt, {\em Stochastic
+  simulation of chemical kinetics}, Annu. Rev. Phys. Chem., 58 (2007),
+  pp.~35--55.
 
 \bibitem{guido2006bottom}
 {\sc N.~Guido, X.~Wang, D.~Adalsteinsson, D.~McMillen, J.~Hasty, C.~Cantor,
@@ -44,6 +102,13 @@
 \bibitem{kass1995bayes}
 {\sc R.~Kass and A.~Raftery}, {\em Bayes factors}, Journal of the American
   Statistical Association, 90 (1995), pp.~773--795.
+
+\bibitem{kevrekidis2003equation}
+{\sc Ioannis~G Kevrekidis, C~William Gear, James~M Hyman, Panagiotis~G
+  Kevrekidid, Olof Runborg, Constantinos Theodoropoulos, et~al.}, {\em
+  Equation-free, coarse-grained multiscale computation: Enabling mocroscopic
+  simulators to perform system-level analysis}, Communications in Mathematical
+  Sciences, 1 (2003), pp.~715--762.
 
 \bibitem{parno2015transport}
 {\sc M.~Parno}, {\em {Transport maps for accelerated Bayesian computation}},
@@ -65,5 +130,9 @@
 \bibitem{robert2013monte}
 {\sc C.~Robert and G.~Casella}, {\em Monte {C}arlo statistical methods},
   Springer New York, 2004.
+
+\bibitem{russ2017parallel}
+{\sc P.~Russell}, {\em Parallel MCMC methods and their application in inverse
+  problems}, PhD thesis, School of Mathematics, University of Manchester, 2017.
 
 \end{thebibliography}

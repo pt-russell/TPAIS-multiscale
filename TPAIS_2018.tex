@@ -135,10 +135,18 @@
 }\xspace%
 }%
 
-\title{Transport map accelerated-PAIS, and application to inverse problems arising from
+\author{Simon L. Cotter\thanks{School of
+    Mathematics, University of Manchester, Manchester, UK. e:
+    simon.cotter@manchester.ac.uk. SLC is grateful for EPSRC First
+    grant award EP/L023393/1. SLC would like to thank the Isaac Newton
+    Institute for Mathematical Sciences for support and hospitality
+    during the programme ``Uncertainty quantification for complex systems: theory and methodologies'' when work on this paper was undertaken. This work was supported by:
+EPSRC grant number EP/K032208/1.} \and Ioannis G. Kevrekidis\thanks{} \and Paul
+  Russell\thanks{School of
+    Mathematics, University of Manchester, Manchester, UK.}}
+
+\title{Transport map accelerated adaptive importance sampling, and application to inverse problems arising from
   multiscale stochastic reaction networks}
-\author{Simon Cotter (EPSRC and INI), Yannis Kevrekidis (?), Paul
-  Russell (EPSRC)}
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -192,7 +200,7 @@ discussed in the previous section. We conclude with a discussion in
 Section \ref{sec:conc}.
 
 \section{Parallel Adaptive Importance Sampling}\label{sec:PAIS}
-PAIS****CITE**** is a variant of PMC****CITE****, which is a family of methods which are based
+Parallel adaptive importance sampling (PAIS)\cite{cotter2015parallel} is a variant of PMC\cite{cappe2012population}, which is a family of methods which are based
 on importance sampling. In importance sampling, we attempt to
 characterise a target density through sampling from that
 density. However, the target density $\pi$ itself is often too complex to sample
@@ -222,7 +230,7 @@ Often the variance of the MCMC proposal kernels can be tuned using
 their respective algorithmic parameters $\beta$. Good values for these
 algorithmic parameters can be
 found by optimising for the effective sample size of the importance
-sample that is produced (see ***CITE*** for more details).
+sample that is produced (see \cite{cotter2015parallel, russ2017parallel} for more details).
 
 If the ensemble is large enough, and the chain has entered
 probabilistic stationarity, then the current state of the ensemble is
@@ -242,10 +250,10 @@ weighted sample, ready for the next iteration of the algorithm. In
 PAIS, a state-of-the-art resampler is used, which uses optimal
 transport methods to find the equally weighted discrete sample which
 best represents the statistics of the importance
-sample***CITE****. For larger ensemble sizes $M$ this can become
+sample\cite{reich2013nonparametric}. For larger ensemble sizes $M$ this can become
 expensive, in which case a greedy approximation of this algorithm, the
 Approximate Multinomial Resampler (AMR) can be
-implemented***CITE****. The output of the resampler is then denoted
+implemented\cite{cotter2015parallel}. The output of the resampler is then denoted
 $\theta^{(k+1)}$ and the algorithm is ready for the next
 iteration. The importance samples $\{\hat{\theta}^{(k)},w^{(k)}\}$ The PAIS is summarised in Algorithm \ref{alg:PAIS}.
 
@@ -276,7 +284,8 @@ particular if that correlation is not global but only local. In this
 case, unless the proposal densities $q$ are informed by this local
 structure, the mixture distribution proposal may not well approximate
 $\pi$ without a very large large ensemble size $M$, which can become
-inhibitively expensive. Some methods have been proposed ****CITE****
+inhibitively expensive. Some methods have been
+proposed\cite{douc2007minimum}
 which use samples local to each particle to inform local covariance
 structure.
 
@@ -311,7 +320,7 @@ $\mu_{\theta}$, with the reference distribution, $\mu_r$, and
 show how the map can be constructed using a weighted sample
 and hence how we can incorporate the map into importance sampling schemes.
 
-\begin{dfn}[(Exact) Transport Map $T$]
+\begin{dfn}[Transport Map $T$]
 	A transport map $T$ is a function $T\colon
         \mathcal{X}\rightarrow\mathbb{R}^d$ such that the {\it
           pullback} of the reference measure with density $\phi(\cdot)$,
@@ -722,7 +731,8 @@ Clearly even with only basis functions of total order 3, we have a large number 
 \subfigure[Original sample $\theta$ from MH-RW algorithm.]{\includegraphics[width=0.31\textwidth]{"images/TPAIS/R2_transport_orig"}}\quad
 \subfigure[Push forward of $\theta$ onto reference space.]{\includegraphics[width=0.31\textwidth]{"images/TPAIS/R2_transport_ref"}}\quad
 \subfigure[Pull back of reference sample onto target space.]{\includegraphics[width=0.31\textwidth]{images/TPAIS/R2_transport_pullback}}
-\caption{Rosenbrock target density as described in Equation~\eqref{eqn:R2_repeat}.}
+\caption{The effect of the approximate transport map $\tilde{T}$ on a
+  sample from the Rosenbrock target density as described in Equation~\eqref{eqn:R2_repeat}.}
 \label{fig:R2_transport}
 \end{figure}
 
@@ -744,7 +754,7 @@ region, although not necessarily outside\cite{parno2014transport}.
   transport map based algorithms on the Rosenbrock density}
 
 We first find the optimal scaling parameters for the individual
-algorithms. This is done, as in ****CITE US**** by optimising for the effective sample size in
+algorithms. This is done, as in \cite{cotter2015parallel}, by optimising for the effective sample size in
 the PAIS algorithm, and by tuning the relative $L^2$ error in the MH
 algorithm. There is currently no
 guidance on the best way of tuning the MH algorithm with transport map
@@ -783,8 +793,9 @@ $\theta_2$. From our experiments, we have observed that the standard PAIS-RW req
 \centering
 \subfigure[Comparison of the two Transport PAIS options.]{\includegraphics[width=0.45\textwidth]{images/TPAIS/R1_L2}}
 \subfigure[Comparison of Transport PAIS option (2) with the standard algorithms.]{\includegraphics[width=0.45\textwidth]{images/TPAIS/R1_L2_all}}
-\caption{Convergence of Algorithms Transport M-H,
-  \ref{alg:TransportPAIS1}, \ref{alg:TransportPAIS2} for density \eqref{eqn:R2_repeat}. Ensemble size $M=150$, resampling performed using the AMR algorithm.}
+\caption{Convergence of algorithms; Transport M-H,
+  algorithm \ref{alg:TransportPAIS1}, algorithm \ref{alg:TransportPAIS2} for
+  density \eqref{eqn:R2_repeat}. Ensemble size $M=150$, resampling performed using the AMR algorithm.}
 \label{fig:R2_l2_convergence}
 \end{figure}
 
@@ -838,17 +849,17 @@ reaction $R_j$.
 
 The model can be represented as the following expression involving
 $N_r$ different unit rate Poisson
-processes****CITE ANDERSON ET AL**** $Y_j$, given by:
+processes\cite{anderson2011continuous} $Y_j$, given by:
 \begin{equation}\label{eq:RTC}
 X(t) = X(0) + \sum_{j=1}^{N_r} \nu_j \int_0^t \alpha_j(X(s)) ds.
 \end{equation}
 
 The master equation for this model is only solvable in certain
-situations, for example monomolecular networks****CITE****, or for
+situations, for example monomolecular networks\cite{jahnke2007solving}, or for
 steady-state solutions certain deficiency
-zero networks****CITE*****. Trajectories for this system can be
-sampled exactly, for instance using the Gillespie SSA***CITE***, or
-its variants\cite{gillespie2007stochastic}****CITE****. However, if the system is stiff, i.e. there
+zero networks\cite{anderson2010product,anderson2016product}. Trajectories for this system can be
+sampled exactly, for instance using the Gillespie SSA\cite{gillespie1977exact}, or
+its variants\cite{gillespie2007stochastic,gibson1998efficient,cao2004efficient,anderson2007modified}. However, if the system is stiff, i.e. there
 are some reactions which are firing many times on a timescale for
 which others are unlikely to fire at all, then trajectories can become
 prohibitively expensive to simulate, since these methods simulate
@@ -868,14 +879,13 @@ without the need to compute many fast reaction events.
 This approach can work well when there is a large timescale gap
 between the fast and slow reactions in a system, but where the
 timescale gap is less pronounced, it can lead to significant
-errors***cite cotter erban errors paper***. Another approach is the
-constrained multiscale method (CMA)***CITE***, based in part on the
-equation-free approach to multiscale computations***CITE
-YANNIS****. This approach also assumes quasi-equillibrium in the
+errors\cite{cotter2016error}. Another approach is the
+constrained multiscale method (CMA)\cite{cotter2011constrained,cotter2016constrained}, based in part on the
+equation-free approach to multiscale computations\cite{kevrekidis2003equation,erban2006gene}. This approach also assumes quasi-equillibrium in the
 system, but takes into account the effect that the slow reactions can
 have on the invariant distribution of the fast variables in the
 system. For a more detailed description of this method, please refer
-to the literature***CITATIONS***.
+to the literature\cite{cotter2016constrained}.
 
 Multiscale methods are not only of use when forward evaluations of the
 dynamics are costly, but can also be of use where we attempt to solve
@@ -1033,32 +1043,35 @@ some rate constant $k_i$, and where mass action kinetics is
 assumed. The parameters $k_i$ are non-negative, and $\mathbf{k} =
 [k_1,\dots,k_4]^\top \in \mathbb{R}_+^4 = \mathcal{X}$. We denote the
 population count of
-species $S_i$ by $X_i \in \mathbb{N}_0$. We assume that we are in a
-parameter regime such that the reactions $R_2\colon S_1\rightarrow S_2$ and $R_3\colon S_2\rightarrow S_1$ occur
-more frequently than the other reactions, $R_1\colon \emptyset \rightarrow S_1$, and $R_4\colon S_2 \rightarrow \emptyset$. Notice that both
+species $S_i$ by $X_i \in \mathbb{N}_0$. 
+We consider this system with the following parameters:
+\begin{equation}\label{eq:params1}
+k_1 = 100, \qquad k_2 = k_3 = 10, \qquad k_4 = 1,
+\end{equation} 
+
+ In this 
+parameter regime the reactions $R_2\colon S_1\rightarrow S_2$ and $R_3\colon S_2\rightarrow S_1$ occur
+more frequently than the other reactions. Notice that both
 chemical species are involved in fast reactions. However, the quantity
 $S = X_1 + X_2$, is conserved by both of the fast reactions,
 and as such, this is the slowly changing quantity in this system.
 
-We create trajectories of this system with the following parameters:****
-\begin{equation}
-k_1 = ? etc
-\end{equation}
-over the time period ****$t \in [0,?]$.
-
-We assume that we are only able to observe
+We observe this system over the time period $t \in [0,500]$ with
+initial condition ******, but we assume that we are only able to observe
 the slow variable $S(t)$. 
 The effective dynamics of $S$ can be approximated by a system of only
 two reactions:
 \begin{equation}\label{eqn:QSSA_system}
-	\emptyset \xrightarrow{\alpha_1(S)} S \xrightarrow{\bar{\alpha}_4(S)} \emptyset.
+	\emptyset \xrightarrow{\alpha_1(S)} S \xrightarrow{\bar{\alpha}_4(S)} \emptyset,
 \end{equation}
+where here the propensities are shown as opposed to the rates.
+
 The effective propensity $\bar{\alpha}_4(S)$ can be  approximated through
 application of a multiscale approximation, as detailed in Section
-\ref{sec:multi}, and in more detail in ****CITE****. These effective
+\ref{sec:multi}, and in more detail in \cite{cotter2016constrained}. These effective
 propensities can often be computed without the need for expensive
 simulations, in particular when the fast subsystem is deficiency zero,
-which is often the case****CITE DIF ZERO PAPERS****. For this very
+which is often the case\cite{anderson2010product,anderson2016product}. For this very
 simple example, the dependance of these effective
 propensities on the original rate parameters can be explicitly
 understood. Under the QEA,
@@ -1110,7 +1123,9 @@ The hyper-parameters corresponding to each of these prior distributions are give
 \begin{figure}[htb]
 \centering
 \includegraphics[width=0.9\textwidth]{"images/Applications/CMA_posterior"}
-\caption{Posterior for the constrained multiscale problem outlined in Section~\ref{sec:chem_multiscale}.}
+\caption{CMA approximation \eqref{eq:Apos} of the posterior arising from observations of
+  the slow variable $S = X_1 + X_2$ for system
+  \eqref{eqn:full_system}  with true rates given by \eqref{eq:params1}.}
 \label{fig:chem_CMA_posterior}
 \end{figure}
 
@@ -1163,9 +1178,9 @@ algorithm this is equivalent to a vanilla random walk. The proposal distribution
 		\node at (5,-1.5) {$X\in\mathcal{Y}\subset\mathbb{R}^d$};
 		\node at (10,-1.5) {$r\in R \subset\mathbb{R}^d$};
 	\end{tikzpicture}
-	\caption{Top: Couplings between parameter space and reference
-          when using the transport map. Bottom: Couplings between parameter space and reference space
-          when using the transport map proposal with a $\log$ preconditioner.}
+	\caption{Couplings between parameter space and reference
+          when using the transport map with (bottom) and without (top)
+        a log preconditioner.}
 	\label{fig:chem_coupling}
 \end{figure}
 
@@ -1214,7 +1229,7 @@ and
 \]
 
 % choice of resampler?
-We will use the AMR***CITE*** resampler with an ensemble size of
+We will use the AMR\cite{russ2017parallel} resampler with an ensemble size of
 $M=500$. This increase in ensemble size in comparison with previous
 example in Section \ref{sec:conv} is to allow for the increase in parameter dimension.
 
@@ -1259,7 +1274,8 @@ of the PAIS algorithm, as we would hope.
 \centering
 \subfigure[Sampling algorithms with no preconditioner for $\tilde{T}$.]{\includegraphics[width=0.495\textwidth]{"images/Applications/CMA_L2_param_space"}}
 \subfigure[Sampling algorithms with a $\log$ preconditioner for $\tilde{T}$.]{\includegraphics[width=0.495\textwidth]{"images/Applications/CMA_L2_log_space"}}
-\caption{Convergence of the constrained multiscale example described in Section~\ref{sec:chem_multiscale}.}
+\caption{Convergence of eight different MCMC algorithms for the CMA
+  approximation of the  posterior arising from the example in Section \ref{sec:chem_multiscale}.}
 \label{fig:chem_multiscale_L2}
 \end{figure}
 
@@ -1273,9 +1289,10 @@ negative reaction rates. Sampling with transport maps with a $\log$ precondition
 
 \begin{figure}[!htb]
 \centering
-\subfigure[Reference space mapped to by $\hat{T}$.]{\includegraphics[width=0.495\textwidth]{"images/Applications/CMA_ref_space_MHTRW"}}
-\subfigure[Reference space mapped to by $T\circ\log$.]{\includegraphics[width=0.495\textwidth]{"images/Applications/CMA_ref_space_MHlogTRW"}}
-\caption{Push forward of the target measure on reference space for the problem described in Section~\ref{sec:multiscale_posterior} found using the TRW and logTRW proposal distributions. Components are linked by the relation $r_i = T_i'(k_i)$ in (a) and $r_i = T_i\circ\log(k_i)$ in (b).}
+\subfigure[Push forward of the posterior sample through$\hat{T}$ with no log preconditioner.]{\includegraphics[width=0.495\textwidth]{"images/Applications/CMA_ref_space_MHTRW"}}
+\subfigure[Push forward of the posterior sample through$\hat{T}$ with log preconditioner.]{\includegraphics[width=0.495\textwidth]{"images/Applications/CMA_ref_space_MHlogTRW"}}
+\caption{Push forward of the target measure on reference space for the the CMA
+  approximation of the  posterior arising from the example in Section \ref{sec:chem_multiscale}, found using the TRW and logTRW proposal distributions. Components are linked by the relation $r_i = T_i(k_i)$ in (a) and $r_i = T_i\circ\log(k_i)$ in (b).}
 \label{fig:chem_reference_spaces}
 \end{figure}
 
@@ -1356,7 +1373,7 @@ dependent on all four parameters $\theta_0 = (k_1, k_2, k_3, k_4)^\top$. The mar
 	1 & 3.2e-3 \\
 	2 & 1.7e-3 \\ \bottomrule
 \end{tabular}
-\caption{Marginal distributions for the data $(\mathbf{R},\mathbf{T})^\top$ for each model considered in Section~\ref{sec:multiscale_posterior}.}
+\caption{Marginal distributions for the data $(\mathbf{R},\mathbf{T})^\top$ for each model considered in Section~\ref{sec:chem_multiscale}.}
 \label{tab:chem_Bayes_marginals}
 \end{table}
 
@@ -1375,7 +1392,9 @@ superior to the QEA approximation.
 \centering
 \subfigure[Marginal for $\hat{k}_4^{\text{QEA}}$.]{\includegraphics[width=0.495\textwidth]{"images/Applications/QEA_approx_marginal"}}
 \subfigure[Marginal for $\hat{k}_4^{\text{CMA}}$.]{\includegraphics[width=0.495\textwidth]{"images/Applications/CMA_approx_marginal"}}
-\caption{Comparison of the approximate marginal densities for the `observable parameter' $\hat{k}_4$ under models $\mathcal{M}_1$ and $\mathcal{M}_2$. Marginals for these two parameters are approximated using samples which have been produced by targeting the three densities $\pi_i = \mathbb{P}(\theta_i|D,\mathcal{M}_i)$ for $i = 0, 1, 2$.}
+\caption{Comparison of the approximate marginal densities for the
+  quantities $\hat{k}_4^{\text{QEA}}$ and $\hat{k}_4^{\text{CMA}}$
+  across the three posterior densities $\pi_i = \mathbb{P}(\theta_i|D,\mathcal{M}_i)$ for $i = 0, 1, 2$.}
 \label{fig:chem_model_comp}
 \end{figure}
 
@@ -1448,7 +1467,7 @@ Here, the propensities are displayed, as opposed to the rates, with
 approximations of the propensities $\hat{\alpha}_5$ and
 $\hat{\alpha}_7$ to be computed. We omit the derivation of these
 effective propensities, using the CMA methodology, for brevity, but
-interested readers can see more details in ****CITE THESIS****.
+interested readers can see more details in \cite{russ2017parallel}.
 
 \subsubsection{Target Distribution}
 As alluded to in the previous section, we aim to sample from the CMA
@@ -1477,7 +1496,8 @@ The priors for this problem were chosen to be fairly uninformative with respect 
 \begin{figure}[htb]
 \centering
 \makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]{"images/Applications/GRN_posterior"}}%
-\caption{Marginal densities of the posterior distribution for the GRN example in Section~\ref{sec:grn}.}
+\caption{Marginal densities of the CMA approximation of the posterior
+  distribution for the GRN example in Section~\ref{sec:grn}.}
 \label{fig:GRN_posterior}
 \end{figure}
 
@@ -1536,7 +1556,8 @@ Due to the numerical cost of calculating the full relative $L^2$ errors for this
 \centering
 \subfigure[Sampling algorithms with no preconditioner for $\tilde{T}$.]{\includegraphics[width=0.495\textwidth]{"images/Applications/GRN_convergence"}}
 \subfigure[Sampling algorithms with a $\log$ preconditioner for $\tilde{T}$.]{\includegraphics[width=0.495\textwidth]{"images/Applications/GRN_convergence_log"}}
-\caption{Convergence of the GRN example described in Section~\ref{sec:grn}.}
+\caption{Convergence of eight different MCMC algorithms for the CMA
+  approximation of the  posterior arising from the example in Section \ref{sec:grn}.}
 \label{fig:grn_L2}
 \end{figure}
 
@@ -1571,34 +1592,42 @@ although only marginally.
 
 \section{Discussion}\label{sec:conc}
 
+
+One major issue with PMC-type algorithms is the curse of
+dimensionality. This curse is two-fold, since as the target
+distribution's dimension is increased, a larger ensemble size is often
+required in order to capture the addition complexity of the density
+that the higher dimension enables. Furthermore, the cost of the
+resampling step within the algorithm grows with the ensemble size. For
+example, the ETPF algorithm is $\mathcal{O}(n^2)$. However, the
+simiplification that the transport map makes has some potential to go
+some way to tackling this problem.
+
 \subsection{Sampling in (moderately) higher
   dimensions}\label{sec:TPAIS_higher_dim}
-One major problem with importance sampling schemes is the curse of
-dimensionality, which means that methods such as PAIS, and other PMC
-methods, can only be used for relatively low dimensional
-problems. Here, we will briefly discuss how transport maps could aid
+Here, we will briefly discuss how transport maps could aid
 with making moderately higher dimensional problems accessible to this
 family of methods.
 
 Algorithm~\ref{alg:TransportPAIS2} allows us to decorrelate the
 dimensions of our random parameter on reference space, where we then
 can resample and map the resulting ensemble back onto target
-space. Since, on reference space, the dimensions are uncorrelated, we
+space. Since, on reference space, the dimensions are approximately uncorrelated, we
 are able to resample in each dimension separately. Resampling in a
 single dimension allows for optimisations in resampling code, and also
 means that the resampler is not affected by the curse of
 dimensionality. 
 
-If we can approximate the posterior well with our mixture and with the
-transport map, we should not be affected by the increase in dimension
-to the extent we have been with the standard PAIS-RW algorithm. In one
+In one
 dimension the ETPF algorithm can be implemented very efficiently. As
 described in~\cite{reich2013nonparametric}, the coupling matrix has
 all non-zero entries in a staircase pattern when the state space is
 ordered. We can exploit this knowledge to produce
-Algorithm~\ref{alg:ETPF_1d}. Which is much faster than using the
+Algorithm~\ref{alg:ETPF_1d}, which is much faster than using the
 simplex algorithm to minimise the associated cost function, and faster
-than the AMR algorithm****CITE OUR OTHER PAPER****.
+than the AMR algorithm\cite{cotter2015parallel}. Moreover, the task of
+running this resampler can then be parallelised over $d$
+processors. This could be an area for further study.
 
 \begin{table}[!htpb]
 \begin{algorithm}[H]
