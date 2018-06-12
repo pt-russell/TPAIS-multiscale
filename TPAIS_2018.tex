@@ -141,7 +141,10 @@
     grant award EP/L023393/1. SLC would like to thank the Isaac Newton
     Institute for Mathematical Sciences for support and hospitality
     during the programme ``Uncertainty quantification for complex systems: theory and methodologies'' when work on this paper was undertaken. This work was supported by:
-EPSRC grant number EP/K032208/1.} \and Ioannis G. Kevrekidis\thanks{} \and Paul
+EPSRC grant number EP/K032208/1.} \and Ioannis
+G. Kevrekidis\thanks{Chemical and Biomolecular Engineering \& Applied
+  Mathematics and Statistics, Johns Hopkins University, Baltimore, MD
+  21218. The work of IGK was partially supported by the US National Science Foundation and by DARPA.} \and Paul
   Russell\thanks{School of
     Mathematics, University of Manchester, Manchester, UK.}}
 
@@ -176,18 +179,125 @@ approximations of the posterior than others.
 
 
 \section{Introduction}
+The importance of Markov chain Monte Carlo (MCMC) methods is becoming
+increasingly apparent, in a world replete with datasets which need to be
+combined with complex dynamical systems in order for us to be able
+make progress in a range of scientific fields. Different MCMC methods
+have been designed with different challenges in mind; high dimensional
+targets****CITE FASTER PAPER*****, large data sets ****zigzag****,
+other methods which exploit piecewise deterministic Markov processes
+***bouncey particle***,
+methods which are able to make very large moves informed by the
+data****stochastic mala, HMC****, methods which are able to exploit
+the geometry of the target***riemannian****. Population Monte Carlo
+(pMC) methods uses efficient importance sampling proposals informed by an
+ensemble of particles which have already learned about the structure
+of the target***cite standard papers including AIS etc****. These methods are particularly useful in the context of
+low dimensional target distributions which have complex structure, for
+which traditional Metropolis-Hastings methods tend to struggle, for
+example when the target is multimodal or if the density is
+concentrated on a lower-dimensional manifold. Moreover, they are an
+excellent candidate for parallelisation, since the task of computing
+the likelihood for each particle in the ensemble can be distributed
+across a set of processors. This is of utmost importance in an age
+where increases in computational power are most likely to come from
+large-scale parallelisation as opposed to the large speed-ups in
+individual processors that we saw throughout the 20th Century.
+
+In ****cite PAIS***, we explored ideas from adaptive MCMC within a
+pMC-type structure, in order to construct an adaptive importance
+sampler which could automatically adapt to optimise
+efficiency. Alongside this, we explored the use of state-of-the-art
+resamplers****cite sebastian***, and a greedy approximation (the
+approximate multinomial resampler) in order to improve the quality of
+the importance sampler proposals.
+
+Other approaches to challenging posterior structure have been
+proposed, including the work of Marzouk and Parnod***cite***, who
+demonstrated how invertible transport maps can be constructed which
+map the target distribution close to an easily-explored reference
+density, such as a d-dimensional Gaussian. Since the map is
+invertible, Gaussian proposal densities on the reference space can be
+mapped to highly informed moves on the parameter space.
+
+In this paper, we particularly concern ourselves with the problem of
+inverse problems in stochastic reaction networks. This type of model
+is used in situations where ODE or diffusion****Chem langevin****
+approximations of chemical reaction kinetics are not viable, usually
+because of the low concentration of one or more chemical
+species****Gillespie****. Biochemical networks typically fall into
+this category, because of the small volume of the reactors involved (a
+cell).
+
+One challenge with networks arising from these applications is that
+they often have some reactions which are occurring many times on a
+timescale in which other reactions in the system are unlikely to
+occur. This multiscale behaviour throws up two main challenges, both
+in observability in an experimental setting, but also in the context
+of modelling, where multiscale systems can make the simulation of the
+continuous time Markov chain computationally intractable.
+
+A range of numerical methods have been suggested to tackle this latter
+problem, including tau-leaping***cite****, diffusion approximations
+***radek and Yannis, cotter and Yannis****, quasi-steady state
+approximations ****slow scale and nested****, and other averaging
+arguments ****cotter comp. phys****. Some of these approaches are more
+computationally intensive than others, but this can be mitigated with the
+use of analytical results about the invariant densities of certain
+types of fast subsystems***product-form papers****.
+
+We would not expect the fast processes in such a system to be
+experimentally observable. In such a situation where only the slow
+variables in a system are identifiable, in an ideal world, we would be
+be able to integrate over the space of all possible trajectories of
+the fast processes. Since this is an insurmountable computational
+task, we might instead wish to approximate the likelihoods arising
+from such a set of observations by the use of an appropriate
+multiscale methodology.
+
+The partial observability of these systems leads to only
+partial-observability of the unknown parameters in the system, for
+example the reaction rates of the fast reactions. The resulting
+multiscale approximations, and the resulting approximations of the
+likelihoods arising from the inverse problem for such a network, then
+often exhibit 
+insensitivity to changes in certain directions of
+parameter space. This causes problems when aiming to sample from such
+a target, since the density is concentrated on a manifold whose
+tangential vectors point in directions of insensitivity. This
+\emph{sloppiness}***cite*** of the likelihood is a challenging problem
+that appears in many applications in science and engineering***active
+subspaces literature here****.
+
+In this work, we aim to improve the PAIS machinery, which is limited,
+as the same proposal kernel is used for each particle in the
+ensemble. This homogeniety of proposal kernels means that complex
+structures in the density can only be well represented with a large
+increase in the ensemble size, increasing computational cost. If
+computational resources do not allow for such an increase, this can
+lead to stability issues in the algorithm, due to the proposal
+distribution in the importance sampler not representing well the
+target density, leading to high variance in the weights, causing slow
+convergence.
+
+As shown in ***cite marzouk****, transport maps can be used to create
+proposal densities which are highly informed by the structure of the
+target density. In this paper, we demonstrate how such maps can also
+be constructed using importance weights arising from a pMC-type
+algorithm in order to accelerate and stabilise convergence. We will
+then apply the methodology to some complex posterior distributions
+arising from Bayesian inversion of multiscale (bio-)chemical networks.
+
 %Topics to cover: parallel MCMC, pMC, PAIS
 %Transport maps, transport map MCMC
 %Stochastic reaction networks
 %Multiscale approximations, QSSA/QEA, CMA
 
-In Section \ref{sec:PAIS}, we will briefly reintroduce Parallel
-Adaptive Importance Sampling (PAIS), a variant of Population Monte
-Carlo (PMC) which incorporates state of the art resamplers. In Section \ref{sec:map} we show how an appropriate transport map can
+In Section \ref{sec:PAIS}, we will briefly reintroduce PAIS. In Section \ref{sec:map} we show how an appropriate transport map can
 be constructed from importance samples which maps the posterior close
 to a reference Gaussian measure. In Section \ref{sec:TPAIS} we show
 how such a map can be incorporated into a sophisticated parallel MCMC
-infrastructure in order to accelerate mixing. In Section
+infrastructure in order to accelerate mixing, and improve stability. In Section
 \ref{sec:conv} we seek to show the advantages of this approach through
 the analysis of a challenging test problem. In Section
 \ref{sec:multi} we consider how likelihoods can be approximated using
