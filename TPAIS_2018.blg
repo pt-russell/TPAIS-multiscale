@@ -1,4 +1,4 @@
-This is BibTeX, Version 0.99d (TeX Live 2017/MacPorts 2017_3)
+This is BibTeX, Version 0.99d (TeX Live 2017/MacPorts 2017_2)
 Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: TPAIS_2018.aux
 The style file: siam.bst
@@ -7,47 +7,59 @@ Repeated entry---line 1748 of file bibliography.bib
  : @article{douc2007minimum
  :                         ,
 I'm skipping whatever remains of this entry
+Repeated entry---line 1785 of file bibliography.bib
+ : @article{duane1987hybrid
+ :                         ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1796 of file bibliography.bib
+ : @article{girolami2011riemann
+ :                             ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1827 of file bibliography.bib
+ : @article{anderson2016product
+ :                             ,
+I'm skipping whatever remains of this entry
 Warning--empty journal in gibson1998efficient
 Warning--empty journal in pinsker1960information
-You've used 29 entries,
+You've used 54 entries,
             2030 wiz_defined-function locations,
-            685 strings with 8597 characters,
-and the built_in function-call counts, 10313 in all, are:
-= -- 1014
-> -- 451
+            826 strings with 13013 characters,
+and the built_in function-call counts, 21149 in all, are:
+= -- 2126
+> -- 932
 < -- 0
-+ -- 182
-- -- 149
-* -- 782
-:= -- 1580
-add.period$ -- 29
-call.type$ -- 29
-change.case$ -- 157
++ -- 377
+- -- 315
+* -- 1621
+:= -- 3159
+add.period$ -- 54
+call.type$ -- 54
+change.case$ -- 318
 chr.to.int$ -- 0
-cite$ -- 31
-duplicate$ -- 497
-empty$ -- 715
-format.name$ -- 149
-if$ -- 2207
+cite$ -- 56
+duplicate$ -- 987
+empty$ -- 1431
+format.name$ -- 315
+if$ -- 4572
 int.to.chr$ -- 0
-int.to.str$ -- 29
-missing$ -- 29
-newline$ -- 90
-num.names$ -- 57
-pop$ -- 140
+int.to.str$ -- 54
+missing$ -- 55
+newline$ -- 165
+num.names$ -- 104
+pop$ -- 269
 preamble$ -- 1
-purify$ -- 132
+purify$ -- 269
 quote$ -- 0
-skip$ -- 448
+skip$ -- 934
 stack$ -- 0
-substring$ -- 681
-swap$ -- 229
+substring$ -- 1532
+swap$ -- 488
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 112
+type$ -- 210
 warning$ -- 2
-while$ -- 105
-width$ -- 31
-write$ -- 255
-(There was 1 error message)
+while$ -- 213
+width$ -- 56
+write$ -- 480
+(There were 4 error messages)

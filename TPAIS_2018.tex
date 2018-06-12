@@ -153,15 +153,15 @@ G. Kevrekidis\thanks{Chemical and Biomolecular Engineering \& Applied
 \begin{document}
 \maketitle
 \begin{abstract}
-In many applications, inverse problems arise where where there are
-complex correlations between the different parameters which we wish to
-infer from data. The correlations often manifest themselves as lower
+In many applications, Bayesian inverse problems can give rise to
+probability distributions which contain complexities due to the
+Hessian varying greatly across parameter space. This complexity often manifests itself as lower
 dimensional manifolds on which the likelihood function is
 invariant, or varies very little. This can be due to trying to infer
 unobservable parameters, or due to sloppiness in the model which is
 being used to describe the data. In such a situation, standard
-sampling methods for characterising the posterior distribution which
-do not incorporate information about this structure will be highly
+sampling methods for characterising the posterior distribution, which
+do not incorporate information about this structure, will be highly
 inefficient. Moreover, most methods are inherently serial in nature,
 and as such are not expoiting the parallelised  nature of modern
 computer infrastructure. In this paper, we seek to develop a method to
@@ -184,15 +184,15 @@ increasingly apparent, in a world replete with datasets which need to be
 combined with complex dynamical systems in order for us to be able
 make progress in a range of scientific fields. Different MCMC methods
 have been designed with different challenges in mind; high dimensional
-targets****CITE FASTER PAPER*****, large data sets ****zigzag****,
+targets\cite{cotter2013mcmc}, large data sets\cite{bierkens2016zig},
 other methods which exploit piecewise deterministic Markov processes
-***bouncey particle***,
+\cite{bouchard2018bouncy},
 methods which are able to make very large moves informed by the
-data****stochastic mala, HMC****, methods which are able to exploit
-the geometry of the target***riemannian****. Population Monte Carlo
+data\cite{teh2016consistency,duane1987hybrid}, methods which are able to exploit
+the geometry of the target\cite{girolami2011riemann}. Population Monte Carlo
 (pMC) methods uses efficient importance sampling proposals informed by an
 ensemble of particles which have already learned about the structure
-of the target***cite standard papers including AIS etc****. These methods are particularly useful in the context of
+of the target\cite{cappe2012population,cappe2008adaptive,douc2007convergence,douc2007minimum, martino2017layered, cornuet2012adaptive, martino2015adaptive}. These methods are particularly useful in the context of
 low dimensional target distributions which have complex structure, for
 which traditional Metropolis-Hastings methods tend to struggle, for
 example when the target is multimodal or if the density is
@@ -204,28 +204,44 @@ where increases in computational power are most likely to come from
 large-scale parallelisation as opposed to the large speed-ups in
 individual processors that we saw throughout the 20th Century.
 
-In ****cite PAIS***, we explored ideas from adaptive MCMC within a
+In \cite{cotter2015parallel}, we explored ideas from adaptive MCMC within a
 pMC-type structure, in order to construct an adaptive importance
 sampler which could automatically adapt to optimise
 efficiency. Alongside this, we explored the use of state-of-the-art
-resamplers****cite sebastian***, and a greedy approximation (the
+resamplers\cite{reich2013nonparametric}, and a greedy approximation (the
 approximate multinomial resampler) in order to improve the quality of
 the importance sampler proposals.
 
 Other approaches to challenging posterior structure have been
-proposed, including the work of Marzouk and Parnod***cite***, who
+proposed, including the work of Marzouk and Parnod\cite{parno2014transport}, who
 demonstrated how invertible transport maps can be constructed which
 map the target distribution close to an easily-explored reference
 density, such as a d-dimensional Gaussian. Since the map is
 invertible, Gaussian proposal densities on the reference space can be
-mapped to highly informed moves on the parameter space.
+mapped to highly informed moves on the parameter space. A related idea
+is the use of the anisotropic diffusion maps\cite{singer2008non}, in
+which a map which describes the slow manifold is constructed using
+principle component analysis. These ideas have also been applied to
+stochastic reaction
+networks\cite{singer2009detecting,dsilva2016data}. In
+\cite{chiavazzo2017intrinsic}, these maps were used to propogate
+data-mining into unexplored regions which were predicted to be close
+to the lower-dimensional manifold. The idea is similar to that of the
+Lamperti or Girsanov transformations for SDEs\cite{flandrin2003stationarity,gardiner2009stochastic},  the aim being to map complex
+processes onto a standard one which is well understood, through a
+change of measure.
+
+Bayesian inverse problems are not the only area in which probability
+densities arise which are concentrated on, or close, lower dimensional
+manifolds. This is also a common feature of molecular dynamics
+problems, where 
 
 In this paper, we particularly concern ourselves with the problem of
 inverse problems in stochastic reaction networks. This type of model
-is used in situations where ODE or diffusion****Chem langevin****
+is used in situations where ODE or diffusion\cite{gillespie2000chemical}
 approximations of chemical reaction kinetics are not viable, usually
 because of the low concentration of one or more chemical
-species****Gillespie****. Biochemical networks typically fall into
+species\cite{gillespie1977exact}. Biochemical networks typically fall into
 this category, because of the small volume of the reactors involved (a
 cell).
 
@@ -237,14 +253,13 @@ in observability in an experimental setting, but also in the context
 of modelling, where multiscale systems can make the simulation of the
 continuous time Markov chain computationally intractable.
 
-A range of numerical methods have been suggested to tackle this latter
-problem, including tau-leaping***cite****, diffusion approximations
-***radek and Yannis, cotter and Yannis****, quasi-steady state
-approximations ****slow scale and nested****, and other averaging
-arguments ****cotter comp. phys****. Some of these approaches are more
+A range of numerical methods have been suggested to tackle this second
+problem, including tau-leaping\cite{rathinam2003stiffness,cao2006efficient}, diffusion approximations\cite{erban2006gene,cotter2011constrained,cotter2016error}, quasi-steady state
+approximations\cite{ea2005nested,cao2005slow}, and other averaging
+arguments\cite{cotter2016constrained}. Some of these approaches are more
 computationally intensive than others, but this can be mitigated with the
 use of analytical results about the invariant densities of certain
-types of fast subsystems***product-form papers****.
+types of fast subsystems\cite{jahnke2007solving,anderson2010product,anderson2016product}.
 
 We would not expect the fast processes in such a system to be
 experimentally observable. In such a situation where only the slow
@@ -265,12 +280,11 @@ insensitivity to changes in certain directions of
 parameter space. This causes problems when aiming to sample from such
 a target, since the density is concentrated on a manifold whose
 tangential vectors point in directions of insensitivity. This
-\emph{sloppiness}***cite*** of the likelihood is a challenging problem
-that appears in many applications in science and engineering***active
-subspaces literature here****.
+\emph{sloppiness}\cite{gutenkunst2007universally,apgar2010sloppy} of the likelihood is a challenging problem
+that appears in many applications in science and engineering\cite{constantine2014active}.
 
 In this work, we aim to improve the PAIS machinery, which is limited,
-as the same proposal kernel is used for each particle in the
+since in the current presentation the same proposal kernel is used for each particle in the
 ensemble. This homogeniety of proposal kernels means that complex
 structures in the density can only be well represented with a large
 increase in the ensemble size, increasing computational cost. If
@@ -280,7 +294,7 @@ distribution in the importance sampler not representing well the
 target density, leading to high variance in the weights, causing slow
 convergence.
 
-As shown in ***cite marzouk****, transport maps can be used to create
+As shown in\cite{parno2014transport}, transport maps can be used to create
 proposal densities which are highly informed by the structure of the
 target density. In this paper, we demonstrate how such maps can also
 be constructed using importance weights arising from a pMC-type
@@ -335,7 +349,7 @@ each of the current particles in the system. If $\theta^{(k)} = [\theta_1^{(k)},
 \theta_2^{(k)}, \ldots, \theta_M^{(k)}]^\top$ is the current state of the
 ensemble, and we wish to use an MCMC proposal density $q(\cdot ;
 \cdot, \beta)$ then 
-\[\chi^{(k)} = \frac{1}{M} \sum_{i=1}^M q(\cdot ; \theta_i^{(k)}.\]
+\[\chi^{(k)} = \frac{1}{M} \sum_{i=1}^M q(\cdot ; \theta_i^{(k)}).\]
 Often the variance of the MCMC proposal kernels can be tuned using
 their respective algorithmic parameters $\beta$. Good values for these
 algorithmic parameters can be
@@ -350,7 +364,7 @@ sample $\{\hat{\theta}^{(k)},w^{(k)}\}$. It can be advantageous to use stratifie
 mixture in order to
 ensure that the sample made is as representative as possible of the
 target density, i.e.
-\[ \hat{\theta}_i^{(k)} \sim q(\cdot ; \theta_i^{(k)}\]
+\[ \hat{\theta}_i^{(k)} \sim q(\cdot ; \theta_i^{(k)})\]
 for each $i = 1,2,\ldots,M$. We now have a weighted sample, and it
 would be inadvisable to use an equally weighted mixture of proposal
 distributions from each of these points. Therefore, before starting
@@ -383,14 +397,14 @@ iteration. The importance samples $\{\hat{\theta}^{(k)},w^{(k)}\}$ The PAIS is s
 
 		Resample $\theta^{(k+1)} \leftarrow \| w^{(k)}\|_1^{-1}\sum_{j=1}^M w_j^{(k)}\delta_{\hat{\theta}_j^{(k)}}(\cdot)$.\label{algline:PAIS_resample}\;
 	}
-	Output $\{(w^{(n)}, \hat{\theta}^{(n)}\}_{n=1}^N$.
+	Output $\{(w^{(n)}, \hat{\theta}^{(n)})\}_{n=1}^N$.
 \caption{The PAIS Algorithm.\label{alg:PAIS}}
 \end{algorithm}
 \end{table}
 
 One problem with the PAIS and other PMC methods can become apparent if
-the target density has very strong correlations in its structure, in
-particular if that correlation is not global but only local. In this
+the target density has highly curved manifolds on which the density is
+concentrated. In this
 case, unless the proposal densities $q$ are informed by this local
 structure, the mixture distribution proposal may not well approximate
 $\pi$ without a very large large ensemble size $M$, which can become
@@ -413,7 +427,7 @@ on importance sampling.
 In~\cite{el2012bayesian} the transport map was introduced to provide a transformation from the prior
 distribution to the posterior distribution, the idea being that one could draw a moderately sized
 sample from the prior distribution and use this sample to approximate a map onto the target space.
-Once this map was known to the desired accuracy a larger sample from the prior could be used to
+Once this map was known to the desired accuracy, a larger sample from the prior could be used to
 investigate the posterior distribution. This
 methodology was adapted in~\cite{parno2014transport} to form a new proposal method for MH
 algorithms. In this case, rather than transforming a sample from the prior into a sample from the target
@@ -431,7 +445,7 @@ show how the map can be constructed using a weighted sample
 and hence how we can incorporate the map into importance sampling schemes.
 
 \begin{dfn}[Transport Map $T$]
-	A transport map $T$ is a function $T\colon
+	A transport map $T$ is a smooth function $T\colon
         \mathcal{X}\rightarrow\mathbb{R}^d$ such that the {\it
           pullback} of the reference measure with density $\phi(\cdot)$,
 	\begin{equation}\label{eq:pullback}
@@ -510,7 +524,7 @@ to be the Kullback-Leibler (KL) divergence between the posterior density and the
 	D_\text{KL}(\pi\|\tilde{\pi}) =
 		\mathbb{E}_\pi\left[\log\left(\frac{\pi(\theta)}{\tilde{\pi}(\theta)}\right)\right].
 \]
-This divergence results in some nice properties which we will explore in the following derivation. The KL divergence is not a true metric since it is not symmetric, however it is commonly used to measure the distance between probability distributions due to it's relatively simple form, and because it provides a bound for the square of the Hellinger distance by Pinsker's inequality~\cite{pinsker1960information},
+This divergence results in some nice properties which we will explore in the following derivation. The KL divergence is not a true metric since it is not symmetric, however it is commonly used to measure the distance between probability distributions due to its relatively simple form, and because it provides a bound for the square of the Hellinger distance by Pinsker's inequality~\cite{pinsker1960information},
 \[
 	D_{KL}(p\|q) \geq D_H^2(p,q),
 \]
@@ -668,7 +682,7 @@ computing the map coefficients,
 \begin{align}\label{eq:weighted_map_optim}
 	&\arg\min_{\gamma_i\in\mathbb{R}^{M_i}} \frac{1}{2\bar{w}}\gamma_i^\top F_i^\top WF_i\gamma_i -
 		\frac{w^\top}{\bar{w}}\log(G_i\gamma_i) + \beta\|\gamma_i-\iota\|^2, \\
-	&\text{subject to} \quad G_i\gamma_i > 0, \notag
+	&\text{subject to} \quad G_i\gamma_i > 0. \notag
 \end{align}
 %where additionally we have introduced a factor of $\frac{1}{K}$ to the
 %regularisation term to prevent over-smoothing as the number of samples increases.
@@ -714,7 +728,7 @@ design a proposal scheme for the PAIS algorithm. In this case we have a choice i
 propose new samples on reference space and resample on target space, or we both propose and resample on reference space, mapping onto target space to output the samples. The first option allows us to reuse much of the framework
 from the standard PAIS algorithm and in the numerics later we see that this performs better than
 both the Transport MH algorithm, and the standard PAIS algorithm. The second option requires some
-restructuring but results in improved performance from the resampler.
+restructuring, but can result in improved performance from the resampler.
 
 \begin{table}
 \begin{algorithm}[H]
@@ -854,7 +868,7 @@ centred at the origin with standard deviation 1. As you move out into
 the tails of the reference density more non-Gaussian features are
 clearly visible. However, overall, the push forward of the target
 density does not look a challenging one to sample from, with even
-relatively simple MCMC methods such as MH-RW. The pullback from
+relatively simple MCMC methods such as Metropolis-Hasting random walk (MH-RW). The pullback from
 reference space, in Figure~\ref{fig:R2_transport}, is an exact match
 of the original sample since we have not perturbed the sample in
 reference space. This inversion is well defined in the sampling
@@ -896,7 +910,7 @@ Table~\ref{tab:R2_opt_scaling}. Here we see that the effective sample
 size is much lower than we see in the one-dimensional examples with
 the PAIS algorithms. However, in the Rosenbrock density
 \eqref{eqn:R2_repeat} we are dealing with a much more complicated
-correlation structure, as well as a very slowly decaying tail in
+curved structure, as well as a very slowly decaying tail in
 $\theta_2$. From our experiments, we have observed that the standard PAIS-RW required an ensemble size of $M=500$ to overcome the problems in this density, however the transport map transforms the tails to be more like those of a Gaussian which can be approximated well by a smaller ensemble size of $M=150$.
 
 \begin{figure}[!ht]
@@ -919,7 +933,7 @@ The convergence of the three algorithms is displayed in Figure~\ref{fig:R2_l2_co
   Networks}\label{sec:multi}
 In this Section, we discuss some recent advances in multiscale methods
 for stochastic reaction networks. Inverse problems arising in this
-area often lead to highly correlated and complex posterior
+area often lead to complex posterior
 distributions, which traditional MCMC methods can struggle to sample
 from. We will then go on to solve some inverse problems related to
 this in Section \ref{sec:num}, using the transport map versions of the
@@ -1212,7 +1226,8 @@ variable $S = X_1 + X_2$. In these last two examples, we approximate the
 posterior using \eqref{eq:Apos} with QEA and CMA approximations of the
 effective dynamics respectively.
 
-In all three cases, we find the posterior distribution for $\mathbf{k} \in \mathcal{X}$. These four parameters are assigned Gamma prior distributions,
+In all three cases, we find the posterior distribution for $\mathbf{k}
+\in \mathcal{X} = \mathbb{R}_+^4$. These four parameters are assigned Gamma prior distributions,
 \[
 	k_i \sim \text{Gamma}(\cdot; \alpha_i, \beta_i), \quad \text{for} \quad i = 1, \dots, 4.
 \]
@@ -1399,8 +1414,11 @@ negative reaction rates. Sampling with transport maps with a $\log$ precondition
 
 \begin{figure}[!htb]
 \centering
-\subfigure[Push forward of the posterior sample through$\hat{T}$ with no log preconditioner.]{\includegraphics[width=0.495\textwidth]{"images/Applications/CMA_ref_space_MHTRW"}}
-\subfigure[Push forward of the posterior sample through$\hat{T}$ with log preconditioner.]{\includegraphics[width=0.495\textwidth]{"images/Applications/CMA_ref_space_MHlogTRW"}}
+\subfigure[Push forward of the posterior sample through $\hat{T}$ with
+no log
+preconditioner.]{\includegraphics[width=0.8\textwidth]{"images/Applications/CMA_ref_space_MHTRW"}}
+\\
+\subfigure[Push forward of the posterior sample through $\hat{T}$ with log preconditioner.]{\includegraphics[width=0.8\textwidth]{"images/Applications/CMA_ref_space_MHlogTRW"}}
 \caption{Push forward of the target measure on reference space for the the CMA
   approximation of the  posterior arising from the example in Section \ref{sec:chem_multiscale}, found using the TRW and logTRW proposal distributions. Components are linked by the relation $r_i = T_i(k_i)$ in (a) and $r_i = T_i\circ\log(k_i)$ in (b).}
 \label{fig:chem_reference_spaces}
@@ -1456,7 +1474,10 @@ informative about these quantities, and which model gives us results
 which are most similar to that which can be obtained from the full
 model, with all reactions (including fast reactions) observed.
 
-A conventional way to compare two models under a Bayesian framework is to calculate the Bayes factors~\cite{chen2012monte}. The Bayes factor, $B_{1,2}$, between two models, $\mathcal{M}_1$ and $\mathcal{M}_2$, can be interpreted as a ratio of the normalisation constants of the posterior distributions given each model,
+A conventional way to compare two models under a Bayesian framework is
+to calculate the Bayes factors~\cite{chen2012monte}. The Bayes factor,
+$B_{1,2}$, between two models, $\mathcal{M}_1$ and $\mathcal{M}_2$,
+given data $D$, can be interpreted as a ratio of the normalisation constants of the posterior distributions given each model,
 \[
 	B_{1,2} = \frac{\mathbb{P}(D|\mathcal{M}_1)}{\mathbb{P}(D|\mathcal{M}_2)}, \quad \text{where} \quad \mathbb{P}(D|\mathcal{M}_k) = \int_\mathcal{X} \mathbb{P}(D|\theta_k,\mathcal{M}_k)\mathbb{P}(\theta_k|\mathcal{M}_k) \, \text{d}\theta_k.
 \]
@@ -1637,7 +1658,16 @@ As in the previous chemical reaction example, we measure convergence of the algo
 
 \subsubsection{Convergence results}
 
-The scaling parameters used are selected by optimising the acceptance rate for the MH algorithms, and optimising the effective sample size for the PAIS algorithms. The optimal parameters are given in Table~\ref{tab:grn_scaling_parameters}.
+The scaling parameters used are selected by optimising the acceptance
+rate for the MH algorithms, and optimising the effective sample size
+for the PAIS algorithms. The optimal parameters are given in
+Table~\ref{tab:grn_scaling_parameters}. Here, for Metropolis-Hastings
+variants, $\beta_{\%}^*$ is the variance of the proposal, optimised
+for an acceptance rate of $50\%$. For the PAIS variants,
+$\beta_{\text{ESS}}^*$ is the variance of each of the proposal kernels
+around each particle, optimised numerically for the maximal effective
+sample size (ESS). ESS/$M$ denotes the ratio of ESS to the number of
+particles, with values closer to one denoting a more efficient algorithm.
 
 \begin{table}[!h]
 	\centering
@@ -1701,7 +1731,16 @@ performs the worst, and the MH-logTRW algorithm performs the best,
 although only marginally. 
 
 \section{Discussion}\label{sec:conc}
+In this paper, we have investigated the use of transport maps to
+accelerate and stabilise ensemble importance sampling schemes. In
+particular we looked at the application of these methods to problems
+arising in inverse problems for multiscale stochastic chemical
+networks, where the posterior distributions which arise can be highly
+concentrated along curved manifolds in parameter space.
+Below we highlight some areas for future work.
 
+\subsection{Sampling in higher
+  dimensions}\label{sec:TPAIS_higher_dim}
 
 One major issue with PMC-type algorithms is the curse of
 dimensionality. This curse is two-fold, since as the target
@@ -1710,14 +1749,16 @@ required in order to capture the addition complexity of the density
 that the higher dimension enables. Furthermore, the cost of the
 resampling step within the algorithm grows with the ensemble size. For
 example, the ETPF algorithm is $\mathcal{O}(n^2)$. However, the
-simiplification that the transport map makes has some potential to go
+simplification that the transport map makes has some potential to go
 some way to tackling this problem.
 
-\subsection{Sampling in (moderately) higher
-  dimensions}\label{sec:TPAIS_higher_dim}
 Here, we will briefly discuss how transport maps could aid
 with making moderately higher dimensional problems accessible to this
-family of methods.
+family of methods. It is important to emphasise here that these
+methods are unlikely to be suitable in anything other than low
+dimensional problems, but the idea that we present here, which is the
+subject of future investigation, could make them applicable to more
+problems which have more than a handful of parameters.
 
 Algorithm~\ref{alg:TransportPAIS2} allows us to decorrelate the
 dimensions of our random parameter on reference space, where we then
@@ -1766,6 +1807,17 @@ Return $y$.\;
 \caption{ETPF algorithm in one dimension.\label{alg:ETPF_1d}}
 \end{algorithm}
 \end{table}
+
+\subsection{The Chicken and Egg Paradox}
+Another issue with the use of transport maps of this ilk, is that in
+order to construct such a map, we require a representative sample from
+the posterior distribution. Since these methods are designed to sample
+from distributions which are inherently difficult to sample from, be
+it due to multimodality, as looked at in \cite{cotter2015parallel}, or
+as in this paper, due to the density being highly concentrated close
+to a curved manifold in parameter space, it could be argued that accessing this initial set of
+samples remains a hard problem. This remains an open problem, which we
+are aiming to address in future work.
 
 
 \bibliographystyle{siam}
