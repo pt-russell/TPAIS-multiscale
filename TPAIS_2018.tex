@@ -255,7 +255,7 @@ continuous time Markov chain computationally intractable.
 
 A range of numerical methods have been suggested to tackle this second
 problem, including tau-leaping\cite{rathinam2003stiffness,cao2006efficient}, diffusion approximations\cite{erban2006gene,cotter2011constrained,cotter2016error}, quasi-steady state
-approximations\cite{ea2005nested,cao2005slow}, and other averaging
+approximations\cite{weinan2007nested,cao2005slow}, and other averaging
 arguments\cite{cotter2016constrained}. Some of these approaches are more
 computationally intensive than others, but this can be mitigated with the
 use of analytical results about the invariant densities of certain
@@ -983,7 +983,7 @@ situations, for example monomolecular networks\cite{jahnke2007solving}, or for
 steady-state solutions certain deficiency
 zero networks\cite{anderson2010product,anderson2016product}. Trajectories for this system can be
 sampled exactly, for instance using the Gillespie SSA\cite{gillespie1977exact}, or
-its variants\cite{gillespie2007stochastic,gibson1998efficient,cao2004efficient,anderson2007modified}. However, if the system is stiff, i.e. there
+its variants\cite{gillespie2007stochastic,cao2004efficient,anderson2007modified}. However, if the system is stiff, i.e. there
 are some reactions which are firing many times on a timescale for
 which others are unlikely to fire at all, then trajectories can become
 prohibitively expensive to simulate, since these methods simulate

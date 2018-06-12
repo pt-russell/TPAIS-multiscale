@@ -3,63 +3,46 @@ Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: TPAIS_2018.aux
 The style file: siam.bst
 Database file #1: bibliography.bib
-Repeated entry---line 1748 of file bibliography.bib
- : @article{douc2007minimum
- :                         ,
-I'm skipping whatever remains of this entry
-Repeated entry---line 1785 of file bibliography.bib
- : @article{duane1987hybrid
- :                         ,
-I'm skipping whatever remains of this entry
-Repeated entry---line 1796 of file bibliography.bib
- : @article{girolami2011riemann
- :                             ,
-I'm skipping whatever remains of this entry
-Repeated entry---line 1827 of file bibliography.bib
- : @article{anderson2016product
- :                             ,
-I'm skipping whatever remains of this entry
-Warning--empty journal in gibson1998efficient
 Warning--empty journal in pinsker1960information
-You've used 54 entries,
+You've used 53 entries,
             2030 wiz_defined-function locations,
-            826 strings with 13013 characters,
-and the built_in function-call counts, 21149 in all, are:
-= -- 2126
-> -- 932
+            821 strings with 12505 characters,
+and the built_in function-call counts, 21025 in all, are:
+= -- 2118
+> -- 930
 < -- 0
-+ -- 377
++ -- 375
 - -- 315
-* -- 1621
-:= -- 3159
-add.period$ -- 54
-call.type$ -- 54
-change.case$ -- 318
+* -- 1617
+:= -- 3138
+add.period$ -- 53
+call.type$ -- 53
+change.case$ -- 315
 chr.to.int$ -- 0
-cite$ -- 56
-duplicate$ -- 987
-empty$ -- 1431
+cite$ -- 54
+duplicate$ -- 972
+empty$ -- 1421
 format.name$ -- 315
-if$ -- 4572
+if$ -- 4547
 int.to.chr$ -- 0
-int.to.str$ -- 54
-missing$ -- 55
-newline$ -- 165
-num.names$ -- 104
-pop$ -- 269
+int.to.str$ -- 53
+missing$ -- 54
+newline$ -- 162
+num.names$ -- 102
+pop$ -- 264
 preamble$ -- 1
-purify$ -- 269
+purify$ -- 267
 quote$ -- 0
-skip$ -- 934
+skip$ -- 923
 stack$ -- 0
-substring$ -- 1532
-swap$ -- 488
+substring$ -- 1546
+swap$ -- 482
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 210
-warning$ -- 2
+type$ -- 206
+warning$ -- 1
 while$ -- 213
-width$ -- 56
-write$ -- 480
-(There were 4 error messages)
+width$ -- 55
+write$ -- 473
+(There was 1 warning)

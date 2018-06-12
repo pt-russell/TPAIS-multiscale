@@ -1,44 +1,43 @@
 \begin{thebibliography}{10}
 
+\bibitem{anderson2007modified}
+{\sc D.~Anderson}, {\em A modified next reaction method for simulating chemical
+  systems with time dependent propensities and delays}, The Journal of chemical
+  physics, 127 (2007), p.~214107.
+
 \bibitem{anderson2016product}
 {\sc D.~Anderson and S.~Cotter}, {\em Product-form stationary distributions for
-  deficiency zero networks with non-mass action kinetics}, {Bulletin of
-  Mathematical Biology}, 78 (2016), pp.~2390--2407.
+  deficiency zero networks with non-mass action kinetics}, Bulletin of
+  mathematical biology, 78 (2016), pp.~2390--2407.
 
 \bibitem{anderson2010product}
 {\sc D.~Anderson, G.~Craciun, and T.~Kurtz}, {\em Product-form stationary
   distributions for deficiency zero chemical reaction networks}, Bulletin of
   mathematical biology, 72 (2010), pp.~1947--1970.
 
-\bibitem{anderson2007modified}
-{\sc David~F Anderson}, {\em A modified next reaction method for simulating
-  chemical systems with time dependent propensities and delays}, The Journal of
-  chemical physics, 127 (2007), p.~214107.
-
 \bibitem{anderson2011continuous}
-{\sc David~F Anderson and Thomas~G Kurtz}, {\em Continuous time markov chain
-  models for chemical reaction networks}, in Design and analysis of
-  biomolecular circuits, Springer, 2011, pp.~3--42.
+{\sc D.~Anderson and T.~Kurtz}, {\em Continuous time markov chain models for
+  chemical reaction networks}, in Design and analysis of biomolecular circuits,
+  Springer, 2011, pp.~3--42.
 
 \bibitem{apgar2010sloppy}
-{\sc Joshua~F Apgar, David~K Witmer, Forest~M White, and Bruce Tidor}, {\em
-  Sloppy models, parameter uncertainty, and the role of experimental design},
-  Molecular BioSystems, 6 (2010), pp.~1890--1900.
+{\sc J.~Apgar, D.~Witmer, F.~White, and B.~Tidor}, {\em Sloppy models,
+  parameter uncertainty, and the role of experimental design}, Molecular
+  BioSystems, 6 (2010), pp.~1890--1900.
 
 \bibitem{becskei2000engineering}
 {\sc A.~Becskei and L.~Serrano}, {\em Engineering stability in gene networks by
   autoregulation}, Nature, 405 (2000), p.~590.
 
 \bibitem{bierkens2016zig}
-{\sc Joris Bierkens, Paul Fearnhead, and Gareth Roberts}, {\em The zig-zag
-  process and super-efficient sampling for bayesian analysis of big data},
-  arXiv preprint arXiv:1607.03188,  (2016).
+{\sc J.~Bierkens, P.~Fearnhead, and G.~Roberts}, {\em The zig-zag process and
+  super-efficient sampling for bayesian analysis of big data}, arXiv preprint
+  arXiv:1607.03188,  (2016).
 
 \bibitem{bouchard2018bouncy}
-{\sc Alexandre Bouchard-C{\^o}t{\'e}, Sebastian~J Vollmer, and Arnaud Doucet},
-  {\em The bouncy particle sampler: A nonreversible rejection-free markov chain
-  monte carlo method}, Journal of the American Statistical Association,
-  (2018), pp.~1--13.
+{\sc A.~Bouchard-C{\^o}t{\'e}, S.~Vollmer, and A.~Doucet}, {\em The bouncy
+  particle sampler: A nonreversible rejection-free markov chain monte carlo
+  method}, Journal of the American Statistical Association,  (2018), pp.~1--13.
 
 \bibitem{cao2005slow}
 {\sc Y.~Cao, D.~Gillespie, and L.~Petzold}, {\em The slow-scale stochastic
@@ -51,7 +50,7 @@
   Physics, 124 (2006), p.~044109.
 
 \bibitem{cao2004efficient}
-{\sc Yang Cao, Hong Li, and Linda Petzold}, {\em Efficient formulation of the
+{\sc Y.~Cao, H.~Li, and L.~Petzold}, {\em Efficient formulation of the
   stochastic simulation algorithm for chemically reacting systems}, The journal
   of chemical physics, 121 (2004), pp.~4059--4067.
 
@@ -69,15 +68,14 @@
   computation}}, Springer Science \& Business Media, 2012.
 
 \bibitem{chiavazzo2017intrinsic}
-{\sc Eliodoro Chiavazzo, Roberto Covino, Ronald~R Coifman, C~William Gear,
-  Anastasia~S Georgiou, Gerhard Hummer, and Ioannis~G Kevrekidis}, {\em
-  Intrinsic map dynamics exploration for uncharted effective free-energy
-  landscapes}, Proceedings of the National Academy of Sciences, 114 (2017),
-  pp.~E5494--E5503.
+{\sc E.~Chiavazzo, R.~Covino, R.~Coifman, C.W. Gear, A.~Georgiou, G.~Hummer,
+  and I.~Kevrekidis}, {\em Intrinsic map dynamics exploration for uncharted
+  effective free-energy landscapes}, Proceedings of the National Academy of
+  Sciences, 114 (2017), pp.~E5494--E5503.
 
 \bibitem{constantine2014active}
-{\sc Paul~G Constantine, Eric Dow, and Qiqi Wang}, {\em Active subspace methods
-  in theory and practice: applications to kriging surfaces}, SIAM Journal on
+{\sc P.~Constantine, E.~Dow, and Q.~Wang}, {\em Active subspace methods in
+  theory and practice: applications to kriging surfaces}, SIAM Journal on
   Scientific Computing, 36 (2014), pp.~A1500--A1524.
 
 \bibitem{cornuet2012adaptive}
@@ -94,6 +92,11 @@
   multiscale stochastic reaction networks and application to conditioned path
   sampling}}, Journal of Computational Physics, 323 (2016), pp.~265--282.
 
+\bibitem{cotter2016error}
+{\sc S.~Cotter and R.~Erban}, {\em Error analysis of diffusion approximation
+  methods for multiscale systems in reaction kinetics}, SIAM Journal on
+  Scientific Computing, 38 (2016), pp.~B144--B163.
+
 \bibitem{cotter2013mcmc}
 {\sc S.~Cotter, G.~Roberts, A.~Stuart, and D.~White}, {\em {MCMC methods for
   functions: modifying old algorithms to make them faster}}, Statistical
@@ -104,59 +107,47 @@
   approach to multiscale stochastic simulation of chemically reacting systems},
   The Journal of Chemical Physics, 135 (2011), p.~094102.
 
-\bibitem{cotter2016error}
-{\sc Simon~L Cotter and Radek Erban}, {\em Error analysis of diffusion
-  approximation methods for multiscale systems in reaction kinetics}, SIAM
-  Journal on Scientific Computing, 38 (2016), pp.~B144--B163.
-
 \bibitem{douc2007convergence}
 {\sc R.~Douc, A.~Guillin, J.~Marin, and C.~Robert}, {\em Convergence of
   adaptive mixtures of importance sampling schemes}, The Annals of Statistics,
   35 (2007), pp.~420--448.
 
 \bibitem{douc2007minimum}
-\leavevmode\vrule height 2pt depth -1.6pt width 23pt, {\em Minimum variance
+{\sc R.~Douc, A.~Guillin, J-M Marin, and C.~Robert}, {\em Minimum variance
   importance sampling via population monte carlo}, ESAIM: Probability and
   Statistics, 11 (2007), pp.~427--447.
 
 \bibitem{dsilva2016data}
-{\sc Carmeline~J Dsilva, Ronen Talmon, C~William Gear, Ronald~R Coifman, and
-  Ioannis~G Kevrekidis}, {\em Data-driven reduction for a class of multiscale
-  fast-slow stochastic dynamical systems}, SIAM Journal on Applied Dynamical
-  Systems, 15 (2016), pp.~1327--1351.
+{\sc C.~Dsilva, R.~Talmon, C.W. Gear, R.~Coifman, and I.~Kevrekidis}, {\em
+  Data-driven reduction for a class of multiscale fast-slow stochastic
+  dynamical systems}, SIAM Journal on Applied Dynamical Systems, 15 (2016),
+  pp.~1327--1351.
 
 \bibitem{duane1987hybrid}
 {\sc S.~Duane, A.~Kennedy, B.~Pendleton, and D.~Roweth}, {\em {Hybrid Monte
   Carlo}}, Physics letters B, 195 (1987), pp.~216--222.
 
-\bibitem{ea2005nested}
-{\sc Weinan Ea}, {\em Nested stochastic simulation algorithm for chemical
-  kinetic systems with disparate rates}, The Journal of chemical physics, 123
-  (2005), p.~194107.
+\bibitem{weinan2007nested}
+{\sc W.~E, D.~Liu, and E.~Vanden-Eijnden}, {\em Nested stochastic simulation
+  algorithms for chemical kinetic systems with multiple time scales}, Journal
+  of computational physics, 221 (2007), pp.~158--180.
 
 \bibitem{el2012bayesian}
 {\sc T.~El~Moselhy and Y.~Marzouk}, {\em Bayesian inference with optimal maps},
   Journal of Computational Physics, 231 (2012), pp.~7815--7850.
 
 \bibitem{erban2006gene}
-{\sc Radek Erban, Ioannis~G Kevrekidis, David Adalsteinsson, and Timothy~C
-  Elston}, {\em Gene regulatory networks: A coarse-grained, equation-free
-  approach to multiscale computation}, The Journal of chemical physics, 124
-  (2006), p.~084106.
+{\sc R.~Erban, I.~Kevrekidis, D.~Adalsteinsson, and T.~Elston}, {\em Gene
+  regulatory networks: A coarse-grained, equation-free approach to multiscale
+  computation}, The Journal of chemical physics, 124 (2006), p.~084106.
 
 \bibitem{flandrin2003stationarity}
-{\sc Patrick Flandrin, Pierre Borgnat, and Pierre-Olivier Amblard}, {\em From
-  stationarity to self-similarity, and back: Variations on the lamperti
-  transformation}, in Processes with Long-Range Correlations, Springer, 2003,
-  pp.~88--117.
+{\sc P.~Flandrin, P.~Borgnat, and P-O Amblard}, {\em From stationarity to
+  self-similarity, and back: Variations on the lamperti transformation}, in
+  Processes with Long-Range Correlations, Springer, 2003, pp.~88--117.
 
 \bibitem{gardiner2009stochastic}
-{\sc Crispin Gardiner}, {\em Stochastic methods}, vol.~4, springer Berlin,
-  2009.
-
-\bibitem{gibson1998efficient}
-{\sc Michael~A Gibson and Jehoshua Bruck}, {\em An efficient algorithm for
-  generating trajectories of stochastic gene regulation reactions},  (1998).
+{\sc C.~Gardiner}, {\em Stochastic methods}, vol.~4, springer Berlin, 2009.
 
 \bibitem{gillespie1977exact}
 {\sc D.~Gillespie}, {\em Exact stochastic simulation of coupled chemical
@@ -183,10 +174,9 @@
   Nature, 439 (2006), p.~856.
 
 \bibitem{gutenkunst2007universally}
-{\sc Ryan~N Gutenkunst, Joshua~J Waterfall, Fergal~P Casey, Kevin~S Brown,
-  Christopher~R Myers, and James~P Sethna}, {\em Universally sloppy parameter
-  sensitivities in systems biology models}, PLoS computational biology, 3
-  (2007), p.~e189.
+{\sc R.~Gutenkunst, J.~Waterfall, F.~Casey, K.~Brown, C.~Myers, and J.~Sethna},
+  {\em Universally sloppy parameter sensitivities in systems biology models},
+  PLoS computational biology, 3 (2007), p.~e189.
 
 \bibitem{jahnke2007solving}
 {\sc T.~Jahnke and W.~Huisinga}, {\em Solving the chemical master equation for
@@ -203,11 +193,10 @@
   Statistical Association, 90 (1995), pp.~773--795.
 
 \bibitem{kevrekidis2003equation}
-{\sc Ioannis~G Kevrekidis, C~William Gear, James~M Hyman, Panagiotis~G
-  Kevrekidid, Olof Runborg, Constantinos Theodoropoulos, et~al.}, {\em
-  Equation-free, coarse-grained multiscale computation: Enabling mocroscopic
-  simulators to perform system-level analysis}, Communications in Mathematical
-  Sciences, 1 (2003), pp.~715--762.
+{\sc I.~Kevrekidis, C.W. Gear, J.~Hyman, P.~Kevrekidis, O.~Runborg,
+  C.~Theodoropoulos, et~al.}, {\em Equation-free, coarse-grained multiscale
+  computation: Enabling mocroscopic simulators to perform system-level
+  analysis}, Communications in Mathematical Sciences, 1 (2003), pp.~715--762.
 
 \bibitem{martino2015adaptive}
 {\sc L.~Martino, V.~Elvira, D.~Luengo, and J.~Corander}, {\em An adaptive
@@ -215,9 +204,8 @@
   on Signal Processing, 63 (2015), pp.~4422--4437.
 
 \bibitem{martino2017layered}
-{\sc Luca Martino, Victor Elvira, David Luengo, and Jukka Corander}, {\em
-  Layered adaptive importance sampling}, Statistics and Computing, 27 (2017),
-  pp.~599--623.
+\leavevmode\vrule height 2pt depth -1.6pt width 23pt, {\em Layered adaptive
+  importance sampling}, Statistics and Computing, 27 (2017), pp.~599--623.
 
 \bibitem{parno2015transport}
 {\sc M.~Parno}, {\em {Transport maps for accelerated Bayesian computation}},
@@ -232,9 +220,9 @@
   variables and processes},  (1960).
 
 \bibitem{rathinam2003stiffness}
-{\sc Muruhan Rathinam, Linda~R Petzold, Yang Cao, and Daniel~T Gillespie}, {\em
-  Stiffness in stochastic chemically reacting systems: The implicit tau-leaping
-  method}, The Journal of Chemical Physics, 119 (2003), pp.~12784--12794.
+{\sc M.~Rathinam, L.~Petzold, Y.~Cao, and D.~Gillespie}, {\em Stiffness in
+  stochastic chemically reacting systems: The implicit tau-leaping method}, The
+  Journal of Chemical Physics, 119 (2003), pp.~12784--12794.
 
 \bibitem{reich2013nonparametric}
 {\sc S.~Reich}, {\em {A nonparametric ensemble transform method for Bayesian
@@ -250,19 +238,19 @@
   problems}, PhD thesis, School of Mathematics, University of Manchester, 2017.
 
 \bibitem{singer2008non}
-{\sc Amit Singer and Ronald~R Coifman}, {\em Non-linear independent component
-  analysis with diffusion maps}, Applied and Computational Harmonic Analysis,
-  25 (2008), pp.~226--239.
+{\sc A.~Singer and R.~Coifman}, {\em Non-linear independent component analysis
+  with diffusion maps}, Applied and Computational Harmonic Analysis, 25 (2008),
+  pp.~226--239.
 
 \bibitem{singer2009detecting}
-{\sc Amit Singer, Radek Erban, Ioannis~G Kevrekidis, and Ronald~R Coifman},
-  {\em Detecting intrinsic slow variables in stochastic dynamical systems by
-  anisotropic diffusion maps}, Proceedings of the National Academy of Sciences,
-  106 (2009), pp.~16090--16095.
+{\sc A.~Singer, R.~Erban, I.~Kevrekidis, and R.~Coifman}, {\em Detecting
+  intrinsic slow variables in stochastic dynamical systems by anisotropic
+  diffusion maps}, Proceedings of the National Academy of Sciences, 106 (2009),
+  pp.~16090--16095.
 
 \bibitem{teh2016consistency}
-{\sc Yee~Whye Teh, Alexandre~H Thiery, and Sebastian~J Vollmer}, {\em
-  Consistency and fluctuations for stochastic gradient langevin dynamics}, The
-  Journal of Machine Learning Research, 17 (2016), pp.~193--225.
+{\sc Y.W. Teh, A.~Thiery, and S.~Vollmer}, {\em Consistency and fluctuations
+  for stochastic gradient langevin dynamics}, The Journal of Machine Learning
+  Research, 17 (2016), pp.~193--225.
 
 \end{thebibliography}
