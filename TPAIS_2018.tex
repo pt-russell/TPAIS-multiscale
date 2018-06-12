@@ -163,7 +163,7 @@ being used to describe the data. In such a situation, standard
 sampling methods for characterising the posterior distribution, which
 do not incorporate information about this structure, will be highly
 inefficient. Moreover, most methods are inherently serial in nature,
-and as such are not expoiting the parallelised  nature of modern
+and as such are not exploiting the parallelised  nature of modern
 computer infrastructure. In this paper, we seek to develop a method to
 tackle this problem, using optimal transport maps to simplify
 posterior distributions which are concentrated on lower dimensional
@@ -224,7 +224,7 @@ which a map which describes the slow manifold is constructed using
 principle component analysis. These ideas have also been applied to
 stochastic reaction
 networks\cite{singer2009detecting,dsilva2016data}. In
-\cite{chiavazzo2017intrinsic}, these maps were used to propogate
+\cite{chiavazzo2017intrinsic}, these maps were used to propagate
 data-mining into unexplored regions which were predicted to be close
 to the lower-dimensional manifold. The idea is similar to that of the
 Lamperti or Girsanov transformations for SDEs\cite{flandrin2003stationarity,gardiner2009stochastic},  the aim being to map complex
@@ -285,7 +285,7 @@ that appears in many applications in science and engineering\cite{constantine201
 
 In this work, we aim to improve the PAIS machinery, which is limited,
 since in the current presentation the same proposal kernel is used for each particle in the
-ensemble. This homogeniety of proposal kernels means that complex
+ensemble. This homogeneity of proposal kernels means that complex
 structures in the density can only be well represented with a large
 increase in the ensemble size, increasing computational cost. If
 computational resources do not allow for such an increase, this can
@@ -955,7 +955,7 @@ propensity or hazard function $\alpha_j(X(t)$ which indicates how
 likely that reaction is to fire, defined by
 \[\alpha_j(X(t)) = \lim_{dt \to 0} \mathbb{P}(\text{Reaction $R_j$ in
     the time interval  } \quad s \in [t, t+ dt] ).\] If a system
-satsifies what is called \emph{mass action kinetics}, then the form of
+satisfies what is called \emph{mass action kinetics}, then the form of
 the function $\alpha_j$ is determined, up to a rate constant, by the
 reactants involved in that reaction:
 \begin{equation}\label{eq:MAK}
@@ -968,7 +968,7 @@ $k_j$ are rate constants.
 Following each reaction $R_j$ there is an instantaneous change in the
 current state, as the reactants of the reaction are consumed, and the
 products produced. This is modelled by a change in the state vector
-$X(t) = X(t) + \nu_j$ where $\nu_j$ is that stochiometric vector for
+$X(t) = X(t) + \nu_j$ where $\nu_j$ is that stoichiometric vector for
 reaction $R_j$.
 
 The model can be represented as the following expression involving
@@ -993,9 +993,9 @@ at a lower cost than the exact algorithms.
 
 One common approach is to induce the quasi-steady-state approximation
 QSSA. This approximation makes the assumption that fast reactions
-enter quasi-equillibrium on a timescale which is negligible with
+enter quasi-equilibrium on a timescale which is negligible with
 respect to the timescale on which the slow dynamics in the system are
-evolving. This amounts to taking the assymptotic limit that the
+evolving. This amounts to taking the asymptotic limit that the
 propensities of the ``slow'' reaction channels are equal to zero. This
 allows us to sample approximate trajectories of the slow reactions
 without the need to compute many fast reaction events.
@@ -1005,7 +1005,7 @@ between the fast and slow reactions in a system, but where the
 timescale gap is less pronounced, it can lead to significant
 errors\cite{cotter2016error}. Another approach is the
 constrained multiscale method (CMA)\cite{cotter2011constrained,cotter2016constrained}, based in part on the
-equation-free approach to multiscale computations\cite{kevrekidis2003equation,erban2006gene}. This approach also assumes quasi-equillibrium in the
+equation-free approach to multiscale computations\cite{kevrekidis2003equation,erban2006gene}. This approach also assumes quasi-equilibrium in the
 system, but takes into account the effect that the slow reactions can
 have on the invariant distribution of the fast variables in the
 system. For a more detailed description of this method, please refer
