@@ -1808,7 +1808,17 @@ Return $y$.\;
 \end{algorithm}
 \end{table}
 
-\subsection{The Chicken and Egg Paradox}
+\subsection{Invertibility of the transport map}
+In this paper, we have considered an approach very similar to that
+deseminated in \cite{parno2014transport}, where we aim to find an
+invertible map which approximates the true transport map between the
+reference measure and the target measure, however this true map is
+invariably itself not invertible. However, by considering embedding
+the map in higher dimensions\cite{whitney_self-intersections_1994,nash1956imbedding,takens_detecting_1981}, these issues of non-invertibility may be
+avoided, and higher quality maps may be found which better aid
+exploration and sampling of the whole state space.
+
+\subsection{The chicken and egg paradox}
 Another issue with the use of transport maps of this ilk, is that in
 order to construct such a map, we require a representative sample from
 the posterior distribution. Since these methods are designed to sample
