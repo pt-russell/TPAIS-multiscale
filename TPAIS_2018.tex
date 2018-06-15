@@ -1181,8 +1181,8 @@ $S = X_1 + X_2$, is conserved by both of the fast reactions,
 and as such, this is the slowly changing quantity in this system.
 
 We observe this system over the time period $t \in [0,500]$ with
-initial condition ******, but we assume that we are only able to observe
-the slow variable $S(t)$. 
+initial condition $S_1(0) = S_2(0) = 0$, but we assume that we are only able to observe
+the slow variable $S(t) = S_1(t) + S_2(t)$. 
 The effective dynamics of $S$ can be approximated by a system of only
 two reactions:
 \begin{equation}\label{eqn:QSSA_system}
@@ -1567,11 +1567,18 @@ The eight reactions are given in Equation~\eqref{eqn:GRN_reactions}.
 	P \xrightarrow{k_7} \emptyset \quad & \quad M \xrightarrow{k_8} \emptyset \nonumber
 \end{align}
 
-We create trajectories of this system with the following parameters:****
-\begin{equation}
-k_1 = ? etc
-\end{equation}
-over the time period ****$t \in [0,?]$.
+We create trajectories of this system with the following parameters:
+\begin{eqnarray*}
+k_1 = 0.04, \qquad
+k_2 = 5000, \qquad
+k_3 = 100, \qquad
+k_4 = 1, \\ 
+k_5 = 0.5, \qquad
+k_6 = 2, \qquad
+k_7 = 0.2, \qquad
+k_8 = 0.05,
+\end{eqnarray*}
+over the time period $t \in [0,500]$.
 
 T-cells can be manufactured which bind to
 proteins of a certain type, and cause them to phosphoresce, allowing
