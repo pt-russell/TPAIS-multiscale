@@ -183,9 +183,10 @@ The importance of Markov chain Monte Carlo (MCMC) methods is becoming
 increasingly apparent, in a world replete with datasets which need to be
 combined with complex dynamical systems in order for us to be able
 make progress in a range of scientific fields. Different MCMC methods
-have been designed with different challenges in mind; high dimensional
-targets\cite{cotter2013mcmc}, large data sets\cite{bierkens2016zig},
-other methods which exploit piecewise deterministic Markov processes
+have been designed with different challenges in mind, for example high dimensional
+targets\cite{cotter2013mcmc}, or large data
+sets\cite{bierkens2016zig}. 
+Other methods which exploit piecewise deterministic Markov processes
 \cite{bouchard2018bouncy},
 methods which are able to make very large moves informed by the
 data\cite{teh2016consistency,duane1987hybrid}, methods which are able to exploit
@@ -213,10 +214,10 @@ approximate multinomial resampler) in order to improve the quality of
 the importance sampler proposals.
 
 Other approaches to challenging posterior structure have been
-proposed, including the work of Marzouk and Parnod\cite{parno2014transport}, who
+proposed, including the work of Marzouk and Parno\cite{parno2014transport}, who
 demonstrated how invertible transport maps can be constructed which
 map the target distribution close to an easily-explored reference
-density, such as a d-dimensional Gaussian. Since the map is
+density, such as a $d$-dimensional Gaussian. Since the map is
 invertible, Gaussian proposal densities on the reference space can be
 mapped to highly informed moves on the parameter space. A related idea
 is the use of the anisotropic diffusion maps\cite{singer2008non}, in
@@ -232,9 +233,9 @@ processes onto a standard one which is well understood, through a
 change of measure.
 
 Bayesian inverse problems are not the only area in which probability
-densities arise which are concentrated on, or close, lower dimensional
+densities arise which are concentrated on, or close to, lower dimensional
 manifolds. This is also a common feature of molecular dynamics
-problems, where 
+problems, where ******
 
 In this paper, we particularly concern ourselves with the problem of
 inverse problems in stochastic reaction networks. This type of model
@@ -283,24 +284,28 @@ tangential vectors point in directions of insensitivity. This
 \emph{sloppiness}\cite{gutenkunst2007universally,apgar2010sloppy} of the likelihood is a challenging problem
 that appears in many applications in science and engineering\cite{constantine2014active}.
 
-In this work, we aim to improve the PAIS machinery, which is limited,
-since in the current presentation the same proposal kernel is used for each particle in the
-ensemble. This homogeneity of proposal kernels means that complex
+In this paper, we aim to incorporate transport maps into an ensemble
+importance sampling setting, in order to develop stable algorithms which are
+capable of sampling from probability distributions with complex
+structures. These maps are constructed using an importance sample of
+the posterior distribution, and are used to simplify the posterior
+distribution, mapping them as close as possible to a reference
+Gaussian measure. Through this map, straightforward Gaussian proposal
+densities are transformed into complex densities, which match as well
+as possible the target density. Less well-informed proposal kernels means that complex
 structures in the density can only be well represented with a large
 increase in the ensemble size, increasing computational cost. If
 computational resources do not allow for such an increase, this can
 lead to stability issues in the algorithm, due to the proposal
 distribution in the importance sampler not representing well the
 target density, leading to high variance in the weights, causing slow
-convergence.
+convergence. Better informed proposal densities
+leads to more stable and faster converging importance sampling
+schemes, and we will demonstrate this through examples
+arising from Bayesian inverse problems on multiscale stochastic
+reaction networks.
 
-As shown in\cite{parno2014transport}, transport maps can be used to create
-proposal densities which are highly informed by the structure of the
-target density. In this paper, we demonstrate how such maps can also
-be constructed using importance weights arising from a pMC-type
-algorithm in order to accelerate and stabilise convergence. We will
-then apply the methodology to some complex posterior distributions
-arising from Bayesian inversion of multiscale (bio-)chemical networks.
+
 
 %Topics to cover: parallel MCMC, pMC, PAIS
 %Transport maps, transport map MCMC
@@ -324,7 +329,7 @@ discussed in the previous section. We conclude with a discussion in
 Section \ref{sec:conc}.
 
 \section{Parallel Adaptive Importance Sampling}\label{sec:PAIS}
-Parallel adaptive importance sampling (PAIS)\cite{cotter2015parallel} is a variant of PMC\cite{cappe2012population}, which is a family of methods which are based
+Parallel adaptive importance sampling (PAIS)\cite{cotter2015parallel} is a variant of pMC\cite{cappe2012population}, which is a family of methods which are based
 on importance sampling. In importance sampling, we attempt to
 characterise a target density through sampling from that
 density. However, the target density $\pi$ itself is often too complex to sample
@@ -336,9 +341,10 @@ using a sample of size $N$
 of a function $f$ with respect to $\pi$ can then be made through the
 formula
 \[\mathbb{E}_\pi(f) \approx \frac{1}{\bar{w}} \sum_{k=1}^N
-  w_kf(\theta^(k)).\]
+  w_kf(\theta^{(k)}),\]
+where $\bar{w} = \sum_{k=1}^N w_k$ is the total weight.
 This method works well when $\pi$ and $\chi$ are close, but can be
-excruciatingly slow when they are not. The idea behind PMC methods is
+excruciatingly slow when they are not. The idea behind pMC methods is
 to construct a good proposal distribution, either from the entire
 history of the algorithm up to the current point, or to use the
 current state of a whole ensemble of $M$ particles in the system.
@@ -349,7 +355,7 @@ each of the current particles in the system. If $\theta^{(k)} = [\theta_1^{(k)},
 \theta_2^{(k)}, \ldots, \theta_M^{(k)}]^\top$ is the current state of the
 ensemble, and we wish to use an MCMC proposal density $q(\cdot ;
 \cdot, \beta)$ then 
-\[\chi^{(k)} = \frac{1}{M} \sum_{i=1}^M q(\cdot ; \theta_i^{(k)}).\]
+\[\chi^{(k)} = \frac{1}{M} \sum_{i=1}^M q(\cdot ; \theta_i^{(k)}, \beta).\]
 Often the variance of the MCMC proposal kernels can be tuned using
 their respective algorithmic parameters $\beta$. Good values for these
 algorithmic parameters can be
@@ -360,16 +366,18 @@ If the ensemble is large enough, and the chain has entered
 probabilistic stationarity, then the current state of the ensemble is
 a good rough discrete approximation of the target density, and in turn
 $\chi^{(k)}$ is close enough to $\pi$ to produce an efficient importance
-sample $\{\hat{\theta}^{(k)},w^{(k)}\}$. It can be advantageous to use stratified sampling of the
+sample $\{(\hat{\theta}^{(k)},w^{(k)})\}$,  where $\theta^{(k)} =
+[\theta_1^{(k)}, \ldots, \theta_M^{(k)}]^\top$ and $w^{(k)} =
+[w_1^{(k)}, \ldots, w_M^{(k)}]^\top$. It can be advantageous to use stratified sampling of the
 mixture in order to
 ensure that the sample made is as representative as possible of the
 target density, i.e.
-\[ \hat{\theta}_i^{(k)} \sim q(\cdot ; \theta_i^{(k)})\]
+\[ \theta_i^{(k)} \sim q(\cdot ; \theta_i^{(k)},\beta)\]
 for each $i = 1,2,\ldots,M$. We now have a weighted sample, and it
 would be inadvisable to use an equally weighted mixture of proposal
 distributions from each of these points. Therefore, before starting
 the next iteration, the importance sample
-$\{\hat{\theta}^{(k)},w^{(k)}\}$ is resampled to produce an equally
+$\{(\theta^{(k)},w^{(k)})\}$ is resampled to produce an equally
 weighted sample, ready for the next iteration of the algorithm. In
 PAIS, a state-of-the-art resampler is used, which uses optimal
 transport methods to find the equally weighted discrete sample which
@@ -379,7 +387,9 @@ expensive, in which case a greedy approximation of this algorithm, the
 Approximate Multinomial Resampler (AMR) can be
 implemented\cite{cotter2015parallel}. The output of the resampler is then denoted
 $\theta^{(k+1)}$ and the algorithm is ready for the next
-iteration. The importance samples $\{\hat{\theta}^{(k)},w^{(k)}\}$ The PAIS is summarised in Algorithm \ref{alg:PAIS}.
+iteration. The PAIS is summarised in Algorithm \ref{alg:PAIS}, where
+the importance samples $\{(\hat{\theta}^{(k)},w^{(k)})\}$ are stored as
+the output.
 
 \begin{table}[!h]
 \centering
@@ -397,12 +407,12 @@ iteration. The importance samples $\{\hat{\theta}^{(k)},w^{(k)}\}$ The PAIS is s
 
 		Resample $\theta^{(k+1)} \leftarrow \| w^{(k)}\|_1^{-1}\sum_{j=1}^M w_j^{(k)}\delta_{\hat{\theta}_j^{(k)}}(\cdot)$.\label{algline:PAIS_resample}\;
 	}
-	Output $\{(w^{(n)}, \hat{\theta}^{(n)})\}_{n=1}^N$.
+	Output $\{(\hat{\theta}^{(n)},w^{(n)})\}_{n=1}^N$.
 \caption{The PAIS Algorithm.\label{alg:PAIS}}
 \end{algorithm}
 \end{table}
 
-One problem with the PAIS and other PMC methods can become apparent if
+One problem with the PAIS and other pMC methods can become apparent if
 the target density has highly curved manifolds on which the density is
 concentrated. In this
 case, unless the proposal densities $q$ are informed by this local
@@ -415,7 +425,7 @@ structure.
 
 In this paper, we investigate the use of transport maps to learn local
 covariances across the whole of the domain, in order to stabilise
-PMC-type methods, and make these methods more applicable to a wider
+pMC-type methods, and make these methods more applicable to a wider
 range of more challenging inference problems.
 
 \section{Construction of transport maps in importance sampling} \label{sec:map}
@@ -436,7 +446,11 @@ The reference density is chosen to allow efficient proposals using a simple prop
 distribution such as a Gaussian centred at the previous state. Proposed states can then be mapped back into a sample from the posterior by applying the inverse of the transport map.
 
 Proposing new states in this way allows us to make large steps around complex probability distributions.
-It is also feasible in this framework to assume that the reference density is close enough to a standard Gaussian that we can efficiently propose moves using a proposal distribution which is independent of the current state, e.g. choose $q(\theta) = \mathcal{N}(0,I_n)$.
+It is also feasible in this framework to assume that the reference
+density is close enough to a standard Gaussian that we can efficiently
+propose moves using a proposal distribution which is independent of
+the current state, for example sampling from the reference Gaussian
+itself, or a slightly more diffuse distribution.
 
 In this Section we outline the methodology in
 \cite{parno2014transport} for approximately coupling the target,
@@ -473,7 +487,7 @@ measure, using the pullback of the reference density $\phi$ through $T^{-1}$.
 Clearly the pullback only exists when $T$ is monotonic, i.e. has a positive definite Jacobian, and has continuous first derivatives.
 Not all maps satisfy these conditions, so we define a smaller space of
 maps, $\mathcal{T}^\uparrow \subset \mathcal{T}$ which contains all
-feasible maps. This space does not necessarily contain an exact
+invertible maps. This space does not necessarily contain an exact
 coupling between target and reference space, and so we are motivated to formulate an optimisation problem to find the map $\tilde{T}
 \in \mathcal{T}^\uparrow$ which most closely maps the target density
 to the reference density.
@@ -501,7 +515,7 @@ to the reference density.
 As in previous work in \cite{parno2014transport}, we can ensure
 invertibility if we restrict the map to be lower triangular, i.e. $\tilde{T} \in \mathcal{T}^{\ltri}\subset\mathcal{T}^\uparrow$. This lower triangular map has the form,
 \[
-	T(\theta_1, \dots, \theta_n) = \begin{bmatrix} T_1(\theta_1) \\ T_2(\theta_1, \theta_2) \\ \vdots \\
+	\tilde{T}(\theta_1, \dots, \theta_n) = \begin{bmatrix} T_1(\theta_1) \\ T_2(\theta_1, \theta_2) \\ \vdots \\
 		T_n(\theta_1, \dots, \theta_n) \end{bmatrix},
 \]
 where $T_i\colon \mathbb{R}^i \to \mathbb{R}$. % We assume that the target and reference probability densities are absolutely continuous on
@@ -582,7 +596,8 @@ We require that the first derivatives of the map are continuous, which is easy t
 \gamma_{i,\mathbf{j}}\psi_\mathbf{j}(\theta).
 \end{equation}
 The parameter $\gamma_i \in \mathbb{R}^{M_i}$ is a vector of coefficients. Each component of $\gamma_i$ corresponds to a basis function
-$\psi_\mathbf{j}$, indexed by the multi-index $\mathbf{j} \in \mathbb{N}_0^d$. These multi-indices are elements of the multi-index set $\mathcal{J}_i$. A multi-index defines a product of univariate polynomials in $\theta_k$,
+$\psi_\mathbf{j}$, indexed by the multi-index $\mathbf{j} \in
+\mathcal{J}_i \subset \mathbb{N}_0^i$. A multi-index defines a product of univariate polynomials in $\theta_k$,
 \[
 	\psi_\mathbf{j}(\theta) = \prod\limits_{k=1}^i \! \varphi_{j_k}(\theta_k), \quad \text{for} \quad \mathbf{j} \in \mathcal{J}_i,
 \]
@@ -710,7 +725,7 @@ again $[G_i\gamma_i]^{-1}$ is taken element-wise.
 
 
 \section[Transport map MCMC]{Transport map usage in PAIS
-  and other PMC algorithms}\label{sec:TPAIS}
+  and other pMC algorithms}\label{sec:TPAIS}
 
 Given importance samples from the target distribution, we have demonstrated how to construct an approximate transport map from the
 target measure to a reference measure. We now consider how to
@@ -916,7 +931,7 @@ $\theta_2$. From our experiments, we have observed that the standard PAIS-RW req
 \begin{figure}[!ht]
 \centering
 \subfigure[Comparison of the two Transport PAIS options.]{\includegraphics[width=0.45\textwidth]{images/TPAIS/R1_L2}}
-\subfigure[Comparison of Transport PAIS option (2) with the standard algorithms.]{\includegraphics[width=0.45\textwidth]{images/TPAIS/R1_L2_all}}
+\subfigure[Comparison of Transport PAIS option (3) with the standard algorithms.]{\includegraphics[width=0.45\textwidth]{images/TPAIS/R1_L2_all}}
 \caption{Convergence of algorithms; Transport M-H,
   algorithm \ref{alg:TransportPAIS1}, algorithm \ref{alg:TransportPAIS2} for
   density \eqref{eqn:R2_repeat}. Ensemble size $M=150$, resampling performed using the AMR algorithm.}
@@ -951,7 +966,7 @@ model the dynamics through a discrete stochastic model, such as a
 continuous time Markov chain.
 
 For each reaction $R_j$, for $j = 1,2,\ldots N_r$, there is a
-propensity or hazard function $\alpha_j(X(t)$ which indicates how
+propensity or hazard function $\alpha_j(X(t))$ which indicates how
 likely that reaction is to fire, defined by
 \[\alpha_j(X(t)) = \lim_{dt \to 0} \mathbb{P}(\text{Reaction $R_j$ in
     the time interval  } \quad s \in [t, t+ dt] ).\] If a system
@@ -991,8 +1006,8 @@ every single reaction event with the same cost. In such a system, one
 might employ multiscale methods in order to approximate trajectories
 at a lower cost than the exact algorithms.
 
-One common approach is to induce the quasi-steady-state approximation
-QSSA. This approximation makes the assumption that fast reactions
+One common approach is to induce the quasi-equillibrium approximation
+QEA. This approximation makes the assumption that fast reactions
 enter quasi-equilibrium on a timescale which is negligible with
 respect to the timescale on which the slow dynamics in the system are
 evolving. This amounts to taking the asymptotic limit that the
@@ -1040,8 +1055,8 @@ where $\alpha_0(X(t)) =\sum_{i}^{N_r} \alpha_i(X(t))$ is the total
 propensity in the system. The second is a multinomial random variable $r_j$
 which dictates which reaction has occurred during the $j$th reaction,
 which takes the value
-$r \in \{1,2,\ldots,N_r\}$ with probability
-\[\mathbb{P}(r = i) = \frac{\alpha_i(X(t))}{\alpha_0(X(t))}.\]
+$i \in \{1,2,\ldots,N_r\}$ with probability
+\[\mathbb{P}(r_j = i) = \frac{\alpha_i(X(t))}{\alpha_0(X(t))}.\]
 As such, in order to compute the likelihood of a particular trajectory
 given a possible realisation of the reaction parameters, it is
 sufficient to have access to the total time spent in each state, and
@@ -1077,7 +1092,7 @@ where $K = |\mathcal{S}|$, the number of states in $\mathcal{S}$, and each state
 
 To construct the posterior distribution for the reaction rates, $\mathbf{k}$, in the chemical system, we formulate the likelihood using the sufficient statistics derived in the previous section. Due to the non-negativity of these reaction rates, we assign a Gamma prior distribution to each rate. Given the distributions in Equations~\eqref{eqn:chem_time_dist} and~\eqref{eqn:chem_react_dist} for our data, the likelihood of observing the data $\mathbf{R}$ and $\mathbf{T}$ is
 \[
-	\ell(\mathbf{R}, \mathbf{T}|\mathbf{k}) \propto \prod\limits_{i=1}^K \text{Multi}(\mathbf{r}(\mathbf{Y}_i); \mathbf{K}_i, \mathbf{p}(\mathbf{Y}_i))\text{Gamma}(\mathbf{T}_i; \mathbf{K}_i, \alpha_0(\mathbf{Y}_i)),
+	\ell(\mathbf{R}, \mathbf{T}|\mathbf{k}) \propto \prod\limits_{i=1}^K \text{Multi}(\mathbf{R}_{i\cdot}; \mathbf{K}_i, \mathbf{p}(\mathbf{Y}_i))\text{Gamma}(\mathbf{T}_i; \mathbf{K}_i, \alpha_0(\mathbf{Y}_i)),
 \]
 where again $\mathbf{Y}_i \in \mathcal{S}$ and the propensities
 $\alpha_i$ and probabilities $p_i$ depend on the reaction rates
@@ -1106,7 +1121,7 @@ R_{s_2}, \ldots R_{s_{n_r}} \} \subset \{R_1, R_2, \ldots , R_{N_r}
 reactions $\alpha_{s_i}$ may depend on the value of the fast variables which is
 unknown. However, the invariant distribution of the fast variables
 conditioned on the slow variables in the system can be approximated
-using a multiscale method, such as the QSSA or the CMA, as described
+using a multiscale method, such as the QEA or the CMA, as described
 briefly in Section \ref{sec:multi}. Once the approximations have been
 made, we arrive at approximate \emph{effective} propensities $\bar{\alpha}_{s_i}$, which
 have been averaged over the computed invariant distributions of the
@@ -1497,14 +1512,16 @@ dependent on all four parameters $\theta_0 = (k_1, k_2, k_3, k_4)^\top$. The mar
 
 \begin{table}[!htb]
 \centering
-\begin{tabular}{rr}
+\begin{tabular}{cccc}
 	\toprule
-	$k$ & \quad $\mathbb{P}(D = (\mathbf{R},\mathbf{T})^\top|\mathcal{M}_k)$ \\ \cmidrule(lr){1-2}
-	0 & 6.8e-3 \\
-	1 & 3.2e-3 \\
-	2 & 1.7e-3 \\ \bottomrule
+	Model description & $k$ & \quad $\mathbb{P}(D =
+                                  (\mathbf{R},\mathbf{T})^\top|\mathcal{M}_k)$
+  & $B_{0,k}$ \\ \cmidrule(lr){1-4}
+	Full & 0 & 6.8e-3 & 1 \\
+	CMA & 1 & 3.2e-3 & 2.09 \\
+	QEA & 2 & 1.7e-3 & 4.10 \\ \bottomrule
 \end{tabular}
-\caption{Marginal distributions for the data $(\mathbf{R},\mathbf{T})^\top$ for each model considered in Section~\ref{sec:chem_multiscale}.}
+\caption{Marginal distributions and Bayes factors for the data $(\mathbf{R},\mathbf{T})^\top$ for each model considered in Section~\ref{sec:chem_multiscale}.}
 \label{tab:chem_Bayes_marginals}
 \end{table}
 
@@ -1558,7 +1575,7 @@ mechanism~\cite{kaern2005stochasticity,guido2006bottom,becskei2000engineering}
 used by a particular cell to regulate the amount of a protein, $P$,
 present. Proteins can bind in pairs to form a dimer $D$. The dimer can
 bind to the gene $G$ to a ``switched off'' state $G'$, in which the
-production of MRNA molecules $M$ is inhibited. The MRNA encodes for
+production of mRNA molecules $M$ is inhibited. The mRNA encodes for
 production of the protein $P$, and both $P$ and $M$ can degrade. 
 The eight reactions are given in Equation~\eqref{eqn:GRN_reactions}.
 \begin{align}
@@ -1587,7 +1604,7 @@ protein. However, the T-cells will not necessarily differentiate
 between monomers and dimers of the protein. We replicate such a
 scenario, in a zero-observational noise setting, by assuming that we
 can only observe $T=P + 2D + 2G'$, the total number of protein
-molecules in the system, alongside $M$, the concentration of MRNA. The
+molecules in the system, alongside $M$, the concentration of mRNA. The
 number of dimers, and the status of the genetic switch, are assumed
 unobservable. In
 order to sample from the posterior distribution on the reaction
@@ -1749,7 +1766,7 @@ Below we highlight some areas for future work.
 \subsection{Sampling in higher
   dimensions}\label{sec:TPAIS_higher_dim}
 
-One major issue with PMC-type algorithms is the curse of
+One major issue with pMC-type algorithms is the curse of
 dimensionality. This curse is two-fold, since as the target
 distribution's dimension is increased, a larger ensemble size is often
 required in order to capture the addition complexity of the density
