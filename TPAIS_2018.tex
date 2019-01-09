@@ -144,7 +144,8 @@
 EPSRC grant number EP/K032208/1.} \and Ioannis
 G. Kevrekidis\thanks{Chemical and Biomolecular Engineering \& Applied
   Mathematics and Statistics, Johns Hopkins University, Baltimore, MD
-  21218. The work of IGK was partially supported by the US National Science Foundation and by DARPA.} \and Paul
+  21218. The work of IGK was partially supported by the US National
+  Science Foundation, by the US AFOSR, and by DARPA.} \and Paul
   Russell\thanks{School of
     Mathematics, University of Manchester, Manchester, UK.}}
 
@@ -164,7 +165,7 @@ sampling methods for characterising the posterior distribution, which
 do not incorporate information about this structure, will be highly
 inefficient. Moreover, most methods are inherently serial in nature,
 and as such are not exploiting the parallelised  nature of modern
-computer infrastructure. In this paper, we seek to develop a method to
+computer infrastructure. In this paper, we seek to develop an approach to
 tackle this problem, using optimal transport maps to simplify
 posterior distributions which are concentrated on lower dimensional
 manifolds.
@@ -186,15 +187,17 @@ make progress in a range of scientific fields. Different MCMC methods
 have been designed with different challenges in mind, for example high dimensional
 targets\cite{cotter2013mcmc}, or large data
 sets\cite{bierkens2016zig}. 
-Other methods which exploit piecewise deterministic Markov processes
+Other methods include piecewise deterministic Markov processes
 \cite{bouchard2018bouncy},
 methods which are able to make very large moves informed by the
 data\cite{teh2016consistency,duane1987hybrid}, methods which are able to exploit
 the geometry of the target\cite{girolami2011riemann}. Population Monte Carlo
-(pMC) methods uses efficient importance sampling proposals informed by an
+(pMC) methods use efficient importance sampling proposals informed by an
 ensemble of particles which have already learned about the structure
 of the target\cite{cappe2012population,cappe2008adaptive,douc2007convergence,douc2007minimum, martino2017layered, cornuet2012adaptive, martino2015adaptive}. These methods are particularly useful in the context of
-low dimensional target distributions which have complex structure, for
+low dimensional target distributions which have complex\footnote{We
+  use ``complex'' with the meaning ``complicated'' rather than
+  containing imaginary numbers.} structure, for
 which traditional Metropolis-Hastings methods tend to struggle, for
 example when the target is multimodal or if the density is
 concentrated on a lower-dimensional manifold. Moreover, they are an
@@ -203,7 +206,7 @@ the likelihood for each particle in the ensemble can be distributed
 across a set of processors. This is of utmost importance in an age
 where increases in computational power are most likely to come from
 large-scale parallelisation as opposed to the large speed-ups in
-individual processors that we saw throughout the 20th Century.
+individual processors that we saw throughout the 20th century.
 
 In \cite{cotter2015parallel}, we explored ideas from adaptive MCMC within a
 pMC-type structure, in order to construct an adaptive importance
@@ -232,19 +235,14 @@ Lamperti or Girsanov transformations for SDEs\cite{flandrin2003stationarity,gard
 processes onto a standard one which is well understood, through a
 change of measure.
 
-Bayesian inverse problems are not the only area in which probability
-densities arise which are concentrated on, or close to, lower dimensional
-manifolds. This is also a common feature of molecular dynamics
-problems, where ******
-
-In this paper, we particularly concern ourselves with the problem of
+In this paper, we particularly concern ourselves with the subject of
 inverse problems in stochastic reaction networks. This type of model
 is used in situations where ODE or diffusion\cite{gillespie2000chemical}
 approximations of chemical reaction kinetics are not viable, usually
 because of the low concentration of one or more chemical
 species\cite{gillespie1977exact}. Biochemical networks typically fall into
 this category, because of the small volume of the reactors involved (a
-cell).
+single cell).
 
 One challenge with networks arising from these applications is that
 they often have some reactions which are occurring many times on a
@@ -271,7 +269,7 @@ task, we might instead wish to approximate the likelihoods arising
 from such a set of observations by the use of an appropriate
 multiscale methodology.
 
-The partial observability of these systems leads to only
+The partial observability of these systems lead to only
 partial-observability of the unknown parameters in the system, for
 example the reaction rates of the fast reactions. The resulting
 multiscale approximations, and the resulting approximations of the
@@ -312,9 +310,9 @@ reaction networks.
 %Stochastic reaction networks
 %Multiscale approximations, QSSA/QEA, CMA
 
-In Section \ref{sec:PAIS}, we will briefly reintroduce PAIS. In Section \ref{sec:map} we show how an appropriate transport map can
+In Section \ref{sec:ETAIS}, we will briefly reintroduce ETAIS. In Section \ref{sec:map} we show how an appropriate transport map can
 be constructed from importance samples which maps the posterior close
-to a reference Gaussian measure. In Section \ref{sec:TPAIS} we show
+to a reference Gaussian measure. In Section \ref{sec:TETAIS} we show
 how such a map can be incorporated into a sophisticated parallel MCMC
 infrastructure in order to accelerate mixing, and improve stability. In Section
 \ref{sec:conv} we seek to show the advantages of this approach through
@@ -328,11 +326,11 @@ methodologies, as well as investigating the posterior approximations
 discussed in the previous section. We conclude with a discussion in
 Section \ref{sec:conc}.
 
-\section{Parallel Adaptive Importance Sampling}\label{sec:PAIS}
-Parallel adaptive importance sampling (PAIS)\cite{cotter2015parallel} is a variant of pMC\cite{cappe2012population}, which is a family of methods which are based
+\section{Ensemble Transport Adaptive Importance Sampling}\label{sec:ETAIS}
+Ensemble transport adaptive importance sampling (ETAIS)\cite{cotter2015parallel} is a variant of pMC\cite{cappe2012population}, which is a family of methods which are based
 on importance sampling. In importance sampling, we attempt to
 characterise a target density through sampling from that
-density. However, the target density $\pi$ itself is often too complex to sample
+density. However, the target density $\pi$ itself is often too complicated to sample
 from directly, so we instead sample from a
 proposal density $\chi$. Each sample $\theta^{(k)} \sim \chi$ is then weighted by
 $w_k = \frac{\pi(\theta^{(k)})}{\chi(\theta^{(k)})}$, to take account of the bias of
@@ -349,7 +347,7 @@ to construct a good proposal distribution, either from the entire
 history of the algorithm up to the current point, or to use the
 current state of a whole ensemble of $M$ particles in the system.
 
-In PAIS, the proposal distribution $\chi$ is chosen to be the equally
+In ETAIS, the proposal distribution $\chi$ is chosen to be the equally
 weighted mixture of any choice of MCMC proposal kernel, evaluated at
 each of the current particles in the system. If $\theta^{(k)} = [\theta_1^{(k)},
 \theta_2^{(k)}, \ldots, \theta_M^{(k)}]^\top$ is the current state of the
@@ -373,13 +371,15 @@ mixture in order to
 ensure that the sample made is as representative as possible of the
 target density, i.e.
 \[ \theta_i^{(k)} \sim q(\cdot ; \theta_i^{(k)},\beta)\]
-for each $i = 1,2,\ldots,M$. We now have a weighted sample, and it
+for each $i = 1,2,\ldots,M$. Usually the kernel $q(\cdot ;
+x,\beta)$ is centred at, or has mean equal to $x$, and whose variance
+is scaled with $\beta$. We now have a weighted sample, and it
 would be inadvisable to use an equally weighted mixture of proposal
 distributions from each of these points. Therefore, before starting
 the next iteration, the importance sample
 $\{(\theta^{(k)},w^{(k)})\}$ is resampled to produce an equally
 weighted sample, ready for the next iteration of the algorithm. In
-PAIS, a state-of-the-art resampler is used, which uses optimal
+ETAIS, a state-of-the-art resampler is used, which uses optimal
 transport methods to find the equally weighted discrete sample which
 best represents the statistics of the importance
 sample\cite{reich2013nonparametric}. For larger ensemble sizes $M$ this can become
@@ -387,7 +387,7 @@ expensive, in which case a greedy approximation of this algorithm, the
 Approximate Multinomial Resampler (AMR) can be
 implemented\cite{cotter2015parallel}. The output of the resampler is then denoted
 $\theta^{(k+1)}$ and the algorithm is ready for the next
-iteration. The PAIS is summarised in Algorithm \ref{alg:PAIS}, where
+iteration. The ETAIS is summarised in Algorithm \ref{alg:ETAIS}, where
 the importance samples $\{(\hat{\theta}^{(k)},w^{(k)})\}$ are stored as
 the output.
 
@@ -398,27 +398,27 @@ the output.
 \BlankLine
 	Initialise $\theta^{(1)} \sim \mu_0$.\;
 	\For{$k=1,\ldots,N$}{
-		Sample $\hat{\theta}_i^{(k)} \sim q(\cdot; \theta_j^{(k)}, \beta)$, for $i = 1,\dots, M$.\label{algline:PAIS_propose}\;
+		Sample $\hat{\theta}_i^{(k)} \sim q(\cdot; \theta_j^{(k)}, \beta)$, for $i = 1,\dots, M$.\label{algline:ETAIS_propose}\;
 		Calculate $w^{(k)} = (w_1^{(k)}, \ldots, w_M^{(k)})^\top$, where
 			\[
 				w^{(k)}_i = \frac{\mu(\hat{\theta}^{(k)}_i)}{\chi^{(k)}(\hat{\theta}^{(k)}_i; \theta^{(k)}, \beta)}.
 			\]
-		\label{algline:PAIS_weights}
+		\label{algline:ETAIS_weights}
 
-		Resample $\theta^{(k+1)} \leftarrow \| w^{(k)}\|_1^{-1}\sum_{j=1}^M w_j^{(k)}\delta_{\hat{\theta}_j^{(k)}}(\cdot)$.\label{algline:PAIS_resample}\;
+		Resample $\theta^{(k+1)} \leftarrow \| w^{(k)}\|_1^{-1}\sum_{j=1}^M w_j^{(k)}\delta_{\hat{\theta}_j^{(k)}}(\cdot)$.\label{algline:ETAIS_resample}\;
 	}
 	Output $\{(\hat{\theta}^{(n)},w^{(n)})\}_{n=1}^N$.
-\caption{The PAIS Algorithm.\label{alg:PAIS}}
+\caption{The ETAIS Algorithm.\label{alg:ETAIS}}
 \end{algorithm}
 \end{table}
 
-One problem with the PAIS and other pMC methods can become apparent if
+One problem with the ETAIS and other pMC methods can become apparent if
 the target density has highly curved manifolds on which the density is
 concentrated. In this
 case, unless the proposal densities $q$ are informed by this local
 structure, the mixture distribution proposal may not well approximate
-$\pi$ without a very large large ensemble size $M$, which can become
-inhibitively expensive. Some methods have been
+$\pi$ without a very large ensemble size $M$, which can become
+prohibitively expensive. Some methods have been
 proposed\cite{douc2007minimum}
 which use samples local to each particle to inform local covariance
 structure.
@@ -610,7 +610,7 @@ to use polynomials of total order $p$,
 	\mathcal{J}_i^\text{TO} = \left\{\mathbf{j}:\|\mathbf{j}\|_1 \leq p, j_k = 0\ \forall k > i\right\},
 \]
 which is optimal in terms of the amount of information captured by the map about the target. The cardinality of $\mathcal{J}_i^\text{TO}$ is $M_i = \binom{i+p}{p}$ which increases rapidly in $d$ and $p$, where $i = 1, \dots, d$. Smaller optimisation problems can be produced by constructing subsets of $\mathcal{J}_i^\text{TO}$. These index sets are discussed
-in~\cite{parno2014transport}. Increased information with a slower increase in the number of map parameters can be achieved with the composition of maps discussed in~\cite{parno2015transport}. Here we stick with polynomials of total order $p$ since we work with low dimensional problems with the PAIS algorithm.
+in~\cite{parno2014transport}. Increased information with a slower increase in the number of map parameters can be achieved with the composition of maps discussed in~\cite{parno2015transport}. Here we stick with polynomials of total order $p$ since we work with low dimensional problems with the ETAIS algorithm.
 
 
 \subsection{Implementation of the optimisation problem}\label{sec:transport_implementation}
@@ -634,7 +634,7 @@ carry equal weight, and as such the Monte Carlo estimator becomes
 \end{equation}
 where $w_k$ are the weights associated with each sample $\theta^{(k)}$, and $\bar{w}$ is the sum of
 all these weights. Optimisation of this cost function results in a map from $\pi$ to some reference density $\pi_r$. By choosing the reference density to be a Gaussian density, we can simplify this expression greatly. Substitution of the Gaussian density into Equation~\eqref{eqn:TM_full_cost} leads to
-\begin{equation}\label{eqn:TPAIS_objective}
+\begin{equation}\label{eqn:TETAIS_objective}
 	C(T) = \frac{1}{\bar{w}}\sum\limits_{i=1}^d \! \sum\limits_{k=1}^K
 		w_k\left[\frac{1}{2}T_i^2(\theta^{(k)}) - \log\frac{\partial
 		T_i}{\partial\theta_i}(\theta^{(k)}) + \beta(T_i(\theta^{(k)})-\theta^{(k)})^2\right],
@@ -710,7 +710,7 @@ criteria.
 
 The Hessian takes the
 form
-\begin{equation}\label{eqn:TPAIS_hessian}
+\begin{equation}\label{eqn:TETAIS_hessian}
 	HC_i(\gamma_i) = \frac{1}{\bar{w}}\left[F_i^\top WF_i + G_i^\top
 		W\text{diag}([G_i\gamma_i]^{-2})G_i\right] + \beta I,
 \end{equation}
@@ -724,8 +724,8 @@ again $[G_i\gamma_i]^{-1}$ is taken element-wise.
 
 
 
-\section[Transport map MCMC]{Transport map usage in PAIS
-  and other pMC algorithms}\label{sec:TPAIS}
+\section[Transport map MCMC]{Transport map usage in ETAIS
+  and other pMC algorithms}\label{sec:TETAIS}
 
 Given importance samples from the target distribution, we have demonstrated how to construct an approximate transport map from the
 target measure to a reference measure. We now consider how to
@@ -739,10 +739,10 @@ will show how similarly, these maps can be used to construct highly
 efficient importance sampling schemes.
 
 In particular, we will show how we can use the transport map derived in Equation~\eqref{eq:weighted_map_optim} to
-design a proposal scheme for the PAIS algorithm. In this case we have a choice in how to proceed; we
+design a proposal scheme for the ETAIS algorithm. In this case we have a choice in how to proceed; we
 propose new samples on reference space and resample on target space, or we both propose and resample on reference space, mapping onto target space to output the samples. The first option allows us to reuse much of the framework
-from the standard PAIS algorithm and in the numerics later we see that this performs better than
-both the Transport MH algorithm, and the standard PAIS algorithm. The second option requires some
+from the standard ETAIS algorithm and in the numerics later we see that this performs better than
+both the Transport MH algorithm, and the standard ETAIS algorithm. The second option requires some
 restructuring, but can result in improved performance from the resampler.
 
 \begin{table}
@@ -771,11 +771,11 @@ Initialise map $\bar{\gamma}^{(1)} = \iota$.\;
 		$\bar{\gamma}^{(k+1)} = \bar{\gamma}^{(k)}$.\;
 	}
 }
-\caption{PAIS algorithm with adaptive transport map. Option 1.\label{alg:TransportPAIS1}}
+\caption{ETAIS algorithm with adaptive transport map. Option 1.\label{alg:TransportETAIS1}}
 \end{algorithm}
 \end{table}
 
-The first option is given in Algorithm~\ref{alg:TransportPAIS1}. We
+The first option is given in Algorithm~\ref{alg:TransportETAIS1}. We
 denote the ensembles of states in target space $\theta^{(k)} =
 \{\theta^{(k)}_1,\dots,\theta^{(k)}_M\}$, and the states in the
 reference space, $r = \{r_1,\dots,r_M\}$, where $M$ is the ensemble
@@ -783,7 +783,7 @@ size. Similarly, the proposal states are denoted $r' =
 \{r'_1,\dots,r'_M\}$ and $(w^{(k)}, \hat{\theta}^{(k)}) =
 \{(w^{(k)}_1, \hat{\theta}^{(k)}_1),\dots,(w^{(k)}_M,
 \hat{\theta}^{(k)}_M)\}$, where these pairs are the states which
-together form our sample from the target distribution. As in the standard version of the PAIS algorithm we use the deterministic mixture weights.
+together form our sample from the target distribution. As in the standard version of the ETAIS algorithm we use the deterministic mixture weights.
 
 \begin{table}
 \begin{algorithm}[H]
@@ -800,7 +800,7 @@ Initialise map $\bar{\gamma}^{(1)} = \iota$.\;
 		w_i^{(k)} = \frac{\pi(\hat{\theta}_i^{(k)})}{\left(\sum_{j=1}^M \! q_r(r_i'; r_j)\right)|J_{\tilde{T}}(\hat{\theta}_i^{(k)};\bar{\gamma}^{(k)})|}.
 	\]
 
-	Resample $r^* \leftarrow \|w^{(k)}\|^{-1}\sum\limits_{j=1}^M \! w_j^{(k)}\delta_{r'_j}(\cdot)$.\label{algline:TPAIS_resample}\;
+	Resample $r^* \leftarrow \|w^{(k)}\|^{-1}\sum\limits_{j=1}^M \! w_j^{(k)}\delta_{r'_j}(\cdot)$.\label{algline:TETAIS_resample}\;
 	Invert $\theta^{(k+1)}_i = \tilde{T}^{-1}(r^*_i)$.\;
 	\eIf{$k\ \text{mod}\ K_U = 0$ and $k < K_\text{stop}$}{
 		\For{$i \leftarrow 1, \dots, n$}{
@@ -811,23 +811,23 @@ Initialise map $\bar{\gamma}^{(1)} = \iota$.\;
 		$\bar{\gamma}^{(k+1)} = \bar{\gamma}^{(k)}$.\;
 	}
 }
-\caption{PAIS algorithm with adaptive transport map. Option 2.\label{alg:TransportPAIS2}}
+\caption{ETAIS algorithm with adaptive transport map. Option 2.\label{alg:TransportETAIS2}}
 \end{algorithm}
 \end{table}
 
-The second option, Algorithm~\ref{alg:TransportPAIS2}, is similar to
-the first except on Line~\ref{algline:TPAIS_resample} where rather
+The second option, Algorithm~\ref{alg:TransportETAIS2}, is similar to
+the first except on Line~\ref{algline:TETAIS_resample} where rather
 than resampling in target space we resample in reference space. In
 reference space the dimensions are roughly uncorrelated, and the
 Gaussian marginals are easy to approximate with fewer ensemble
 members. This means that the resampling step will be more efficient in
-moderately higher dimensions, which we discuss in Section~\ref{sec:TPAIS_higher_dim}.
+moderately higher dimensions, which we discuss in Section~\ref{sec:TETAIS_higher_dim}.
 
 \section[Convergence of transport MCMC]{Convergence of the transport proposal based MCMC algorithms}\label{sec:conv}
 
 In this Section we study the convergence of the transport based
 proposal distributions which we have described in
-Section~\ref{sec:TPAIS}.
+Section~\ref{sec:TETAIS}.
 We take as a test problem the ubiquitous Rosenbrock banana-shaped
 density. This target density is given by
 \begin{equation}\label{eqn:R2_repeat}
@@ -879,7 +879,7 @@ Figure~\ref{fig:R2_transport} shows the output of the approximate
 transport map. Even though we have truncated the infinite expansion in
 the monomial basis down to 4 and 10 terms in respective dimensions,
 the push forward of the sample is still a unimodal distribution
-centred at the origin with standard deviation 1. As you move out into
+centred at the origin with standard deviation 1. As one moves out into
 the tails of the reference density more non-Gaussian features are
 clearly visible. However, overall, the push forward of the target
 density does not look a challenging one to sample from, with even
@@ -894,19 +894,19 @@ region, although not necessarily outside\cite{parno2014transport}.
 
 We first find the optimal scaling parameters for the individual
 algorithms. This is done, as in \cite{cotter2015parallel}, by optimising for the effective sample size in
-the PAIS algorithm, and by tuning the relative $L^2$ error in the MH
+the ETAIS algorithm, and by tuning the relative $L^2$ error in the MH
 algorithm. There is currently no
 guidance on the best way of tuning the MH algorithm with transport map
 proposals although one might expect results similar to the standard MH
 results, especially if adaptation of the map is stopped after a given
-point. As in the PAIS algorithm, optimising for the effective sample size might be the best option.
+point. As in the ETAIS algorithm, optimising for the effective sample size might be the best option.
 
 \begin{table}[!ht]
 \centering
 \begin{tabular}{lrrr}
 \toprule
 	Statistic \quad / \quad Algorithm & Transport M-H &
-                                                            Alg. \ref{alg:TransportPAIS1} & Alg. \ref{alg:TransportPAIS2}  \\ \cmidrule(lr){1-4}
+                                                            Alg. \ref{alg:TransportETAIS1} & Alg. \ref{alg:TransportETAIS2}  \\ \cmidrule(lr){1-4}
 	$\delta_{L^2}$				 & 1.0e-0 & 1.1e-1 & 3.5e-1 \\
 	$\delta_{\text{ESS}}$				 & - & 1.0e-1 & 5.2e-1 \\ \cmidrule(lr){1-4}
 	Acc. rate							 & 0.23 & - & - \\
@@ -915,7 +915,7 @@ point. As in the PAIS algorithm, optimising for the effective sample size might 
 \end{tabular}
 \caption{Optimal scaling parameters for the transport map based
   algorithms applied to $R_1$, optimising for the $L^2$ error and
-  the effective sample size (ESS) for PAIS algorithms, and for average
+  the effective sample size (ESS) for ETAIS algorithms, and for average
   acceptance rate for MH algorithms.}
 \label{tab:R2_opt_scaling}
 \end{table}
@@ -923,26 +923,27 @@ point. As in the PAIS algorithm, optimising for the effective sample size might 
 The optimal scaling parameters are given in
 Table~\ref{tab:R2_opt_scaling}. Here we see that the effective sample
 size is much lower than we see in the one-dimensional examples with
-the PAIS algorithms. However, in the Rosenbrock density
+the ETAIS algorithms. However, in the Rosenbrock density
 \eqref{eqn:R2_repeat} we are dealing with a much more complicated
 curved structure, as well as a very slowly decaying tail in
-$\theta_2$. From our experiments, we have observed that the standard PAIS-RW required an ensemble size of $M=500$ to overcome the problems in this density, however the transport map transforms the tails to be more like those of a Gaussian which can be approximated well by a smaller ensemble size of $M=150$.
+$\theta_2$. From our experiments, we have observed that the standard ETAIS-RW required an ensemble size of $M=500$ to overcome the problems in this density, however the transport map transforms the tails to be more like those of a Gaussian which can be approximated well by a smaller ensemble size of $M=150$.
 
 \begin{figure}[!ht]
 \centering
-\subfigure[Comparison of the two Transport PAIS options.]{\includegraphics[width=0.45\textwidth]{images/TPAIS/R1_L2}}
-\subfigure[Comparison of Transport PAIS option (3) with the standard algorithms.]{\includegraphics[width=0.45\textwidth]{images/TPAIS/R1_L2_all}}
+\subfigure[Comparison of the two Transport ETAIS
+options.]{\includegraphics[width=0.45\textwidth]{images/TPAIS/R1_L2}}
+\subfigure[Comparison of Transport ETAIS option (3) with the standard algorithms.]{\includegraphics[width=0.45\textwidth]{images/TPAIS/R1_L2_all}}
 \caption{Convergence of algorithms; Transport M-H,
-  algorithm \ref{alg:TransportPAIS1}, algorithm \ref{alg:TransportPAIS2} for
+  algorithm \ref{alg:TransportETAIS1}, algorithm \ref{alg:TransportETAIS2} for
   density \eqref{eqn:R2_repeat}. Ensemble size $M=150$, resampling performed using the AMR algorithm.}
 \label{fig:R2_l2_convergence}
 \end{figure}
 
-The convergence of the three algorithms is displayed in Figure~\ref{fig:R2_l2_convergence}. Figure (a) shows that the two variations of the transport based PAIS algorithms converge with similar rates. The second version, which performs the resampling stage in reference space rather than target space, has a slightly higher ESS, and is more stable than option (1). This version also has a property that we can exploit in Section~\ref{sec:TPAIS_higher_dim}.
+The convergence of the three algorithms is displayed in Figure~\ref{fig:R2_l2_convergence}. Figure (a) shows that the two variations of the transport based ETAIS algorithms converge with similar rates. The second version, which performs the resampling stage in reference space rather than target space, has a slightly higher ESS, and is more stable than option (1). This version also has a property that we can exploit in Section~\ref{sec:TETAIS_higher_dim}.
 
 
 %\section{Transport map-accelerated Parallel Adaptive Importance
-  %Sampling (TPAIS)}\label{sec:TPAIS}
+  %Sampling (TETAIS)}\label{sec:TETAIS}
 
 \section{Multiscale Methods for Stochastic Chemical Reaction
   Networks}\label{sec:multi}
@@ -952,7 +953,7 @@ area often lead to complex posterior
 distributions, which traditional MCMC methods can struggle to sample
 from. We will then go on to solve some inverse problems related to
 this in Section \ref{sec:num}, using the transport map versions of the
-PAIS algorithm, as described in Section \ref{sec:TPAIS}.
+ETAIS algorithm, as described in Section \ref{sec:TETAIS}.
 
 We consider chemical reaction networks of $N_s$ chemical species $\{S_j\}_{j=1}^{N_s}$,
 with population numbers given by $X(t) = [X_1(t), X_2(t), \ldots, X_{N_s}(t)]^\top \in
@@ -1155,7 +1156,7 @@ occurrence of slow reactions.
 \section{Numerical Examples}\label{sec:num}
 In this section we look at two examples of chemical systems to
 demonstrate the effectiveness of the Bayesian approach we have
-proposed, along with the transport PAIS algorithms for sampling the
+proposed, along with the transport ETAIS algorithms for sampling the
 challenging posterior distribution on the reaction parameters that
 arise. 
 
@@ -1273,10 +1274,10 @@ Figure~\ref{fig:chem_CMA_posterior} shows how this posterior looks
 when we use the CMA to model the effective degradation propensity $\bar{\alpha}_4$.
 
 We consider several different algorithms for sampling from these
-distributions. First we implement both the PAIS and MH algorithms with
-a Gaussian proposal distribution. In the case of the PAIS algorithm,
+distributions. First we implement both the ETAIS and MH algorithms with
+a Gaussian proposal distribution. In the case of the ETAIS algorithm,
 this is a Gaussian mixture proposal distribution, and in the MH
-algorithm this is equivalent to a vanilla random walk. The proposal distribution uses a covariance matrix which has been constructed using the sample covariance of a sample produced using a standard MH-RW algorithm. We also compare the PAIS and MH algorithms when using a transport map proposal distribution. This proposal method was discussed in detail in Chapter~\ref{sec:TPAIS}.
+algorithm this is equivalent to a vanilla random walk. The proposal distribution uses a covariance matrix which has been constructed using the sample covariance of a sample produced using a standard MH-RW algorithm. We also compare the ETAIS and MH algorithms when using a transport map proposal distribution. This proposal method was discussed in detail in Chapter~\ref{sec:TETAIS}.
 
 \begin{figure}
 	\centering
@@ -1326,7 +1327,7 @@ algorithm this is equivalent to a vanilla random walk. The proposal distribution
 
 Figure~\ref{fig:chem_coupling} (top) shows how we define a bijective map,
 $\hat{T}$, between parameter space $\mathcal{X}$ and a reference space
-$R$. When using the transport map proposal distribution, we prefix the proposal method with a T, e.g. MH-RW  and MH-TRW, as well as PAIS-RW and PAIS-TRW. In practice we cannot ensure that the approximate map $\tilde{T}$
+$R$. When using the transport map proposal distribution, we prefix the proposal method with a T, e.g. MH-RW  and MH-TRW, as well as ETAIS-RW and ETAIS-TRW. In practice we cannot ensure that the approximate map $\tilde{T}$
 is uniquely invertible over the whole of $R$ and so $\tilde{T}$ is not
 truly bijective. This leads to problems for our strictly positive
 state space, $\mathcal{X} \subset \mathbb{R}_+^d$, since proposals in
@@ -1341,7 +1342,7 @@ $\mathbb{R}^d$, which means that all proposals made on the reference
 space are mapped to valid
 proposals on the true parameter space. It also reduces the work required of the map, which since
 we use only a finite dimensional approximation, can improve
-performance and stability. As before, the proposal distributions are labelled with a T for transport map and when using the intermediate space we prepend `log' to the proposal method, e.g. MH-logRW and MH-logTRW, with, PAIS-logRW and PAIS-logTRW.
+performance and stability. As before, the proposal distributions are labelled with a T for transport map and when using the intermediate space we prepend `log' to the proposal method, e.g. MH-logRW and MH-logTRW, with, ETAIS-logRW and ETAIS-logTRW.
 
 Figure~\ref{fig:chem_coupling} (bottom) displays the composition of maps
 when we include this $\log$ preconditioner leading to an intermediate space $\mathcal{Y}$. The inclusion of this additional map means that we must again alter our importance weight definition to reflect the pullback from $R$ through $\mathcal{Y}$. The weight is now
@@ -1387,7 +1388,7 @@ expect very similar results for the other posterior distributions discussed.
 \centering
 \begin{tabular}{rrrrrr}
 \toprule
-	\multicolumn{1}{l}{Algorithm} & \multicolumn{3}{c}{MH} & \multicolumn{2}{c}{PAIS} \\ \cmidrule(lr){2-4} \cmidrule(lr){5-6}
+	\multicolumn{1}{l}{Algorithm} & \multicolumn{3}{c}{MH} & \multicolumn{2}{c}{ETAIS} \\ \cmidrule(lr){2-4} \cmidrule(lr){5-6}
 	& & $\delta$ & & $\delta$ & ESS \\ \midrule
 	RW & & 5.5e-3 & & 1.0e-0 & 9.0e-3 \\
 	TRW & & 1.2e-0 & & 4.0e-1 & 1.2e-3 \\
@@ -1395,7 +1396,7 @@ expect very similar results for the other posterior distributions discussed.
 	logTRW & & 2.7e-2 & & 1.5e-1 & 3.5e-1 \\
 \bottomrule
 \end{tabular}
-\caption{Optimal scaling parameters for the MH and PAIS algorithms applied to the constrained multiscale problem in Section~\ref{sec:chem_multiscale}. MH parameters optimised by acceptance rate, and PAIS parameters optimised using effective sample size.}
+\caption{Optimal scaling parameters for the MH and ETAIS algorithms applied to the constrained multiscale problem in Section~\ref{sec:chem_multiscale}. MH parameters optimised by acceptance rate, and ETAIS parameters optimised using effective sample size.}
 \label{tab:chem_multiscale_scaling}
 \end{table}
 
@@ -1403,12 +1404,12 @@ The optimal scaling parameters for the proposal distributions are
 given in Table~\ref{tab:chem_multiscale_scaling}. These are
 precomputed by running the algorithms for different parameter
 values. MH-RW based algorithms are tuned to an acceptance rate close
-to the optimal $23.4\%$, and PAIS algorithms are tuned to maximise the
+to the optimal $23.4\%$, and ETAIS algorithms are tuned to maximise the
 effective sample size (ESS). The optimal parameter values for the MH
 algorithms are not particularly informative about their performance,
 since they relate to algorithms operating on different
 transformations. The ESS is highest for the logTRW variant
-of the PAIS algorithm, as we would hope.
+of the ETAIS algorithm, as we would hope.
 
 \begin{figure}[!htb]
 \centering
@@ -1419,13 +1420,13 @@ of the PAIS algorithm, as we would hope.
 \label{fig:chem_multiscale_L2}
 \end{figure}
 
-Convergence of the eight algorithms for this example is shown in Figure~\ref{fig:chem_multiscale_L2}. We first note the poor performance of the MH based algorithms, each of them taking roughly 10,000 samples to begin converging. Only the MH-TRW is at all competitive with the PAIS algorithms. During the simulation interval, the MH-TRW algorithm has not settled down to the expected $\mathcal{O}(1/\sqrt{N})$ rate which means that the estimate is still biased by the long burn-in time. As we have seen in previous examples, the burn-in time for the PAIS algorithm is negligible.
+Convergence of the eight algorithms for this example is shown in Figure~\ref{fig:chem_multiscale_L2}. We first note the poor performance of the MH based algorithms, each of them taking roughly 10,000 samples to begin converging. Only the MH-TRW is at all competitive with the ETAIS algorithms. During the simulation interval, the MH-TRW algorithm has not settled down to the expected $\mathcal{O}(1/\sqrt{N})$ rate which means that the estimate is still biased by the long burn-in time. As we have seen in previous examples, the burn-in time for the ETAIS algorithm is negligible.
 
-The PAIS variants with RW and TRW proposals perform similarly on both
+The ETAIS variants with RW and TRW proposals perform similarly on both
 sample spaces. When sampling without a preconditioner, the transport map is not
 quite as efficient, largely due to the difficulties discussed in the
 previous section i.e. many proposals are made which do result in
-negative reaction rates. Sampling with transport maps with a $\log$ preconditioner leads to more comparable Monte Carlo errors, with the logTRW being apparently slightly less stable. This proposal method becomes more stable as we increase either the ensemble size, or the number of iterations between updates of the transport map, $T$. Overall we see the smallest Monte Carlo errors for a given amount of computational effort coming from the PAIS-logTRW algorithm.
+negative reaction rates. Sampling with transport maps with a $\log$ preconditioner leads to more comparable Monte Carlo errors, with the logTRW being apparently slightly less stable. This proposal method becomes more stable as we increase either the ensemble size, or the number of iterations between updates of the transport map, $T$. Overall we see the smallest Monte Carlo errors for a given amount of computational effort coming from the ETAIS-logTRW algorithm.
 
 \begin{figure}[!htb]
 \centering
@@ -1496,7 +1497,7 @@ given data $D$, can be interpreted as a ratio of the normalisation constants of 
 \[
 	B_{1,2} = \frac{\mathbb{P}(D|\mathcal{M}_1)}{\mathbb{P}(D|\mathcal{M}_2)}, \quad \text{where} \quad \mathbb{P}(D|\mathcal{M}_k) = \int_\mathcal{X} \mathbb{P}(D|\theta_k,\mathcal{M}_k)\mathbb{P}(\theta_k|\mathcal{M}_k) \, \text{d}\theta_k.
 \]
-Under the PAIS framework, it is straightforward to calculate these factors using the Monte Carlo estimator for the normalisation constants. From~\cite{robert2013monte} these normalisation constants take the form
+Under the ETAIS framework, it is straightforward to calculate these factors using the Monte Carlo estimator for the normalisation constants. From~\cite{robert2013monte} these normalisation constants take the form
 \[
 	Z_k \approx \hat{Z}_k\frac{1}{NM}\sum_{i=1}^N\sum_{j=1}^M w_j^{(i)}(\mathcal{M}_k),
 \]
@@ -1660,7 +1661,7 @@ The one- and two-dimensional marginal distributions for the full
 posterior distribution are displayed in
 Figure~\ref{fig:GRN_posterior}. The posterior does not contain many
 interesting correlation structures, however several dimensions have
-leptokurtic tails which are difficult for the standard PAIS algorithm
+leptokurtic tails which are difficult for the standard ETAIS algorithm
 to sample from. The marginal densities also vary over very different
 scales, which could lead to problems with the algorithms which do not
 benefit from the transport map.
@@ -1672,7 +1673,7 @@ without transport map acceleration, which were discussed in
 Section~\ref{sec:chem_multiscale} to this posterior. As with this
 example, the log conditioner is required so that our transport map is a function $T\colon\mathbb{R}^d\rightarrow\mathbb{R}^d$, rather than a map from $\mathbb{R}_+^d$ to $\mathbb{R}^d$.
 
-The transport map setup has not changed from the previous example. However, due to the scaling of the weight we have had to be more careful about which samples we use to build our map. We require that the objective function $C(T)$, from Equation~\eqref{eqn:TPAIS_objective} is convex, which requires that the second derivative, given in Equation~\eqref{eqn:TPAIS_hessian}, is positive definite. This positive definite property depends on all weights in our sample being strictly positive, which is not always possible on a computer. For this reason we filter out any samples from the optimisation problem where the weight is a numeric zero. This does not affect the validity of the map since a weight zero would not contribute to the expectation.
+The transport map setup has not changed from the previous example. However, due to the scaling of the weight we have had to be more careful about which samples we use to build our map. We require that the objective function $C(T)$, from Equation~\eqref{eqn:TETAIS_objective} is convex, which requires that the second derivative, given in Equation~\eqref{eqn:TETAIS_hessian}, is positive definite. This positive definite property depends on all weights in our sample being strictly positive, which is not always possible on a computer. For this reason we filter out any samples from the optimisation problem where the weight is a numeric zero. This does not affect the validity of the map since a weight zero would not contribute to the expectation.
 
 In all eight algorithms we adapt the proposal variances during the
 burn-in phase of the algorithms to avoid the need for a huge ensemble size to approximate the posterior with a mixture of isotropic Gaussian kernels.
@@ -1684,10 +1685,10 @@ As in the previous chemical reaction example, we measure convergence of the algo
 
 The scaling parameters used are selected by optimising the acceptance
 rate for the MH algorithms, and optimising the effective sample size
-for the PAIS algorithms. The optimal parameters are given in
+for the ETAIS algorithms. The optimal parameters are given in
 Table~\ref{tab:grn_scaling_parameters}. Here, for Metropolis-Hastings
 variants, $\beta_{\%}^*$ is the variance of the proposal, optimised
-for an acceptance rate of $50\%$. For the PAIS variants,
+for an acceptance rate of $50\%$. For the ETAIS variants,
 $\beta_{\text{ESS}}^*$ is the variance of each of the proposal kernels
 around each particle, optimised numerically for the maximal effective
 sample size (ESS). ESS/$M$ denotes the ratio of ESS to the number of
@@ -1697,7 +1698,7 @@ particles, with values closer to one denoting a more efficient algorithm.
 	\centering
 	\begin{tabular}{lrrrrrrrr}
 	\toprule
-		 & \multicolumn{4}{c}{MH} & \multicolumn{4}{c}{PAIS} \\ \cmidrule(lr){2-5} \cmidrule(lr){6-9}
+		 & \multicolumn{4}{c}{MH} & \multicolumn{4}{c}{ETAIS} \\ \cmidrule(lr){2-5} \cmidrule(lr){6-9}
 		& RW & logRW & TRW & log-TRW & RW & logRW & TRW & log-TRW \\ \midrule
 		$\beta_{\%}^*$	 	& 1.0e-1 & 3.9e-1 & 1.0e-0 &6.0e-1 & - & - & - & - \\
 		$\beta_{\text{ESS}}^*$	& - 	        & -           & -            & -            & 1.0e-0 & 1.3e-0 & 8.0e-1 & 5.0e-1 \\
@@ -1725,7 +1726,7 @@ Due to the numerical cost of calculating the full relative $L^2$ errors for this
 \label{fig:grn_L2}
 \end{figure}
 
-The first thing to note is that the first PAIS measurement happens
+The first thing to note is that the first ETAIS measurement happens
 after 2500 samples, whereas the first MH measurement occurs after 50
 samples. This is due to the much larger ensemble size required to
 sample in higher dimensions. We believe that an ensemble size of 2500
@@ -1733,11 +1734,11 @@ is over-cautious in this example and we could have used a smaller
 ensemble size. We also believe that the required ensemble size to sample
 from these posteriors is reduced by the use of the transport map.
 
-The second obvious feature of these convergence plots is that the PAIS
+The second obvious feature of these convergence plots is that the ETAIS
 algorithms outperform the MH algorithms by a large margin - roughly a
 reduction of two orders of magnitude in the relative error over the
 same number of samples. A less positive result is that for this
-example the PAIS-TRW algorithm has found a map which has prevented
+example the ETAIS-TRW algorithm has found a map which has prevented
 further convergence of the mean. This is likely because one dimension
 of the transport map is sending proposals onto the negative real line
 and so all samples are being assigned a zero weight. This is behaviour
@@ -1746,7 +1747,7 @@ preconditioners are used where the posterior is not absolutely
 continuous with respect to Lebesgue measure, as is the case when the
 posterior is only non-zero on the positive quadrant of $\mathbb{R}^d$
 as in these examples. The large increase in the effective sample size
-observed between the PAIS-logRW and PAIS-logTRW algorithms is
+observed between the ETAIS-logRW and ETAIS-logTRW algorithms is
 converted into an estimate which is twice as accurate after 1 million
 samples. 
 
@@ -1764,7 +1765,7 @@ concentrated along curved manifolds in parameter space.
 Below we highlight some areas for future work.
 
 \subsection{Sampling in higher
-  dimensions}\label{sec:TPAIS_higher_dim}
+  dimensions}\label{sec:TETAIS_higher_dim}
 
 One major issue with pMC-type algorithms is the curse of
 dimensionality. This curse is two-fold, since as the target
@@ -1784,7 +1785,7 @@ dimensional problems, but the idea that we present here, which is the
 subject of future investigation, could make them applicable to more
 problems which have more than a handful of parameters.
 
-Algorithm~\ref{alg:TransportPAIS2} allows us to decorrelate the
+Algorithm~\ref{alg:TransportETAIS2} allows us to decorrelate the
 dimensions of our random parameter on reference space, where we then
 can resample and map the resulting ensemble back onto target
 space. Since, on reference space, the dimensions are approximately uncorrelated, we
@@ -1833,8 +1834,8 @@ Return $y$.\;
 \end{table}
 
 \subsection{Invertibility of the transport map}
-In this paper, we have considered an approach very similar to that
-deseminated in \cite{parno2014transport}, where we aim to find an
+In this paper, we have considered an approach similar to that
+presented in \cite{parno2014transport}, where we aim to find an
 invertible map which approximates the true transport map between the
 reference measure and the target measure, however this true map is
 invariably itself not invertible. However, by considering embedding

@@ -25,17 +25,17 @@
 \citation{constantine2014active}
 \citation{cotter2015parallel}
 \citation{cappe2012population}
-\newlabel{sec:PAIS}{{2}{3}}
-\@writefile{toc}{\contentsline {section}{\numberline {2}Parallel Adaptive Importance Sampling}{3}}
+\newlabel{sec:ETAIS}{{2}{3}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Ensemble Transport Adaptive Importance Sampling}{3}}
 \citation{cotter2015parallel,russ2017parallel}
 \citation{reich2013nonparametric}
 \citation{cotter2015parallel}
 \citation{douc2007minimum}
-\newlabel{alg:PAIS}{{1}{4}}
-\newlabel{algline:PAIS_propose}{{3}{4}}
-\newlabel{algline:PAIS_weights}{{4}{4}}
-\newlabel{algline:PAIS_resample}{{5}{4}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {1}{\ignorespaces The PAIS Algorithm.}}{4}}
+\newlabel{alg:ETAIS}{{1}{4}}
+\newlabel{algline:ETAIS_propose}{{3}{4}}
+\newlabel{algline:ETAIS_weights}{{4}{4}}
+\newlabel{algline:ETAIS_resample}{{5}{4}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {1}{\ignorespaces The ETAIS Algorithm.}}{4}}
 \citation{el2012bayesian}
 \citation{parno2014transport}
 \citation{parno2014transport}
@@ -56,20 +56,20 @@
 \newlabel{sec:transport_implementation}{{3.3}{8}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Implementation of the optimisation problem}{8}}
 \newlabel{eqn:TM_full_cost}{{3.6}{8}}
-\newlabel{eqn:TPAIS_objective}{{3.7}{8}}
+\newlabel{eqn:TETAIS_objective}{{3.7}{8}}
 \citation{parno2014transport}
 \newlabel{eq:gamma_map_optim}{{3.8}{9}}
 \newlabel{eq:blas_map_optim}{{3.9}{9}}
 \newlabel{eq:weighted_map_optim}{{3.10}{9}}
 \citation{parno2014transport}
 \citation{parno2014transport}
-\newlabel{eqn:TPAIS_hessian}{{3.11}{10}}
-\newlabel{sec:TPAIS}{{4}{10}}
+\newlabel{eqn:TETAIS_hessian}{{3.11}{10}}
+\newlabel{sec:TETAIS}{{4}{10}}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Transport map MCMC}{10}}
 \newlabel{sec:conv}{{5}{10}}
 \@writefile{toc}{\contentsline {section}{\numberline {5}Convergence of transport MCMC}{10}}
-\newlabel{alg:TransportPAIS1}{{2}{11}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {2}{\ignorespaces PAIS algorithm with adaptive transport map. Option 1.}}{11}}
+\newlabel{alg:TransportETAIS1}{{2}{11}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {2}{\ignorespaces ETAIS algorithm with adaptive transport map. Option 1.}}{11}}
 \@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces Visualisation of the Rosenbrock density as given in Equation\nobreakspace  {}\textup  {\hbox {\mathsurround \z@ \normalfont  (\ignorespaces 5.1\hbox {}\unskip \@@italiccorr )}}.}}{11}}
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Marginal density function for $\theta _1$.}}}{11}}
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Marginal density function for $\theta _2$.}}}{11}}
@@ -78,9 +78,9 @@
 \newlabel{eqn:R2_repeat}{{5.1}{11}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Implementation details}{11}}
 \citation{parno2014transport}
-\newlabel{alg:TransportPAIS2}{{3}{12}}
-\newlabel{algline:TPAIS_resample}{{8}{12}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {3}{\ignorespaces PAIS algorithm with adaptive transport map. Option 2.}}{12}}
+\newlabel{alg:TransportETAIS2}{{3}{12}}
+\newlabel{algline:TETAIS_resample}{{8}{12}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {3}{\ignorespaces ETAIS algorithm with adaptive transport map. Option 2.}}{12}}
 \citation{cotter2015parallel}
 \@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces The effect of the approximate transport map $\mathaccentV {tilde}07E{T}$ on a sample from the Rosenbrock target density as described in Equation\nobreakspace  {}\textup  {\hbox {\mathsurround \z@ \normalfont  (\ignorespaces 5.1\hbox {}\unskip \@@italiccorr )}}.}}{13}}
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Original sample $\theta $ from MH-RW algorithm.}}}{13}}
@@ -88,11 +88,11 @@
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Pull back of reference sample onto target space.}}}{13}}
 \newlabel{fig:R2_transport}{{5.2}{13}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Numerical results}{13}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.1}{\ignorespaces Optimal scaling parameters for the transport map based algorithms applied to $R_1$, optimising for the $L^2$ error and the effective sample size (ESS) for PAIS algorithms, and for average acceptance rate for MH algorithms.}}{13}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.1}{\ignorespaces Optimal scaling parameters for the transport map based algorithms applied to $R_1$, optimising for the $L^2$ error and the effective sample size (ESS) for ETAIS algorithms, and for average acceptance rate for MH algorithms.}}{13}}
 \newlabel{tab:R2_opt_scaling}{{5.1}{13}}
 \@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces Convergence of algorithms; Transport M-H, algorithm 2\hbox {}, algorithm 3\hbox {} for density \textup  {\hbox {\mathsurround \z@ \normalfont  (\ignorespaces 5.1\hbox {}\unskip \@@italiccorr )}}. Ensemble size $M=150$, resampling performed using the AMR algorithm.}}{14}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Comparison of the two Transport PAIS options.}}}{14}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Comparison of Transport PAIS option (3) with the standard algorithms.}}}{14}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Comparison of the two Transport ETAIS options.}}}{14}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Comparison of Transport ETAIS option (3) with the standard algorithms.}}}{14}}
 \newlabel{fig:R2_l2_convergence}{{5.3}{14}}
 \newlabel{sec:multi}{{6}{14}}
 \@writefile{toc}{\contentsline {section}{\numberline {6}Multiscale Methods for Stochastic Chemical Reaction Networks}{14}}
@@ -132,7 +132,7 @@
 \@writefile{lof}{\contentsline {figure}{\numberline {7.2}{\ignorespaces Couplings between parameter space and reference when using the transport map with (bottom) and without (top) a log preconditioner.}}{20}}
 \newlabel{fig:chem_coupling}{{7.2}{20}}
 \citation{russ2017parallel}
-\@writefile{lot}{\contentsline {table}{\numberline {7.2}{\ignorespaces Optimal scaling parameters for the MH and PAIS algorithms applied to the constrained multiscale problem in Section\nobreakspace  {}7.1\hbox {}. MH parameters optimised by acceptance rate, and PAIS parameters optimised using effective sample size.}}{22}}
+\@writefile{lot}{\contentsline {table}{\numberline {7.2}{\ignorespaces Optimal scaling parameters for the MH and ETAIS algorithms applied to the constrained multiscale problem in Section\nobreakspace  {}7.1\hbox {}. MH parameters optimised by acceptance rate, and ETAIS parameters optimised using effective sample size.}}{22}}
 \newlabel{tab:chem_multiscale_scaling}{{7.2}{22}}
 \@writefile{lof}{\contentsline {figure}{\numberline {7.3}{\ignorespaces Convergence of eight different MCMC algorithms for the CMA approximation of the posterior arising from the example in Section 7.1\hbox {}.}}{22}}
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Sampling algorithms with no preconditioner for $\mathaccentV{tilde}07E{T}$.}}}{22}}
@@ -149,7 +149,7 @@
 \citation{chen2012monte}
 \citation{robert2013monte}
 \citation{kass1995bayes}
-\@writefile{lot}{\contentsline {table}{\numberline {7.3}{\ignorespaces Marginal distributions for the data $(\mathbf  {R},\mathbf  {T})^\top $ for each model considered in Section\nobreakspace  {}7.1\hbox {}.}}{25}}
+\@writefile{lot}{\contentsline {table}{\numberline {7.3}{\ignorespaces Marginal distributions and Bayes factors for the data $(\mathbf  {R},\mathbf  {T})^\top $ for each model considered in Section\nobreakspace  {}7.1\hbox {}.}}{25}}
 \newlabel{tab:chem_Bayes_marginals}{{7.3}{25}}
 \citation{kaern2005stochasticity,guido2006bottom,becskei2000engineering}
 \@writefile{lof}{\contentsline {figure}{\numberline {7.6}{\ignorespaces Comparison of the approximate marginal densities for the quantities $\mathaccentV {hat}05E{k}_4^{\text  {QEA}}$ and $\mathaccentV {hat}05E{k}_4^{\text  {CMA}}$ across the three posterior densities $\pi _i = \mathbb  {P}(\theta _i|D,\mathcal  {M}_i)$ for $i = 0, 1, 2$.}}{26}}
@@ -164,10 +164,10 @@
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {7.2.1}Target Distribution}{27}}
 \@writefile{lot}{\contentsline {table}{\numberline {7.4}{\ignorespaces Hyper parameters for the Gamma priors on each of the reaction rates in the GRN example in Section\nobreakspace  {}7.2\hbox {}.}}{27}}
 \newlabel{tab:grn_priors}{{7.4}{27}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.2.2}Implementation}{27}}
 \@writefile{lof}{\contentsline {figure}{\numberline {7.7}{\ignorespaces Marginal densities of the CMA approximation of the posterior distribution for the GRN example in Section\nobreakspace  {}7.2\hbox {}.}}{28}}
 \newlabel{fig:GRN_posterior}{{7.7}{28}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.2.3}Convergence results}{28}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.2.2}Implementation}{28}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.2.3}Convergence results}{29}}
 \@writefile{lot}{\contentsline {table}{\numberline {7.5}{\ignorespaces Scaling parameters for the sampling algorithms applied to the GRN example in Section\nobreakspace  {}7.2\hbox {}.}}{29}}
 \newlabel{tab:grn_scaling_parameters}{{7.5}{29}}
 \@writefile{lof}{\contentsline {figure}{\numberline {7.8}{\ignorespaces Convergence of eight different MCMC algorithms for the CMA approximation of the posterior arising from the example in Section 7.2\hbox {}.}}{29}}
@@ -176,13 +176,12 @@
 \newlabel{fig:grn_L2}{{7.8}{29}}
 \citation{reich2013nonparametric}
 \citation{cotter2015parallel}
-\citation{parno2014transport}
-\citation{whitney_self-intersections_1994,nash1956imbedding,takens_detecting_1981}
 \newlabel{sec:conc}{{8}{30}}
 \@writefile{toc}{\contentsline {section}{\numberline {8}Discussion}{30}}
-\newlabel{sec:TPAIS_higher_dim}{{8.1}{30}}
+\newlabel{sec:TETAIS_higher_dim}{{8.1}{30}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {8.1}Sampling in higher dimensions}{30}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.2}Invertibility of the transport map}{30}}
+\citation{parno2014transport}
+\citation{whitney_self-intersections_1994,nash1956imbedding,takens_detecting_1981}
 \citation{cotter2015parallel}
 \bibstyle{siam}
 \bibdata{bibliography}
@@ -191,14 +190,15 @@
 \bibcite{anderson2010product}{3}
 \bibcite{anderson2011continuous}{4}
 \bibcite{apgar2010sloppy}{5}
+\newlabel{alg:ETPF_1d}{{4}{31}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {4}{\ignorespaces ETPF algorithm in one dimension.}}{31}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.2}Invertibility of the transport map}{31}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.3}The chicken and egg paradox}{31}}
 \bibcite{becskei2000engineering}{6}
 \bibcite{bierkens2016zig}{7}
 \bibcite{bouchard2018bouncy}{8}
 \bibcite{cao2005slow}{9}
 \bibcite{cao2006efficient}{10}
-\newlabel{alg:ETPF_1d}{{4}{31}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {4}{\ignorespaces ETPF algorithm in one dimension.}}{31}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.3}The chicken and egg paradox}{31}}
 \bibcite{cao2004efficient}{11}
 \bibcite{cappe2008adaptive}{12}
 \bibcite{cappe2012population}{13}
