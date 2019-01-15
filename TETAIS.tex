@@ -163,19 +163,24 @@ unobservable parameters, or due to sloppiness in the model which is
 being used to describe the data. In such a situation, standard
 sampling methods for characterising the posterior distribution, which
 do not incorporate information about this structure, will be highly
-inefficient. Moreover, most methods are inherently serial in nature,
-and as such are not exploiting the parallelised  nature of modern
-computer infrastructure. In this paper, we seek to develop an approach to
-tackle this problem, using optimal transport maps to simplify
+inefficient. 
+
+In this paper, we seek to develop an approach to
+tackle this problem when using adaptive importance sampling methods,
+by using optimal transport maps to simplify
 posterior distributions which are concentrated on lower dimensional
-manifolds.
+manifolds. This approach is applicable to a whole range of
+problems for which Monte Carlo Markoc chain (MCMC) methods mix slowly.
 
 We demonstrate the approach by considering inverse problems arising
 from partially observed stochastic reaction networks. In particular,
 we consider systems which exhibit multiscale behaviour, but for which
 only the slow variables in the system are observable. We demonstrate
 that certain multiscale approximations lead to more consistent
-approximations of the posterior than others.
+approximations of the posterior than others. The use of optimal
+transport maps stabilises the ensemble transform adaptive importance
+sampling (ETAIS) method, and allows for efficient sampling with
+smaller ensemble sizes.
 \end{abstract}
 
 
@@ -186,11 +191,11 @@ combined with complex dynamical systems in order for us to be able
 make progress in a range of scientific fields. Different MCMC methods
 have been designed with different challenges in mind, for example high dimensional
 targets\cite{cotter2013mcmc}, or large data
-sets\cite{bierkens2016zig}. 
-Other methods include piecewise deterministic Markov processes
-\cite{bouchard2018bouncy},
-methods which are able to make very large moves informed by the
-data\cite{teh2016consistency,duane1987hybrid}, methods which are able to exploit
+sets\cite{bierkens2016zig}. New types of stochastic processes
+have been considered, such as piecewise deterministic Markov processes
+\cite{bouchard2018bouncy}.
+Other methods are able to make very large moves informed by the
+data\cite{teh2016consistency,duane1987hybrid}, and others are able to exploit
 the geometry of the target\cite{girolami2011riemann}. Population Monte Carlo
 (pMC) methods use efficient importance sampling proposals informed by an
 ensemble of particles which have already learned about the structure
@@ -208,13 +213,12 @@ where increases in computational power are most likely to come from
 large-scale parallelisation as opposed to the large speed-ups in
 individual processors that we saw throughout the 20th century.
 
-In \cite{cotter2015parallel}, we explored ideas from adaptive MCMC within a
-pMC-type structure, in order to construct an adaptive importance
-sampler which could automatically adapt to optimise
+In \cite{cotter2015parallel}, we explored ideas from adaptive MCMC
+within adaptive importance samplers, in order to construct a method which could automatically adapt to optimise
 efficiency. Alongside this, we explored the use of state-of-the-art
-resamplers\cite{reich2013nonparametric}, and a greedy approximation (the
-approximate multinomial resampler) in order to improve the quality of
-the importance sampler proposals.
+resamplers\cite{reich2013nonparametric}, and the multinomial transform
+(MT), a greedy approximation of the ensemble transform method, in order to improve the quality of
+the importance sampler proposal distribution.
 
 Other approaches to challenging posterior structure have been
 proposed, including the work of Marzouk and Parno\cite{parno2014transport}, who
@@ -224,7 +228,7 @@ density, such as a $d$-dimensional Gaussian. Since the map is
 invertible, Gaussian proposal densities on the reference space can be
 mapped to highly informed moves on the parameter space. A related idea
 is the use of the anisotropic diffusion maps\cite{singer2008non}, in
-which a map which describes the slow manifold is constructed using
+which a map which describes the manifold is constructed using
 principle component analysis. These ideas have also been applied to
 stochastic reaction
 networks\cite{singer2009detecting,dsilva2016data}. In
@@ -273,7 +277,7 @@ The partial observability of these systems lead to only
 partial-observability of the unknown parameters in the system, for
 example the reaction rates of the fast reactions. The resulting
 multiscale approximations, and the resulting approximations of the
-likelihoods arising from the inverse problem for such a network, then
+likelihoods arising from the inverse problem for such a network, 
 often exhibit 
 insensitivity to changes in certain directions of
 parameter space. This causes problems when aiming to sample from such
@@ -310,7 +314,8 @@ reaction networks.
 %Stochastic reaction networks
 %Multiscale approximations, QSSA/QEA, CMA
 
-In Section \ref{sec:ETAIS}, we will briefly reintroduce ETAIS. In Section \ref{sec:map} we show how an appropriate transport map can
+In Section \ref{sec:ETAIS}, we will briefly reintroduce the ensemble
+transport adaptive importance sampling (ETAIS) method. In Section \ref{sec:map} we show how an appropriate transport map can
 be constructed from importance samples which maps the posterior close
 to a reference Gaussian measure. In Section \ref{sec:TETAIS} we show
 how such a map can be incorporated into a sophisticated parallel MCMC
@@ -327,12 +332,14 @@ discussed in the previous section. We conclude with a discussion in
 Section \ref{sec:conc}.
 
 \section{Ensemble Transport Adaptive Importance Sampling}\label{sec:ETAIS}
-Ensemble transport adaptive importance sampling (ETAIS)\cite{cotter2015parallel} is a variant of pMC\cite{cappe2012population}, which is a family of methods which are based
-on importance sampling. In importance sampling, we attempt to
-characterise a target density through sampling from that
-density. However, the target density $\pi$ itself is often too complicated to sample
-from directly, so we instead sample from a
-proposal density $\chi$. Each sample $\theta^{(k)} \sim \chi$ is then weighted by
+Ensemble transport adaptive importance sampling
+(ETAIS)\cite{cotter2015parallel} is an adaptive importance sampling framework
+which uses an ensemble of particles and state-of-the-art resampling
+methods to construct a mixture proposal distribution which closely
+matches the target distribution. 
+
+In importance sampling, we aim to sample from a target $\pi$, by
+sampling from a chosen proposal distribution $\chi$. Each sample $\theta^{(k)} \sim \chi$ is then weighted by
 $w_k = \frac{\pi(\theta^{(k)})}{\chi(\theta^{(k)})}$, to take account of the bias of
 sampling from a different distribution to $\pi$. Monte Carlo estimates
 using a sample of size $N$
@@ -342,21 +349,23 @@ formula
   w_kf(\theta^{(k)}),\]
 where $\bar{w} = \sum_{k=1}^N w_k$ is the total weight.
 This method works well when $\pi$ and $\chi$ are close, but can be
-excruciatingly slow when they are not. The idea behind pMC methods is
+excruciatingly slow when they are not. The idea behind adaptive
+importance sampling methods is
 to construct a good proposal distribution, either from the entire
 history of the algorithm up to the current point, or to use the
 current state of a whole ensemble of $M$ particles in the system.
 
 In ETAIS, the proposal distribution $\chi$ is chosen to be the equally
-weighted mixture of any choice of MCMC proposal kernel, evaluated at
-each of the current particles in the system. If $\theta^{(k)} = [\theta_1^{(k)},
+weighted mixture of set of proposal kernels. If $\theta^{(k)} = [\theta_1^{(k)},
 \theta_2^{(k)}, \ldots, \theta_M^{(k)}]^\top$ is the current state of the
-ensemble, and we wish to use an MCMC proposal density $q(\cdot ;
+ensemble, and we wish to use a mixture of the proposal density $q(\cdot ;
 \cdot, \beta)$ then 
-\[\chi^{(k)} = \frac{1}{M} \sum_{i=1}^M q(\cdot ; \theta_i^{(k)}, \beta).\]
-Often the variance of the MCMC proposal kernels can be tuned using
-their respective algorithmic parameters $\beta$. Good values for these
-algorithmic parameters can be
+\[\chi^{(k)} = \frac{1}{M} \sum_{i=1}^M q(\cdot ; \theta_i^{(k)},
+\beta).\]
+Usually the kernel $q(\cdot ;
+x,\beta)$ is centred at, or has mean equal to $x$, and whose variance
+scales with $\beta$. Good values for the
+algorithmic parameter(s) $\beta$ can be
 found by optimising for the effective sample size of the importance
 sample that is produced (see \cite{cotter2015parallel, russ2017parallel} for more details).
 
@@ -371,9 +380,7 @@ mixture in order to
 ensure that the sample made is as representative as possible of the
 target density, i.e.
 \[ \theta_i^{(k)} \sim q(\cdot ; \theta_i^{(k)},\beta)\]
-for each $i = 1,2,\ldots,M$. Usually the kernel $q(\cdot ;
-x,\beta)$ is centred at, or has mean equal to $x$, and whose variance
-is scaled with $\beta$. We now have a weighted sample, and it
+for each $i = 1,2,\ldots,M$.  We now have a weighted sample, and it
 would be inadvisable to use an equally weighted mixture of proposal
 distributions from each of these points. Therefore, before starting
 the next iteration, the importance sample
@@ -396,12 +403,12 @@ the output.
 \begin{algorithm}[H]
 \DontPrintSemicolon
 \BlankLine
-	Initialise $\theta^{(1)} \sim \mu_0$.\;
+	Initialise $\theta^{(1)} \sim \pi_0$.\;
 	\For{$k=1,\ldots,N$}{
 		Sample $\hat{\theta}_i^{(k)} \sim q(\cdot; \theta_j^{(k)}, \beta)$, for $i = 1,\dots, M$.\label{algline:ETAIS_propose}\;
 		Calculate $w^{(k)} = (w_1^{(k)}, \ldots, w_M^{(k)})^\top$, where
 			\[
-				w^{(k)}_i = \frac{\mu(\hat{\theta}^{(k)}_i)}{\chi^{(k)}(\hat{\theta}^{(k)}_i; \theta^{(k)}, \beta)}.
+				w^{(k)}_i = \frac{\pi(\hat{\theta}^{(k)}_i)}{\chi^{(k)}(\hat{\theta}^{(k)}_i; \theta^{(k)}, \beta)}.
 			\]
 		\label{algline:ETAIS_weights}
 
@@ -412,7 +419,7 @@ the output.
 \end{algorithm}
 \end{table}
 
-One problem with the ETAIS and other pMC methods can become apparent if
+One problem with the ETAIS and other similar methods can become apparent if
 the target density has highly curved manifolds on which the density is
 concentrated. In this
 case, unless the proposal densities $q$ are informed by this local
@@ -425,7 +432,7 @@ structure.
 
 In this paper, we investigate the use of transport maps to learn local
 covariances across the whole of the domain, in order to stabilise
-pMC-type methods, and make these methods more applicable to a wider
+adaptive importance sampling methods, and make these methods more applicable to a wider
 range of more challenging inference problems.
 
 \section{Construction of transport maps in importance sampling} \label{sec:map}
@@ -445,16 +452,19 @@ distribution, the map transforms a sample from the posterior onto a reference sp
 The reference density is chosen to allow efficient proposals using a simple proposal
 distribution such as a Gaussian centred at the previous state. Proposed states can then be mapped back into a sample from the posterior by applying the inverse of the transport map.
 
-Proposing new states in this way allows us to make large steps around complex probability distributions.
-It is also feasible in this framework to assume that the reference
-density is close enough to a standard Gaussian that we can efficiently
+Proposing new states in this way allows us to make large, informed
+moves, even when sampling from probability distributions with complex structure.
+If a very good such map can be found, it is also possible that the
+push forward of the posterior density through the map is close enough
+to the reference Gaussian that we can efficiently
 propose moves using a proposal distribution which is independent of
 the current state, for example sampling from the reference Gaussian
 itself, or a slightly more diffuse distribution.
 
 In this Section we outline the methodology in
-\cite{parno2014transport} for approximately coupling the target,
-$\mu_{\theta}$, with the reference distribution, $\mu_r$, and
+\cite{parno2014transport} for approximately coupling the target
+measure with density
+$\pi_{\theta}$, with the reference distribution with density $\pi_r$, and
 show how the map can be constructed using a weighted sample
 and hence how we can incorporate the map into importance sampling schemes.
 
@@ -479,7 +489,7 @@ and hence how we can incorporate the map into importance sampling schemes.
 % onto target space using $T^{-1}$. These proposed samples are then distributed according to the target distribution.
 
 \begin{dfn}[Target and Reference Space]
-	The transport map pushes a particle from a {\it target space} $\mathcal{X}$, that is a subset of $\mathbb{R}^d$ equipped with a target measure $\mu_{\theta}$, onto a {\it reference space}, $R$, again a subset of $\mathbb{R}^d$ equipped with the reference measure $\mu_r$.
+	The transport map pushes a particle from a {\it target space} $\mathcal{X}$, that is a subset of $\mathbb{R}^d$ equipped with a target density $\pi_{\theta}$, onto a {\it reference space}, $R$, again a subset of $\mathbb{R}^d$ equipped with the reference density $\pi_r$.
 \end{dfn}
 
 Armed with such a map, independent samples can be made of the target
@@ -685,11 +695,11 @@ The regularisation term in Equation~\eqref{eq:blas_map_optim} can be approximate
 	\frac{1}{\bar{w}}\sum\limits_{k=1}^K \! w_k
         (F_i\gamma_i-\theta^{(k)})^\top(F_i\gamma_i-\theta^{(k)})
         \xrightarrow[K \to \infty]{}
-		\int_{\mathbb{R}^n} |T(\theta)-\theta|^2 \text{d}\mu_\theta =
+		\int_{\mathbb{R}^n} |T(\theta)-\theta|^2 \text{d}\pi_\theta =
 		\sum\limits_{\mathbf{j}\in\mathcal{J}_i^\text{TO}} (\gamma_{i,\mathbf{j}}-\iota_\mathbf{j})^2,
 \]
 where $\iota$ is the vector of coefficients for the identity map. This is of course only true when
-the polynomial family $\mathcal{P}(\theta)$ is chosen to be orthonormal with respect to $\mu_\theta$; however this
+the polynomial family $\mathcal{P}(\theta)$ is chosen to be orthonormal with respect to $\pi_\theta$; however this
 approximation prevents the map from collapsing onto a Dirac when the expectation is badly approximated by a small number of samples.% If we do not normalise the MC estimator by $K$, we can allow this regularisation term to be dominated by the rest of the cost function as $K$ increases.
 
 These simplifications result in the efficiently implementable, regularised optimisation problem for
@@ -725,7 +735,7 @@ again $[G_i\gamma_i]^{-1}$ is taken element-wise.
 
 
 \section[Transport map MCMC]{Transport map usage in ETAIS
-  and other pMC algorithms}\label{sec:TETAIS}
+  and other importance sampling algorithms}\label{sec:TETAIS}
 
 Given importance samples from the target distribution, we have demonstrated how to construct an approximate transport map from the
 target measure to a reference measure. We now consider how to
@@ -1463,8 +1473,7 @@ This difference in the denominator causes a shift in the manifold on
 which the posterior is concentrated, as can be seen in
 Figure~\ref{fig:chem_diff}. The figure shows the difference in
 posteriors densities
-\begin{equation}\label{eqn:chem_diff}
-	\text{diff}(\mu^{\text{CMA}}, \mu^{\text{QEA}}) = \pi^{\text{CMA}}(\mathbf{k}|\mathbf{R},\mathbf{T}) - \pi^{\text{QEA}}(\mathbf{k}|\mathbf{R},\mathbf{T}).
+\begin{equation}\label{eqn:chem_diff}\pi^{\text{CMA}}(\mathbf{k}|\mathbf{R},\mathbf{T}) - \pi^{\text{QEA}}(\mathbf{k}|\mathbf{R},\mathbf{T}).
 \end{equation}
 
 \begin{figure}[htb]
@@ -1767,7 +1776,7 @@ Below we highlight some areas for future work.
 \subsection{Sampling in higher
   dimensions}\label{sec:TETAIS_higher_dim}
 
-One major issue with pMC-type algorithms is the curse of
+One major issue with importance sampling-based algorithms is the curse of
 dimensionality. This curse is two-fold, since as the target
 distribution's dimension is increased, a larger ensemble size is often
 required in order to capture the addition complexity of the density
