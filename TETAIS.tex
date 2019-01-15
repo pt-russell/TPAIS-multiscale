@@ -489,7 +489,7 @@ and hence how we can incorporate the map into importance sampling schemes.
 % onto target space using $T^{-1}$. These proposed samples are then distributed according to the target distribution.
 
 \begin{dfn}[Target and Reference Space]
-	The transport map pushes a particle from a {\it target space} $\mathcal{X}$, that is a subset of $\mathbb{R}^d$ equipped with a target density $\pi_{\theta}$, onto a {\it reference space}, $R$, again a subset of $\mathbb{R}^d$ equipped with the reference density $\pi_r$.
+	The transport map pushes a sample from a {\it target space} $\mathcal{X}$, that is a subset of $\mathbb{R}^d$ equipped with a target density $\pi_{\theta}$, onto a {\it reference space}, $R$, again a subset of $\mathbb{R}^d$ equipped with the reference density $\pi_r$.
 \end{dfn}
 
 Armed with such a map, independent samples can be made of the target
@@ -552,7 +552,7 @@ This divergence results in some nice properties which we will explore in the fol
 \[
 	D_{KL}(p\|q) \geq D_H^2(p,q),
 \]
-which is a true metric between probability distributions $p$ and $q$.
+which is a true distance metric on probability distributions.
 Given the form of the pullback in Equation~\eqref{eq:pullback}, now taken through an approximate map $\tilde{T}$, the divergence becomes
 \[
 	D_\text{KL}(\pi\|\tilde{\pi}) = \mathbb{E}_\pi\left[\log\pi(\theta) - \log\pi_r(\tilde{T}(\theta)) -
@@ -739,7 +739,7 @@ again $[G_i\gamma_i]^{-1}$ is taken element-wise.
 
 Given importance samples from the target distribution, we have demonstrated how to construct an approximate transport map from the
 target measure to a reference measure. We now consider how to
-implement an importance sampling-based MCMC algorithm which uses
+implement an ensemble importance sampling algorithm which uses
 these maps to propose new states. In \cite{parno2014transport} it was
 shown how approximate transport maps can be used to accelerate
 Metropolis-Hastings methods, with the map being periodically updated
@@ -827,8 +827,10 @@ Initialise map $\bar{\gamma}^{(1)} = \iota$.\;
 
 The second option, Algorithm~\ref{alg:TransportETAIS2}, is similar to
 the first except on Line~\ref{algline:TETAIS_resample} where rather
-than resampling in target space we resample in reference space. In
-reference space the dimensions are roughly uncorrelated, and the
+than resampling in target space we resample in reference
+space. Assuming a good transport map, the push forward of the target
+measure onto 
+reference space has no strong correlations, and the
 Gaussian marginals are easy to approximate with fewer ensemble
 members. This means that the resampling step will be more efficient in
 moderately higher dimensions, which we discuss in Section~\ref{sec:TETAIS_higher_dim}.
@@ -857,7 +859,7 @@ as a test problem in optimisation and MCMC communities.
 
 \subsection{Implementation details}
 
-Before looking at the performance of the MCMC algorithms, we demonstrate some properties of the transport maps we will be using in our MCMC algorithms. We draw 1 million samples from the density in \eqref{eqn:R2_repeat}, and use this sample in the framework of Section~\ref{sec:map} to build a transport map. We use this map to push forward the original sample onto the reference space, where we will be able to see how well the map has performed at converting the original sample to a standard Gaussian. We then pull the sample back on to target space using the inverse map to check that our map is invertible and well behaved.
+Before looking at the performance of the algorithms, we demonstrate some properties of the transport maps we will be using. We draw 1 million samples from the density \eqref{eqn:R2_repeat}, and use this sample in the framework of Section~\ref{sec:map} to build a transport map. We use this map to push forward the original sample onto the reference space, where we will be able to see how well the map has performed at converting the original sample to a standard Gaussian. We then pull the sample back on to target space using the inverse map to check that our map is invertible and well behaved.
 
 For this example, we use an index set of total order 3 with monomial
 basis functions. It is important that total order is an odd number,
@@ -949,7 +951,31 @@ options.]{\includegraphics[width=0.45\textwidth]{images/TPAIS/R1_L2}}
 \label{fig:R2_l2_convergence}
 \end{figure}
 
-The convergence of the three algorithms is displayed in Figure~\ref{fig:R2_l2_convergence}. Figure (a) shows that the two variations of the transport based ETAIS algorithms converge with similar rates. The second version, which performs the resampling stage in reference space rather than target space, has a slightly higher ESS, and is more stable than option (1). This version also has a property that we can exploit in Section~\ref{sec:TETAIS_higher_dim}.
+The convergence of the three algorithms is displayed in
+Figure~\ref{fig:R2_l2_convergence}. Figure (a) shows that the two
+variations of the transport based ETAIS algorithms converge with
+similar rates. The second version, which performs the resampling stage
+in reference space rather than target space, has a slightly higher
+ESS, and is more stable than option (1). This version also has a
+property that we can exploit in Section~\ref{sec:TETAIS_higher_dim}.
+
+Figure~\ref{fig:R2_l2_convergence} (b) compares the performance of
+RWMH, transport map-accelerated RWMH, ETAIS-RW and transport
+map-accelerated ETAIS-RW. The difference in performance between RWMH
+and its accelerated version is relatively negligible, in part because
+this version of the Rosenbrock is not overtly pathological. The story
+is different for the ETAIS algorithms. The slowly decaying tails of
+the Rosenbrock cause a problem for ETAIS since these are not
+well-represented in the proposal distributions, leading to high weight
+variance and poor convergence. A much larger
+ensemble would be required to ensure a stable ETAIS implementation for this
+problem, which leads to high overhead costs for the resampling step
+and evaluation of the importance weights. The transport map-accelerated
+ETAIS, on the other hand, is stabilised by the map, which transforms the proposal
+distributions in order to adequately approximate the slowly decaying
+tails of the target. This stabilisation allows us to benefit from the
+improved convergence of the ETAIS methodology, with a smaller ensemble
+size. 
 
 
 %\section{Transport map-accelerated Parallel Adaptive Importance
@@ -1006,7 +1032,7 @@ X(t) = X(0) + \sum_{j=1}^{N_r} \nu_j \int_0^t \alpha_j(X(s)) ds.
 
 The master equation for this model is only solvable in certain
 situations, for example monomolecular networks\cite{jahnke2007solving}, or for
-steady-state solutions certain deficiency
+steady-state solutions for weakly reversible deficiency
 zero networks\cite{anderson2010product,anderson2016product}. Trajectories for this system can be
 sampled exactly, for instance using the Gillespie SSA\cite{gillespie1977exact}, or
 its variants\cite{gillespie2007stochastic,cao2004efficient,anderson2007modified}. However, if the system is stiff, i.e. there
@@ -1030,7 +1056,7 @@ This approach can work well when there is a large timescale gap
 between the fast and slow reactions in a system, but where the
 timescale gap is less pronounced, it can lead to significant
 errors\cite{cotter2016error}. Another approach is the
-constrained multiscale method (CMA)\cite{cotter2011constrained,cotter2016constrained}, based in part on the
+constrained multiscale algorithm (CMA)\cite{cotter2011constrained,cotter2016constrained}, based in part on the
 equation-free approach to multiscale computations\cite{kevrekidis2003equation,erban2006gene}. This approach also assumes quasi-equilibrium in the
 system, but takes into account the effect that the slow reactions can
 have on the invariant distribution of the fast variables in the
@@ -1124,7 +1150,7 @@ Our choice of Gamma prior distributions with hyper-parameters $(a_i, b_i)$ resul
 
 \subsection{Approximation of likelihoods in multiscale chemical
   networks}
-Suppose now that we are only observing the slower variables in a
+Suppose now that we only observe the slower variables in a
 multiscale chemical system of this type. Suppose that $n_r < N_r$ is the number of slow
 reactions in the system, and the slow reactions are given by $\{R_{s_1},
 R_{s_2}, \ldots R_{s_{n_r}} \} \subset \{R_1, R_2, \ldots , R_{N_r}
@@ -1165,8 +1191,8 @@ data is limited only to changes in the slow variable due to the
 occurrence of slow reactions.
 \section{Numerical Examples}\label{sec:num}
 In this section we look at two examples of chemical systems to
-demonstrate the effectiveness of the Bayesian approach we have
-proposed, along with the transport ETAIS algorithms for sampling the
+demonstrate the effectiveness of transport ETAIS algorithms for
+sampling from the
 challenging posterior distribution on the reaction parameters that
 arise. 
 
@@ -1184,7 +1210,7 @@ arise.
 \subsection{A Multiscale Chemical System}\label{sec:chem_multiscale}
 
 First we consider a simple multiscale example involving two chemical
-species $S_1$ and $S_2$ involved in only zeroth and first order reactions:
+species $S_1$ and $S_2$,
 \begin{equation}\label{eqn:full_system}
 	\emptyset \xrightarrow{k_1} S_1 \xleftrightarrows[k_3]{k_2} S_2 \xrightarrow{k_4} \emptyset.
 \end{equation}
@@ -1196,9 +1222,9 @@ population count of
 species $S_i$ by $X_i \in \mathbb{N}_0$. 
 We consider this system with the following parameters:
 \begin{equation}\label{eq:params1}
-k_1 = 100, \qquad k_2 = k_3 = 10, \qquad k_4 = 1,
+k_1V = 100, \qquad k_2 = k_3 = 10, \qquad k_4 = 1,
 \end{equation} 
-
+where $V$ is the volume of the reactor.
  In this 
 parameter regime the reactions $R_2\colon S_1\rightarrow S_2$ and $R_3\colon S_2\rightarrow S_1$ occur
 more frequently than the other reactions. Notice that both
@@ -1247,7 +1273,7 @@ We aim to recover three different posterior distributions. In the
 first, which is of the form \eqref{eqn:chem_posterior}, we assume that we can fully and exactly observe the whole state
 vector for the whole of the observation time window $t \in [0,T]$. In
 the second and
-third, the same data are used, but restricted to observations of the slow
+third, the same data are used, but projected down to one dimensional observations of the slow
 variable $S = X_1 + X_2$. In these last two examples, we approximate the
 posterior using \eqref{eq:Apos} with QEA and CMA approximations of the
 effective dynamics respectively.
@@ -1281,13 +1307,25 @@ The hyper-parameters corresponding to each of these prior distributions are give
 \end{figure}
 
 Figure~\ref{fig:chem_CMA_posterior} shows how this posterior looks
-when we use the CMA to model the effective degradation propensity $\bar{\alpha}_4$.
+when we use the CMA to model the effective degradation propensity
+$\bar{\alpha}_4$. Although this posterior does not appear to be
+pathologically difficult to sample using MCMC from these plots, it most certainly is. The posterior
+density is concentrated close to a curved manifold. Since the manifold
+is curved, the joint marginals do not look unreasonable, where in fact
+the density has very differing derivatives in different directions
+when evaluated close to this manifold.
 
 We consider several different algorithms for sampling from these
 distributions. First we implement both the ETAIS and MH algorithms with
 a Gaussian proposal distribution. In the case of the ETAIS algorithm,
 this is a Gaussian mixture proposal distribution, and in the MH
-algorithm this is equivalent to a vanilla random walk. The proposal distribution uses a covariance matrix which has been constructed using the sample covariance of a sample produced using a standard MH-RW algorithm. We also compare the ETAIS and MH algorithms when using a transport map proposal distribution. This proposal method was discussed in detail in Chapter~\ref{sec:TETAIS}.
+algorithm this is equivalent to a vanilla random walk. The proposal
+distribution uses a covariance matrix which has been constructed using
+the sample covariance of a sample produced using a standard MH-RW
+algorithm. This is necessary since these algorithms otherwise fail to
+converge in a reasonable time for
+this problem. We also compare the ETAIS and MH algorithms when using a
+transport map proposal distributionm, as was discussed in detail in Chapter~\ref{sec:TETAIS}.
 
 \begin{figure}
 	\centering
@@ -1381,7 +1419,7 @@ and
 
 % choice of resampler?
 We will use the MT\cite{russ2017parallel} resampler with an ensemble size of
-$M=500$. This increase in ensemble size in comparison with previous
+$M=500$. This increase in ensemble size in comparison with the previous
 example in Section \ref{sec:conv} is to allow for the increase in parameter dimension.
 
 % analysis method
@@ -1392,7 +1430,9 @@ the MH-RW algorithm. We do this for each of the eight algorithms we
 have so far discussed. Convergence is shown only for the CMA
 approximation of the posterior \eqref{eq:Apos} with effective rate for
 the degradation of $S$ given by \eqref{eqn:chem_CMA_rate}, but we
-expect very similar results for the other posterior distributions discussed.
+expect very similar results for the other multiscale approximation of
+posterior distributions
+discussed.
 
 \begin{table}[!h]
 \centering
@@ -1419,7 +1459,11 @@ effective sample size (ESS). The optimal parameter values for the MH
 algorithms are not particularly informative about their performance,
 since they relate to algorithms operating on different
 transformations. The ESS is highest for the logTRW variant
-of the ETAIS algorithm, as we would hope.
+of the ETAIS algorithm, as we would hope. We note here that as
+outlined in \cite{cotter2015parallel}, it is possible to construct
+adaptive versions of ETAIS which automatically tune these algorithmic
+parameters, but we compare against the static optimal parameter values
+for all algorithms to ensure fairness.
 
 \begin{figure}[!htb]
 \centering
@@ -1430,13 +1474,22 @@ of the ETAIS algorithm, as we would hope.
 \label{fig:chem_multiscale_L2}
 \end{figure}
 
-Convergence of the eight algorithms for this example is shown in Figure~\ref{fig:chem_multiscale_L2}. We first note the poor performance of the MH based algorithms, each of them taking roughly 10,000 samples to begin converging. Only the MH-TRW is at all competitive with the ETAIS algorithms. During the simulation interval, the MH-TRW algorithm has not settled down to the expected $\mathcal{O}(1/\sqrt{N})$ rate which means that the estimate is still biased by the long burn-in time. As we have seen in previous examples, the burn-in time for the ETAIS algorithm is negligible.
+Convergence of the eight algorithms for this example are shown in
+Figure~\ref{fig:chem_multiscale_L2}. We first note the poor
+performance of the MH based algorithms, despite being preconditioned
+with a pre-computed sample covariance. Only the MH-TRW is at all competitive with the ETAIS algorithms. During the simulation interval, the MH-TRW algorithm has not settled down to the expected $\mathcal{O}(1/\sqrt{N})$ rate which means that the estimate is still biased by the long burn-in time. As we have seen in previous examples, the burn-in time for the ETAIS algorithm is negligible.
 
 The ETAIS variants with RW and TRW proposals perform similarly on both
 sample spaces. When sampling without a preconditioner, the transport map is not
 quite as efficient, largely due to the difficulties discussed in the
 previous section i.e. many proposals are made which do result in
-negative reaction rates. Sampling with transport maps with a $\log$ preconditioner leads to more comparable Monte Carlo errors, with the logTRW being apparently slightly less stable. This proposal method becomes more stable as we increase either the ensemble size, or the number of iterations between updates of the transport map, $T$. Overall we see the smallest Monte Carlo errors for a given amount of computational effort coming from the ETAIS-logTRW algorithm.
+negative reaction rates. Sampling with transport maps with a $\log$
+preconditioner leads to more comparable Monte Carlo errors, with the
+logTRW being apparently slightly less stable. This proposal method
+becomes more stable as we increase either the ensemble size, or the
+number of iterations between updates of the transport map,
+$T$. Overall we see the smallest Monte Carlo errors for a given number
+of likelihood evaluations coming from the ETAIS-logTRW algorithm.
 
 \begin{figure}[!htb]
 \centering
@@ -1450,7 +1503,7 @@ preconditioner.]{\includegraphics[width=0.8\textwidth]{"images/Applications/CMA_
 \label{fig:chem_reference_spaces}
 \end{figure}
 
-We now look at the proposal distributions of the transport map accelerated algorithms. In Figure~\ref{fig:chem_reference_spaces}, we see the reference spaces found by; in (a) mapping the posterior through the map $\hat{T}$, and in (b) by mapping the posterior through $T\circ\log$. For the most part, each of these marginal distributions can be recognised as a Gaussian. However, with the exception of $\mathbb{P}(r_2,r_3)$, we would not consider them to be close to a standardised $\mathcal{N}(0, \text{I})$ distribution. Before thinking that the transport map has not helped us to find a `nicer' space on which to propose new values we should consider that the dimensions are now (1) largely uncorrelated, and (2) the variances in each dimension are much more similar than they are in Figure~\ref{fig:chem_CMA_posterior}.
+We now look at the proposal distributions of the transport map accelerated algorithms. In Figure~\ref{fig:chem_reference_spaces}, we see the reference spaces found by; (a) mapping the posterior through the map $\hat{T}$, (b) by mapping the posterior through $T\circ\log$. For the most part, each of these marginal distributions can be recognised as a Gaussian. However, with the exception of $\mathbb{P}(r_2,r_3)$, we would not consider them to be close to a standardised $\mathcal{N}(0, \text{I})$ distribution. Before thinking that the transport map has not helped us to find a `nicer' space on which to propose new values we should consider that the dimensions are now (1) largely uncorrelated, and (2) the variances in each dimension are much more similar than they are in Figure~\ref{fig:chem_CMA_posterior}.
 
 In Figure~\ref{fig:chem_reference_spaces} (b) we see that
 $\text{var}(r_1)$ and $\text{var}(r_4)$ are much smaller than
