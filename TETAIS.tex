@@ -170,7 +170,7 @@ tackle this problem when using adaptive importance sampling methods,
 by using optimal transport maps to simplify
 posterior distributions which are concentrated on lower dimensional
 manifolds. This approach is applicable to a whole range of
-problems for which Monte Carlo Markoc chain (MCMC) methods mix slowly.
+problems for which Monte Carlo Markov chain (MCMC) methods mix slowly.
 
 We demonstrate the approach by considering inverse problems arising
 from partially observed stochastic reaction networks. In particular,
@@ -1043,7 +1043,7 @@ every single reaction event with the same cost. In such a system, one
 might employ multiscale methods in order to approximate trajectories
 at a lower cost than the exact algorithms.
 
-One common approach is to induce the quasi-equillibrium approximation
+One common approach is to induce the quasi-equilibrium approximation
 QEA. This approximation makes the assumption that fast reactions
 enter quasi-equilibrium on a timescale which is negligible with
 respect to the timescale on which the slow dynamics in the system are
@@ -1325,7 +1325,7 @@ the sample covariance of a sample produced using a standard MH-RW
 algorithm. This is necessary since these algorithms otherwise fail to
 converge in a reasonable time for
 this problem. We also compare the ETAIS and MH algorithms when using a
-transport map proposal distributionm, as was discussed in detail in Chapter~\ref{sec:TETAIS}.
+transport map proposal distribution, as was discussed in detail in Chapter~\ref{sec:TETAIS}.
 
 \begin{figure}
 	\centering
@@ -1515,16 +1515,16 @@ components in an adaptive scheme. Another option is to increase the total order 
 
 \subsubsection{Comparison of the Constrained and QEA approaches}
 
-The convergence analysis has been performed for the constrained
+The convergence analysis in the previous section was performed for the constrained
 approximation of the posterior distribution. We now look at the
-differences in the approximations of the posterior distribution
-arising in this problem between the CMA and QEA. Recall that the approaches differed only in the form of the effective degradation propensity $\hat{\alpha}_4$,
+differences in the CMA and QEA approximations of the posterior distribution
+arising in this problem. Recall that the approaches differed only in the form of the effective degradation propensity $\hat{\alpha}_4$,
 \[
 	\hat{\alpha}_4^{\text{QEA}}(s) = \frac{k_2k_4s}{k_2+k_3} \quad \text{and} \quad \hat{\alpha}_4^{\text{CMA}}(s) = \frac{k_2k_4s}{k_2+k_3+k_4}.
 \]
 This difference in the denominator causes a shift in the manifold on
 which the posterior is concentrated, as can be seen in
-Figure~\ref{fig:chem_diff}. The figure shows the difference in
+Figure~\ref{fig:chem_diff}, in which we plot the difference in the 
 posteriors densities
 \begin{equation}\label{eqn:chem_diff}\pi^{\text{CMA}}(\mathbf{k}|\mathbf{R},\mathbf{T}) - \pi^{\text{QEA}}(\mathbf{k}|\mathbf{R},\mathbf{T}).
 \end{equation}
@@ -1537,7 +1537,7 @@ posteriors densities
 \end{figure}
 
 Since the two posteriors have been approximated using an MCMC sample,
-there is a significant amount of noise, particularly in the tails of
+there is a visible amount of Monte Carlo static, particularly in the tails of
 the distributions. We can see that the differences in the marginals
 for $k_1, k_2,$ and $k_3$ are relatively small, but the marginal for
 $k_4$ varies by a significant amount. 
@@ -1594,8 +1594,8 @@ which we observe all reactions perfectly. However this model is not
 significantly better than the CMA model ($B_{0,1} = 2.09 < 3.2$,
 ~\cite{kass1995bayes}). The Bayes factor $B_{0,2} = 4.1 > 3.2$ tells
 us that we should significantly prefer the full model to the QEA
-approximation of the posterior. These Bayes factors present a
-relatively weak
+approximation of the posterior. These Bayes factors provide evidence
+for our
 argument that the constrained approximation of the posterior is
 superior to the QEA approximation. 
 
@@ -1613,9 +1613,7 @@ Figure~\ref{fig:chem_model_comp} displays more compelling evidence in
 this direction. Here we show the marginal distributions for the
 quantities $\hat{k}_4^{\text{QEA}}$ and $\hat{k}_4^{\text{CMA}}$ with
 respect to each of the three posterior distributions, $\pi_i(\cdot|D,
-\mathcal{M}_i)$, $i = 0, 1, 2$.  
-
-Firstly, in
+\mathcal{M}_i)$, $i = 0, 1, 2$. Firstly, in
 Figure~\ref{fig:chem_model_comp} (a), displaying the marginals for
 $\hat{k}_4^{\text{QEA}}$ we see that $\pi_0$, the density arising from
 the full model with all reactions observed, is peaked a distance away
@@ -1628,16 +1626,16 @@ densities for $\hat{k}_4^{\text{CMA}}$ for $\pi_0$ and $\pi_1$ are
 barely distinguishable, even with the vastly reduced data available in
 the posterior $\pi_1$ with CMA approximation. The QEA approximation
 $\pi_2$ is again peaked far away from both of the other distributions.
-This appears to demonstrate that the data regarding the slow variable
+This demonstrates that the data regarding the slow variable
 $S$ is only informative about $k_1 $ and $\hat{k}_4^{\text{CMA}}$, as
-predicted by the CMA multiscale approximation.
+predicted by the constrained multiscale approximation.
 
 \subsection{Gene Regulatory Network}\label{sec:grn}
 In this example, we look at a model of a gene regulatory network (GRN)
 mechanism~\cite{kaern2005stochasticity,guido2006bottom,becskei2000engineering}
-used by a particular cell to regulate the amount of a protein, $P$,
+used by a cell to regulate the amount of a protein, $P$,
 present. Proteins can bind in pairs to form a dimer $D$. The dimer can
-bind to the gene $G$ to a ``switched off'' state $G'$, in which the
+bind to the gene $G$ and convert it into a ``switched off'' state $G'$, in which the
 production of mRNA molecules $M$ is inhibited. The mRNA encodes for
 production of the protein $P$, and both $P$ and $M$ can degrade. 
 The eight reactions are given in Equation~\eqref{eqn:GRN_reactions}.
@@ -1647,7 +1645,7 @@ The eight reactions are given in Equation~\eqref{eqn:GRN_reactions}.
 	P \xrightarrow{k_7} \emptyset \quad & \quad M \xrightarrow{k_8} \emptyset \nonumber
 \end{align}
 
-We create trajectories of this system with the following parameters:
+We create trajectories of this system, using the Gillespie SSA, with the following parameters:
 \begin{eqnarray*}
 k_1 = 0.04, \qquad
 k_2 = 5000, \qquad
@@ -1664,7 +1662,7 @@ T-cells can be manufactured which bind to
 proteins of a certain type, and cause them to phosphoresce, allowing
 for approximate observations of the concentration levels of that
 protein. However, the T-cells will not necessarily differentiate
-between monomers and dimers of the protein. We replicate such a
+between monomers and dimers of the protein. We approximately replicate such a
 scenario, in a zero-observational noise setting, by assuming that we
 can only observe $T=P + 2D + 2G'$, the total number of protein
 molecules in the system, alongside $M$, the concentration of mRNA. The
@@ -1693,11 +1691,13 @@ approximation of the posterior distribution as defined in
 Equation~\eqref{eqn:chem_posterior}. This example is more involved
 than the previous one, since we have an eight dimensional parameter
 space corresponding to the eight reaction rates in the system
-\eqref{eqn:GRN_reactions}. However half of those reactions are
+\eqref{eqn:GRN_reactions}. Half of those reactions are
 unobservable, and their effect on the posterior is only felt through
-their effect on the effective propensities $\hat{\alpha}_5$ and $\hat{\alpha}_7$.
+their effect on the effective propensities $\hat{\alpha}_5$ and
+$\hat{\alpha}_7$, and observations of the frequencies of these reactions.
 
-The priors for this problem were chosen to be fairly uninformative with respect to the likelihood function for each reaction rate. A list of the hyper-parameters corresponding to each Gamma prior can be found in Table~\ref{tab:grn_priors}.
+The priors for this problem were chosen to be fairly uninformative,
+and a list of the hyper-parameters corresponding to each Gamma prior can be found in Table~\ref{tab:grn_priors}.
 
 \begin{table}[!h]
 \centering
@@ -1721,10 +1721,12 @@ The priors for this problem were chosen to be fairly uninformative with respect 
 
 The one- and two-dimensional marginal distributions for the full
 posterior distribution are displayed in
-Figure~\ref{fig:GRN_posterior}. The posterior does not contain many
-interesting correlation structures, however several dimensions have
+Figure~\ref{fig:GRN_posterior}. The posterior does not appear from
+these joint marginals to contain many
+interesting correlation structures, although several dimensions have
 leptokurtic tails which are difficult for the standard ETAIS algorithm
-to sample from. The marginal densities also vary over very different
+to sample from. However as with the previous example, the density is
+concentrated close to a lower-dimensional manifold. The marginal densities also vary over very different
 scales, which could lead to problems with the algorithms which do not
 benefit from the transport map.
 
@@ -1735,7 +1737,16 @@ without transport map acceleration, which were discussed in
 Section~\ref{sec:chem_multiscale} to this posterior. As with this
 example, the log conditioner is required so that our transport map is a function $T\colon\mathbb{R}^d\rightarrow\mathbb{R}^d$, rather than a map from $\mathbb{R}_+^d$ to $\mathbb{R}^d$.
 
-The transport map setup has not changed from the previous example. However, due to the scaling of the weight we have had to be more careful about which samples we use to build our map. We require that the objective function $C(T)$, from Equation~\eqref{eqn:TETAIS_objective} is convex, which requires that the second derivative, given in Equation~\eqref{eqn:TETAIS_hessian}, is positive definite. This positive definite property depends on all weights in our sample being strictly positive, which is not always possible on a computer. For this reason we filter out any samples from the optimisation problem where the weight is a numeric zero. This does not affect the validity of the map since a weight zero would not contribute to the expectation.
+The transport map setup has not changed from the previous
+example. However, due to the scaling of the weight we have had to be
+more careful about which samples we use to build our map. We require
+that the objective function $C(T)$, from
+Equation~\eqref{eqn:TETAIS_objective} is convex, which requires that
+the second derivative, given in Equation~\eqref{eqn:TETAIS_hessian},
+is positive definite. This positive definite property depends on all
+weights in our sample being strictly positive, which is not always
+possible on a computer, where very small positive numbers can be
+rounded down to absolute zero. For this reason we filter out any samples from the optimisation problem where the weight is a numeric zero. This does not affect the validity of the map since a weight zero would not contribute to the expectation.
 
 In all eight algorithms we adapt the proposal variances during the
 burn-in phase of the algorithms to avoid the need for a huge ensemble size to approximate the posterior with a mixture of isotropic Gaussian kernels.
@@ -1788,30 +1799,37 @@ Due to the numerical cost of calculating the full relative $L^2$ errors for this
 \label{fig:grn_L2}
 \end{figure}
 
-The first thing to note is that the first ETAIS measurement happens
-after 2500 samples, whereas the first MH measurement occurs after 50
-samples. This is due to the much larger ensemble size required to
-sample in higher dimensions. We believe that an ensemble size of 2500
-is over-cautious in this example and we could have used a smaller
-ensemble size. We also believe that the required ensemble size to sample
+We believe that an ensemble size of 2500
+is over-cautious, despite the larger number of dimensions in this
+example, and that the required ensemble size to sample
 from these posteriors is reduced by the use of the transport map.
 
 The second obvious feature of these convergence plots is that the ETAIS
 algorithms outperform the MH algorithms by a large margin - roughly a
 reduction of two orders of magnitude in the relative error over the
-same number of samples. A less positive result is that for this
-example the ETAIS-TRW algorithm has found a map which has prevented
-further convergence of the mean. This is likely because one dimension
-of the transport map is sending proposals onto the negative real line
-and so all samples are being assigned a zero weight. This is behaviour
-which was anticipated, and it is always suggested that appropriate
-preconditioners are used where the posterior is not absolutely
-continuous with respect to Lebesgue measure, as is the case when the
-posterior is only non-zero on the positive quadrant of $\mathbb{R}^d$
-as in these examples. The large increase in the effective sample size
+same number of samples.
+
+We note that in this 
+example the ETAIS-TRW algorithm does not perform as well as the ETAIS-RW
+algorithm. This is due to the lack of log preconditioner. The
+posterior has support only on the positive quadrant, and without the
+preconditioner, the transport map has to work hard to enforce
+this. With a relatively low-dimensional approximation being used for
+the transport map, this makes it more likely that the map produced
+may hinder sampling rather than improving it. This highlights the
+importance of using preconditioners with transport maps in order to
+ensure absolute continuity of the posterior distribution with respect
+to the pullback of the proposal distribution on reference space.
+
+In contrast, when we look at the convergence of these two algorithms
+with the log preconditioner, the transport map version exhibits more
+consistent and stable convergence, with some of the 32 repeats for the
+ETAIS-logRW algorithm producing rare large weights which hinder convergence.
+The large increase in the effective sample size
 observed between the ETAIS-logRW and ETAIS-logTRW algorithms is
 converted into an estimate which is twice as accurate after 1 million
-samples. 
+samples. This demonstrates our claim that the transport map can
+produce stable ETAIS implementations with smaller ensemble sizes than without.
 
 A similar pattern is seen in the MH algorithms, where the MH-TRW
 performs the worst, and the MH-logTRW algorithm performs the best,
@@ -1819,12 +1837,23 @@ although only marginally.
 
 \section{Discussion}\label{sec:conc}
 In this paper, we have investigated the use of transport maps to
-accelerate and stabilise ensemble importance sampling schemes. In
+accelerate and stabilise ensemble importance sampling schemes. We
+considered the ETAIS methodology here, but the approach used is
+applicable to all such methods. The idea is powerful since it allows
+adaptive importance sampling schemes to be efficient and stable for
+smaller ensemble sizes. This in turn suggests that the improvements in
+performance that adaptive importance sampling schemes can deliver
+could be made applicable to a bigger class of problems.
+
+In
 particular we looked at the application of these methods to problems
 arising in inverse problems for multiscale stochastic chemical
 networks, where the posterior distributions which arise can be highly
-concentrated along curved manifolds in parameter space.
-Below we highlight some areas for future work.
+concentrated along curved manifolds in parameter space. Through these
+results we also demonstrated the improvement in accuracy of inference
+for multiscale problems when more sophisticated multiscale
+approximations are employed.
+Below we highlight two areas for future work.
 
 \subsection{Sampling in higher
   dimensions}\label{sec:TETAIS_higher_dim}
@@ -1847,23 +1876,23 @@ dimensional problems, but the idea that we present here, which is the
 subject of future investigation, could make them applicable to more
 problems which have more than a handful of parameters.
 
-Algorithm~\ref{alg:TransportETAIS2} allows us to decorrelate the
-dimensions of our random parameter on reference space, where we then
-can resample and map the resulting ensemble back onto target
-space. Since, on reference space, the dimensions are approximately uncorrelated, we
-are able to resample in each dimension separately. Resampling in a
+Armed with a high quality transport map, we can transform the target
+distribution close to a Gaussian reference measure, which is
+uncorrelated in all dimensions. This lack of correlations allows us to
+resample in each dimension separately. Resampling in a
 single dimension allows for optimisations in resampling code, and also
 means that the resampler is not affected by the curse of
 dimensionality. 
 
 In one
-dimension the ETPF algorithm can be implemented very efficiently. As
+dimension, the ETPF algorithm can be implemented very efficiently. As
 described in~\cite{reich2013nonparametric}, the coupling matrix has
 all non-zero entries in a staircase pattern when the state space is
 ordered. We can exploit this knowledge to produce
 Algorithm~\ref{alg:ETPF_1d}, which is much faster than using the
 simplex algorithm to minimise the associated cost function, and faster
-than the MT algorithm\cite{cotter2015parallel}. Moreover, the task of
+than the MT algorithm\cite{cotter2015parallel}, which is itself a
+greedy approximation to the output of the ETPF resampler. Moreover, the task of
 running this resampler can then be parallelised over $d$
 processors. This could be an area for further study.
 
@@ -1899,11 +1928,29 @@ Return $y$.\;
 In this paper, we have considered an approach similar to that
 presented in \cite{parno2014transport}, where we aim to find an
 invertible map which approximates the true transport map between the
-reference measure and the target measure, however this true map is
+reference measure and the target measure. However, this true map is
 invariably itself not invertible. However, by considering embedding
 the map in higher dimensions\cite{whitney_self-intersections_1994,nash1956imbedding,takens_detecting_1981}, these issues of non-invertibility may be
 avoided, and higher quality maps may be found which better aid
 exploration and sampling of the whole state space.
+
+\subsection{Adaptivity of ensemble sizes}
+At initialisation, our transport map approximation is equal to the
+identity, and the algorithm is essentially the standard ETAIS
+algorithm. In order to build a good transport map approximation, we
+require a good sample from the posterior distribution. Since our aim
+is to apply this methodology to challenging problems, this is itself a
+challenge. However, in the limit of the number of ensemble members
+going to infinity, this approach is consistent and stable. However,
+large ensemble sizes come with large computational costs.
+
+We propose that the transport map acceleration could be used in
+conjunction with an adaptive ensemble size mechanism. First we can
+initialise the algorithm with a large ensemble size, and the identity transport map. As
+we explore the density, the transport map quickly improves, making it
+possible to sample efficiently and stably with a smaller ensemble
+size. The problem then amounts to finding a reliable method to
+approximate the lowest stable ensemble size.
 
 % \subsection{The chicken and egg paradox}
 % Another issue with the use of transport maps of this ilk, is that in
