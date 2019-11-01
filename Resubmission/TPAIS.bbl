@@ -1,0 +1,127 @@
+\begin{thebibliography}{10}
+
+\bibitem{anderson2016product}
+{\sc D.~Anderson and S.~Cotter}, {\em Product-form stationary distributions for
+  deficiency zero networks with non-mass action kinetics}, {Bulletin of
+  Mathematical Biology}, 78 (2016), pp.~2390--2407.
+
+\bibitem{anderson2010product}
+{\sc D.~Anderson, G.~Craciun, and T.~Kurtz}, {\em Product-form stationary
+  distributions for deficiency zero chemical reaction networks}, Bulletin of
+  mathematical biology, 72 (2010), pp.~1947--1970.
+
+\bibitem{becskei2000engineering}
+{\sc A.~Becskei and L.~Serrano}, {\em Engineering stability in gene networks by
+  autoregulation}, Nature, 405 (2000), p.~590.
+
+\bibitem{cao2005avoiding}
+{\sc Y.~Cao, D.~Gillespie, and L.~Petzold}, {\em {Avoiding negative populations
+  in explicit Poisson tau-leaping}}, The Journal of Chemical Physics, 123
+  (2005), p.~054104.
+
+\bibitem{cao2006efficient}
+\leavevmode\vrule height 2pt depth -1.6pt width 23pt, {\em Efficient step size
+  selection for the tau-leaping simulation method}, The Journal of Chemical
+  Physics, 124 (2006), p.~044109.
+
+\bibitem{chatterjee2005binomial}
+{\sc A.~Chatterjee, D.~Vlachos, and M.~Katsoulakis}, {\em Binomial distribution
+  based $\tau$-leap accelerated stochastic simulation}, The Journal of Chemical
+  Physics, 122 (2005), p.~024112.
+
+\bibitem{chen2012monte}
+{\sc M.~Chen, Q.~Shao, and J.~Ibrahim}, {\em {Monte Carlo methods in Bayesian
+  computation}}, Springer Science \& Business Media, 2012.
+
+\bibitem{cotter2016constrained}
+{\sc S.~Cotter}, {\em {Constrained approximation of effective generators for
+  multiscale stochastic reaction networks and application to conditioned path
+  sampling}}, Journal of Computational Physics, 323 (2016), pp.~265--282.
+
+\bibitem{cotter2011constrained}
+{\sc S.~Cotter, K.~Zygalakis, I.~Kevrekidis, and R.~Erban}, {\em A constrained
+  approach to multiscale stochastic simulation of chemically reacting systems},
+  The Journal of Chemical Physics, 135 (2011), p.~094102.
+
+\bibitem{el2012bayesian}
+{\sc T.~El~Moselhy and Y.~Marzouk}, {\em Bayesian inference with optimal maps},
+  Journal of Computational Physics, 231 (2012), pp.~7815--7850.
+
+\bibitem{gillespie1977exact}
+{\sc D.~Gillespie}, {\em Exact stochastic simulation of coupled chemical
+  reactions}, The Journal of Physical Chemistry, 81 (1977), pp.~2340--2361.
+
+\bibitem{gillespie1991markov}
+\leavevmode\vrule height 2pt depth -1.6pt width 23pt, {\em Markov processes: an
+  introduction for physical scientists}, Elsevier, 1991.
+
+\bibitem{gillespie2000chemical}
+\leavevmode\vrule height 2pt depth -1.6pt width 23pt, {\em {The Chemical
+  Langevin equation}}, The Journal of Chemical Physics, 113 (2000),
+  pp.~297--306.
+
+\bibitem{gillespie2007stochastic}
+\leavevmode\vrule height 2pt depth -1.6pt width 23pt, {\em Stochastic
+  simulation of chemical kinetics}, Annu. Rev. Phys. Chem., 58 (2007),
+  pp.~35--55.
+
+\bibitem{girolami2011riemann}
+{\sc M.~Girolami and B.~Calderhead}, {\em {Riemann manifold langevin and
+  hamiltonian monte carlo methods}}, Journal of the Royal Statistical Society:
+  Series B (Statistical Methodology), 73 (2011), pp.~123--214.
+
+\bibitem{guido2006bottom}
+{\sc N.~Guido, X.~Wang, D.~Adalsteinsson, D.~McMillen, J.~Hasty, C.~Cantor,
+  T.~Elston, and J.~Collins}, {\em A bottom-up approach to gene regulation},
+  Nature, 439 (2006), p.~856.
+
+\bibitem{jahnke2007solving}
+{\sc T.~Jahnke and W.~Huisinga}, {\em Solving the chemical master equation for
+  monomolecular reaction systems analytically}, Journal of Mathematical
+  Biology, 54 (2007), pp.~1--26.
+
+\bibitem{kaern2005stochasticity}
+{\sc M.~Kaern, T.~Elston, W.~Blake, and J.~Collins}, {\em Stochasticity in gene
+  expression: from theories to phenotypes}, Nature reviews. Genetics, 6 (2005),
+  p.~451.
+
+\bibitem{kass1995bayes}
+{\sc R.~Kass and A.~Raftery}, {\em Bayes factors}, Journal of the American
+  Statistical Association, 90 (1995), pp.~773--795.
+
+\bibitem{mcadams1999sa}
+{\sc H.~McAdams and A.~Arkin}, {\em {It's a noisy business! Genetic regulation
+  at the nanomolar scale}}, Trends in Genetics, 15 (1999), pp.~65--69.
+
+\bibitem{parno2015transport}
+{\sc M.~Parno}, {\em {Transport maps for accelerated Bayesian computation}},
+  PhD thesis, Massachusetts Institute of Technology, 2015.
+
+\bibitem{parno2014transport}
+{\sc M.~Parno and Y.~Marzouk}, {\em {Transport map accelerated Markov chain
+  Monte Carlo}}, arXiv preprint arXiv:1412.5492,  (2014).
+
+\bibitem{pinsker1960information}
+{\sc M.~Pinsker}, {\em Information and information stability of random
+  variables and processes},  (1960).
+
+\bibitem{reich2013nonparametric}
+{\sc S.~Reich}, {\em {A nonparametric ensemble transform method for Bayesian
+  inference}}, SIAM Journal on Scientific Computing, 35 (2013),
+  pp.~A2013--A2024.
+
+\bibitem{robert2013monte}
+{\sc C.~Robert and G.~Casella}, {\em Monte {C}arlo statistical methods},
+  Springer New York, 2004.
+
+\bibitem{shahrezaei2008colored}
+{\sc V.~Shahrezaei, J.~Ollivier, and P.~Swain}, {\em Colored extrinsic
+  fluctuations and stochastic gene expression}, Molecular systems biology, 4
+  (2008), p.~196.
+
+\bibitem{szekely2014stochastic}
+{\sc T.~Szekely and K.~Burrage}, {\em Stochastic simulation in systems
+  biology}, Computational and structural biotechnology journal, 12 (2014),
+  pp.~14--25.
+
+\end{thebibliography}

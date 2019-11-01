@@ -1,0 +1,91 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{url}
+\usepackage{amsmath,amssymb}
+\usepackage{enumerate}
+\usepackage{color}
+\usepackage{amsthm,amsmath}
+\usepackage{bbm}
+\usepackage{mhchem}
+
+%for stacking below a sum or max...
+\usepackage{mathtools}
+
+\usepackage[colorlinks]{hyperref}
+
+\newcommand{\comment}[2]{\vspace{0.6cm}{\bf Comment:} {\it #1.}
+
+\vspace{0.3cm}{\bf Answer:} #2}
+
+\begin{document}
+\title{Response to Referee Comments: Transport map-accelerated adaptive importance sampling}
+\maketitle
+
+Firstly, we would like to thank the referees, associate editor and editor for their careful consideration of our manuscript. We largely agree with the comments made, and have adjusted the paper to reflect the extremely helpful suggestions that have been given. In particular, both referees commented on the long length of the paper and the somewhat disjoint feel between the two main topics discussed within it. In order to address this primary point, we have made substantial reductions to the paper in the areas suggested by the referees. We have also reduced the emphasis on the multiscale stochastic reaction network material, aiming to use this as an example of a nice application for the methods outlined, as opposed to an equally-weighted component of the work. We hope that this has gone a long way to knitting the two parts of the work together in a way which tells a more coherent story.
+
+Below we list the comments made by the referees and respond to them in turn, highlighting where we have made changes in the manuscript to address them. We also attach a version of the paper with the changes in text highlighted in red. Since a lot of the larger changes involved removal of sections of text and material, we have also attached a copy of the originally submitted paper with the removed sections highlighted in blue.
+
+We would like to thank the referees and editors for their time in considering our manuscript for publication in SIAM JUQ.
+
+
+\section*{Referee 1 comments}
+
+\comment{Length and scope. Not including references, this manuscript is 32 pages long and seems to have two somewhat disjoint parts. The first part develops the transport map accelerated importance sampler and provides details of the algorithm. The second part seems to focus more on multiscale approximations of stochastic reaction networks, and the impact that these approximations have on the posterior distribution. While interesting, especially within a model discrepancy context, I feel that this part of the paper is tangential to the paper's main algorithmic contributions. With the length of this paper in mind, I would suggest shortening Sections 6 and 7 in order to focus more on numerical comparisons of the new algorithm and less on stochastic reaction networks. Details of the multiscale material could be moved into supplementary material or even into another manuscript.}{}
+
+\comment{Regularization. In regards to the regularization terms in equation (3.2), the authors claim that "experimentation has shown that the choice $\beta=1$ is sufficient for most problems." I would like to see more discussion on this choice. With a sufficiently large number of samples, decreasing $\beta$ should result in a more accurate transport map, so why does a smaller value of $\beta$ not yield a more efficient algorithm? With $\beta=1$, is the map somehow able to capture enough of the posterior structure to enable effective importance sampling?}{}
+
+\comment{Proposal distribution. The proposed transport map ETAIS algorithm is tested using local random walk proposals for each ensemble member. However, for accurate maps, an independent Gaussian proposal or some form of mixture proposal could potentially generate nearly iid samples of the target distribution. Is there a reason for sticking with the random walk proposals? I think adding a comparison of proposal types, even if only on the Rosenbrock toy problem, would help readers understand the importance of each part in the transport map ETAIS algorithm: the proposal, map, resampler, and ensemble size.}
+
+\comment{Ensemble Size. How is the ensemble size chosen? The authors mention that a smaller ensemble can be used when the transport map is accurate, but are there any guidelines on how to choose the ensemble size given the map?}{}
+
+\comment{Closing Remarks. I found the discussion (Section 8) ended rather abruptly. When reading the manuscript, I felt like I walked off the end of the manuscript. I think a sentence or two that ties things together would provide a better closing statement.}
+
+\comment{I would prefer numbering all equations, but leave that to the author's discretion.}{} 
+
+\comment{Subscript in Algorithm 1 on line 3. Should the proposal be centered at $\theta_j$ or $\theta_i$}{}
+
+\comment{Second equation on page 4. Should the sample be labeled with a $\hat{ }$?}{}
+
+\comment{When discussing monotonicity of the map, it might be worth pointing out the monotone parameterizations introduced in "An Introduction to Sampling via Measure Transport" by Marzouk et al.}{}
+
+\comment{In Section 4, the notation for proposed points on the reference space (marked with an apostrophe) and proposed points on the target space (marked with a $\hat{ }$) are different. It might be easier to follow if these were consistent, but that is up to the authors.}{}
+
+\comment{Equation (6.2) $Y_j$ is used in the text but $X$ is used in the equation. Is that a typo?}{}
+
+\comment{Sentence before equation (6.3). "variable" should be plural "variables"}{}
+
+\section*{Referee 2 comments}
+
+\comment{I do think that having these realistic applications is a strength—but I think the paper would be much easier to digest if the pieces were better woven together at the outset. On that note, the introduction takes a rather long time to get to the point of combining transport-ETIAS with partially observed stochastic reaction networks. Perhaps the necessary link here is “sloppiness,” mentioned on page 3?}{}
+
+\comment{Also, it should be made more clear what exactly is new within the stochastic reaction networks portion of the paper}{}
+
+\comment{In the numerical examples, what exactly is the “relative L2 error,” or $\delta_{L^2}$? I don’t see where this is defined, and I don’t know it as a standard MCMC or importance sampling diagnostic. Is it the relative $L_2$ error in the estimate of some posterior moment? If so, which moment? And relative to what? Similarly, can you define $\delta_{ESS}$ as a function of the ESS?}
+
+\comment{Do the error versus \# samples plots (as in Figure 5.3, Figure 7.3, Figure 7.8) correspond to a single runs of MCMC? Or are they the error averaged over many independent chains (in
+1
+which case I think plotting all the runs in the same figure would be more illustrative). These are Monte Carlo schemes, so I expect the error in any given running estimate to be noisy.}{}
+
+\comment{By \# of samples, in the plots for MCMC error, do you simply mean the number of MCMC iterations? Similarly, what is meant by \# of samples in the ETIAS error plots? Using “samples” without context is confusing, as there are many intermediate populations of samples at hand.}{}
+
+\comment{To complement these plots, I think that a very useful and widely used diagnostic, applicable both to MCMC and ETIAS and their transport-accelerated versions, would be ESS per posterior density evaluation, or simply ESS per unit of computational time.}{}
+
+\comment{I think there is some confusion about invertibility in various places.
+In the discussion following Definition 3.2, it is stated that the space of all invertible maps might not contain an exact coupling. For absolutely continuous distributions with strictly positive densities, which seems to correspond to the cases here, I do not believe that this statement is correct. There is always a bijective map from one distribution to the other (and vice versa); indeed, there is an infinity of such maps. If one only considers maps with triangular structure, then there is a unique (up to sets of measure zero) invertible transformation. This is more or less the Knothe–Rosenblatt rearrangement; see one of Villani’s books, or [Bogachev, Kolesnikov, Medvedev 2005] for a more formal treatment.
+Similarly, the statement in Section 8.2 about the true map being “invariably itself not in- vertible” seemed odd to me. If by the true map one means the KR rearrangement, then it is invertible. Maybe I am confused about what is meant by “true map?”}{}
+
+\comment{ In comparing the transport MH and the transport-ETIAS algorithms, I think it is somehow not surprising that in many problems the latter performs better. But I also have a hunch that the difference may be due to “global” versus local proposals. Transport MH, as I understand the implementation here, is restricted to using local random-walk proposals in the reference space. But some of the larger efficiency gains in [46] resulted from the use of a Metropolis independence proposal on the reference space, in particular draws from a standard Gaussian, i.e., the entire reference measure. These global moves yielded excellent mixing when the map was sufficiently accurate, and were combined with local moves using a delayed rejection scheme. ETIAS is not exactly the same, but it does have something in common with a global proposal. More broadly, this reflects the close link between independence Metropolis algorithms and importance sampling. Some comments (please agree or disagree) on this front would be illuminating.}{}
+
+\comment{What part of Section 6 is newly developed in this paper? Is the derivation of the exact likelihood in Section 6.1 new? Or is the approximation in Section 6.2 new? This relates to my broader comment above. It would be good to have a clearer picture of where exactly this paper’s key contributions lie, and even of their relative weight.}{}
+
+\comment{Here are several suggestions for content that could be removed entirely or shortened, along with a few areas that could be expanded:
+  \begin{itemize}
+    \item The use of log-transformations to map strictly positive variables to the real line is a standard trick in MCMC, and has also been employed in previous work on transport. One could simply mention this and move forward. Thus I don’t see the need of including any results without the log preconditioner in problems where it is warranted. Log- preconditioning is well recognized as a good thing to do.
+\item A lot of Section 3 could be abridged by appropriate referencing of [46].
+\item Section 4 is quite terse, but the“second option” (Algorithm 3)—both proposing and resampling on the reference space—seems to be the cleaner algorithm and, if I understand the authors, the more effective one. So perhaps the first option can be mentioned in passing, and all the results can focus on the second? Is there any good reason to use Algorithm 2 instead of Algorithm 3?
+\item The description of the ETIAS algorithm in Section 2 is very nice, but here an illustrative figure might help. \end{itemize}}{}
+
+\comment{End of Section 2, “learn local covariances across the whole of the domain”: I believe I under- stand what is meant, but this awkwardly phrased}{}
+
+\end{document}
