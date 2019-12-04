@@ -44,11 +44,6 @@
   simulation algorithm}, The Journal of chemical physics, 122 (2005),
   p.~014116.
 
-\bibitem{cao2006efficient}
-\leavevmode\vrule height 2pt depth -1.6pt width 23pt, {\em Efficient step size
-  selection for the tau-leaping simulation method}, The Journal of Chemical
-  Physics, 124 (2006), p.~044109.
-
 \bibitem{cao2004efficient}
 {\sc Y.~Cao, H.~Li, and L.~Petzold}, {\em Efficient formulation of the
   stochastic simulation algorithm for chemically reacting systems}, The journal
@@ -154,11 +149,6 @@
 {\sc D.~Gillespie}, {\em Exact stochastic simulation of coupled chemical
   reactions}, The Journal of Physical Chemistry, 81 (1977), pp.~2340--2361.
 
-\bibitem{gillespie2000chemical}
-\leavevmode\vrule height 2pt depth -1.6pt width 23pt, {\em {The Chemical
-  Langevin equation}}, The Journal of Chemical Physics, 113 (2000),
-  pp.~297--306.
-
 \bibitem{gillespie2007stochastic}
 \leavevmode\vrule height 2pt depth -1.6pt width 23pt, {\em Stochastic
   simulation of chemical kinetics}, Annu. Rev. Phys. Chem., 58 (2007),
@@ -209,8 +199,8 @@
   importance sampling}, Statistics and Computing, 27 (2017), pp.~599--623.
 
 \bibitem{nash1956imbedding}
-{\sc John Nash}, {\em The imbedding problem for riemannian manifolds}, Annals
-  of mathematics,  (1956), pp.~20--63.
+{\sc J.~Nash}, {\em The imbedding problem for riemannian manifolds}, Annals of
+  mathematics,  (1956), pp.~20--63.
 
 \bibitem{parno2015transport}
 {\sc M.~Parno}, {\em {Transport maps for accelerated Bayesian computation}},
@@ -224,19 +214,10 @@
 {\sc M.~Pinsker}, {\em Information and information stability of random
   variables and processes},  (1960).
 
-\bibitem{rathinam2003stiffness}
-{\sc M.~Rathinam, L.~Petzold, Y.~Cao, and D.~Gillespie}, {\em Stiffness in
-  stochastic chemically reacting systems: The implicit tau-leaping method}, The
-  Journal of Chemical Physics, 119 (2003), pp.~12784--12794.
-
 \bibitem{reich2013nonparametric}
 {\sc S.~Reich}, {\em {A nonparametric ensemble transform method for Bayesian
   inference}}, SIAM Journal on Scientific Computing, 35 (2013),
   pp.~A2013--A2024.
-
-\bibitem{robert2013monte}
-{\sc C.~Robert and G.~Casella}, {\em Monte {C}arlo statistical methods},
-  Springer New York, 2004.
 
 \bibitem{russ2017parallel}
 {\sc P.~Russell}, {\em Parallel MCMC methods and their application in inverse
@@ -254,8 +235,8 @@
   pp.~16090--16095.
 
 \bibitem{takens_detecting_1981}
-{\sc Floris Takens}, {\em Detecting strange attractors in turbulence}, in
-  Dynamical systems and turbulence, Warwick 1980, Springer, 1981, pp.~366--381.
+{\sc F.~Takens}, {\em Detecting strange attractors in turbulence}, in Dynamical
+  systems and turbulence, Warwick 1980, Springer, 1981, pp.~366--381.
 
 \bibitem{teh2016consistency}
 {\sc Y.W. Teh, A.~Thiery, and S.~Vollmer}, {\em Consistency and fluctuations
@@ -263,7 +244,7 @@
   Research, 17 (2016), pp.~193--225.
 
 \bibitem{whitney_self-intersections_1994}
-{\sc Hassler Whitney}, {\em The self-intersections of a smooth n-manifold in
+{\sc H.~Whitney}, {\em The self-intersections of a smooth n-manifold in
   2n-space}, Annals of Mathematics,  (1944), pp.~220--246.
 
 \end{thebibliography}
