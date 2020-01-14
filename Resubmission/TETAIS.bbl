@@ -34,10 +34,20 @@
   super-efficient sampling for bayesian analysis of big data}, arXiv preprint
   arXiv:1607.03188,  (2016).
 
+\bibitem{bogachev2005triangular}
+{\sc V.~Bogachev, A.~Kolesnikov, and K.~Medvedev}, {\em Triangular
+  transformations of measures}, Sbornik: Mathematics, 196 (2005), p.~309.
+
 \bibitem{bouchard2018bouncy}
 {\sc A.~Bouchard-C{\^o}t{\'e}, S.~Vollmer, and A.~Doucet}, {\em The bouncy
   particle sampler: A nonreversible rejection-free markov chain monte carlo
   method}, Journal of the American Statistical Association,  (2018), pp.~1--13.
+
+\bibitem{bugallo2017adaptive}
+{\sc Monica~F Bugallo, Victor Elvira, Luca Martino, David Luengo, Joaquin
+  Miguez, and Petar~M Djuric}, {\em Adaptive importance sampling: the past, the
+  present, and the future}, IEEE Signal Processing Magazine, 34 (2017),
+  pp.~60--79.
 
 \bibitem{cao2005slow}
 {\sc Y.~Cao, D.~Gillespie, and L.~Petzold}, {\em The slow-scale stochastic
@@ -198,17 +208,15 @@
 \leavevmode\vrule height 2pt depth -1.6pt width 23pt, {\em Layered adaptive
   importance sampling}, Statistics and Computing, 27 (2017), pp.~599--623.
 
-\bibitem{nash1956imbedding}
-{\sc J.~Nash}, {\em The imbedding problem for riemannian manifolds}, Annals of
-  mathematics,  (1956), pp.~20--63.
+\bibitem{y.17:_handb_uncer_quant}
+{\sc Y.~Marzouk, T.~Moselhy, M.~Parno, and A.~Spantini}, {\em Handbook of
+  Uncertainty Quantification}, Springer, 2017, ch.~An introduction to sampling
+  via measure transport.
 
-\bibitem{parno2015transport}
-{\sc M.~Parno}, {\em {Transport maps for accelerated Bayesian computation}},
-  PhD thesis, Massachusetts Institute of Technology, 2015.
-
-\bibitem{parno2014transport}
-{\sc M.~Parno and Y.~Marzouk}, {\em {Transport map accelerated Markov chain
-  Monte Carlo}}, arXiv preprint arXiv:1412.5492,  (2014).
+\bibitem{parno2018transport}
+{\sc M.~Parno and Y.~Marzouk}, {\em Transport map accelerated markov chain
+  monte carlo}, SIAM/ASA Journal on Uncertainty Quantification, 6 (2018),
+  pp.~645--682.
 
 \bibitem{pinsker1960information}
 {\sc M.~Pinsker}, {\em Information and information stability of random
@@ -234,17 +242,9 @@
   diffusion maps}, Proceedings of the National Academy of Sciences, 106 (2009),
   pp.~16090--16095.
 
-\bibitem{takens_detecting_1981}
-{\sc F.~Takens}, {\em Detecting strange attractors in turbulence}, in Dynamical
-  systems and turbulence, Warwick 1980, Springer, 1981, pp.~366--381.
-
 \bibitem{teh2016consistency}
 {\sc Y.W. Teh, A.~Thiery, and S.~Vollmer}, {\em Consistency and fluctuations
   for stochastic gradient langevin dynamics}, The Journal of Machine Learning
   Research, 17 (2016), pp.~193--225.
-
-\bibitem{whitney_self-intersections_1994}
-{\sc H.~Whitney}, {\em The self-intersections of a smooth n-manifold in
-  2n-space}, Annals of Mathematics,  (1944), pp.~220--246.
 
 \end{thebibliography}

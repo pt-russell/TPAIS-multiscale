@@ -225,7 +225,7 @@ resamplers\cite{reich2013nonparametric}, and the multinomial transform
 the importance sampler proposal distribution.
 
 Other approaches to challenging posterior structure have been
-proposed, including the work of Marzouk and Parno\cite{parno2014transport}, who
+proposed, including the work of Marzouk and Parno\cite{parno2018transport}, who
 demonstrated how invertible transport maps can be constructed which
 map the target distribution close to an easily-explored reference
 density, such as a $d$-dimensional Gaussian. Since the map is
@@ -295,7 +295,7 @@ can be reliably observed.}
 % from such a set of observations by the use of an appropriate
 % multiscale methodology.
 
-****Could move this material to stochastic network section****
+% ****Could move this material to stochastic network section****
 
 
 
@@ -312,7 +312,7 @@ can be reliably observed.}
 % \emph{sloppiness}\cite{gutenkunst2007universally,apgar2010sloppy} of the likelihood is a challenging problem
 % that appears in many applications in science and engineering\cite{constantine2014active}.
 
-********Did I mean to get rid of this?**********
+% ********Did I mean to reintroduce this last paragraph?********** NOOOOO!!!
 
 In this paper, we aim to incorporate transport maps into an ensemble
 importance sampling setting, in order to develop stable algorithms which are
@@ -333,7 +333,13 @@ convergence. Better informed proposal densities
 leads to more stable and faster converging importance sampling
 schemes, and we will demonstrate this through examples
 arising from Bayesian inverse problems on multiscale stochastic
-reaction networks.
+reaction networks. \edit{In a perfect scenario, the numerical
+  approximation of the optimal transport map would capture all of the
+  posterior structure, and independent samples could be drawn by
+  sampling from the reference measure. However in many cases the push
+  forward of the posterior measure can still exhibit complex structure
+  which means that efficient adaptive importance sampling can be
+  preferential to this independent sampling approach.}
 
 
 
@@ -381,7 +387,8 @@ excruciatingly slow when they are not. The idea behind adaptive
 importance sampling methods is
 to construct a good proposal distribution, either from the entire
 history of the algorithm up to the current point, or to use the
-current state of a whole ensemble of $M$ particles in the system.
+current state of a whole ensemble of $M$ particles in the system.  \edit{A nice illustrative figure of how adaptive
+  importance sampling algorithms work is given in \cite{bugallo2017adaptive}.}
 
 In ETAIS, the proposal distribution $\chi$ is chosen to be the equally
 weighted mixture of set of proposal kernels. If $\theta^{(k)} = [\theta_1^{(k)},
@@ -447,6 +454,17 @@ the output.
 \end{algorithm}
 \end{table}
 
+\edit{The choice of proposal kernel $q$ can affect the convergence of
+  the algorithm. In particular, it is important that the tails of the
+  proposal distribution are as fat as the target distribution. In this
+  work we will primarily use Gaussian kernels, but we have previously
+  made comparisons with more complex kernels, such as MALA or
+  HMC\cite{cotter2015parallel,russ2017parallel}. There is minimal
+  benefit from using these more complex kernels, which come at
+  additional cost.}
+
+
+
 One problem with the ETAIS and other similar methods can become apparent if
 the target density has highly curved manifolds on which the density is
 concentrated. In this
@@ -458,10 +476,11 @@ proposed\cite{douc2007minimum}
 which use samples local to each particle to inform local covariance
 structure.
 
-In this paper, we investigate the use of transport maps to learn local
-covariances across the whole of the domain, in order to stabilise
-adaptive importance sampling methods, and make these methods more applicable to a wider
-range of more challenging inference problems.
+\edit{In this paper, we investigate the use of transport maps which allows
+us to learn the local correlation structures of the posterior in
+currently explored regions. Using these transport maps, we can
+stabilise adaptive importance sampling methods, and make these methods
+more applicable to a wider range of more challenging inference problems.}
 
 \section{Construction of transport maps in importance sampling} \label{sec:map}
 %Follow the other papers, show adaptation(s)
@@ -474,7 +493,7 @@ distribution to the posterior distribution, the idea being that one could draw a
 sample from the prior distribution and use this sample to approximate a map onto the target space.
 Once this map was known to the desired accuracy, a larger sample from the prior could be used to
 investigate the posterior distribution. This
-methodology was adapted in~\cite{parno2014transport} to form a new proposal method for MH
+methodology was adapted in~\cite{parno2018transport} to form a new proposal method for MH
 algorithms. In this case, rather than transforming a sample from the prior into a sample from the target
 distribution, the map transforms a sample from the posterior onto a reference space.
 The reference density is chosen to allow efficient proposals using a simple proposal
@@ -490,7 +509,7 @@ the current state, for example sampling from the reference Gaussian
 itself, or a slightly more diffuse distribution.
 
 In this Section we outline the methodology in
-\cite{parno2014transport} for approximately coupling the target
+\cite{parno2018transport} for approximately coupling the target
 measure with density
 $\pi_{\theta}$, with the reference distribution with density $\pi_r$, and
 show how the map can be constructed using a weighted sample
@@ -524,18 +543,19 @@ Armed with such a map, independent samples can be made of the target
 measure, using the pullback of the reference density $\phi$ through $T^{-1}$.
 Clearly the pullback only exists when $T$ is monotonic, i.e. has a positive definite Jacobian, and has continuous first derivatives.
 Not all maps satisfy these conditions, so we define a smaller space of
-maps, $\mathcal{T}^\uparrow \subset \mathcal{T}$ which contains all
-invertible maps. This space does not necessarily contain an exact
-coupling between target and reference space, and so we are motivated to formulate an optimisation problem to find the map $\tilde{T}
+maps, $\mathcal{T}^\uparrow \subset \mathcal{T}$, \edit{ where $\mathcal{T}$ which contains all
+invertible maps. It is an intractable problem to find the
+  Knothe–Rosenblatt rearrangement, and so we numerically approximate
+  it by formulating an optimisation problem to find the map $\tilde{T}
 \in \mathcal{T}^\uparrow$ which most closely maps the target density
-to the reference density.
+to the reference density.}
 
 % We attempt to find the deterministic coupling of two continuous
 % probability distributions, $(\mu_\theta, \hat{\mu_r})$, such that
 % $\hat{\mu_r} = T\mu_\theta$ where the distance between $\mu_r$ (the
 % desired reference measure) and $\hat{\mu_r}$ (the achieved reference
 % measure) is minimised, for $T \in \mathcal{T}^\uparrow$. As in
-% \cite{parno2014transport} we aim to minimise the Kullback-Liebler (KL)
+% \cite{parno2018transport} we aim to minimise the Kullback-Liebler (KL)
 % divergence between the density of $\mu_{\theta}$ and the pullback of
 % the density of $\mu_{r}$, i.e. the distance between $\pi(\theta)$ and
 % $\tilde{\pi}(\theta)$. For two absolutely continuous measures with
@@ -550,8 +570,10 @@ to the reference density.
 % square root of the KL-divergence is an upperbound to the Hellinger
 % distance metric.
 
-As in previous work in \cite{parno2014transport}, we can ensure
-invertibility if we restrict the map to be lower triangular, i.e. $\tilde{T} \in \mathcal{T}^{\ltri}\subset\mathcal{T}^\uparrow$. This lower triangular map has the form,
+As in previous work in \cite{parno2018transport}, we can ensure
+invertibility if we restrict the map to be \edit{lower triangular\cite{bogachev2005triangular}}, i.e. $\tilde{T} \in \mathcal{T}^{\ltri}\subset\mathcal{T}^\uparrow$. \edit{There are a number of different
+  approaches to guaranteeing monotonicity\cite{y.17:_handb_uncer_quant}, but here we follow
+  the approach taken in \cite{parno2018transport}.} This lower triangular map has the form,
 \begin{equation}
 	\tilde{T}(\theta_1, \dots, \theta_n) = \begin{bmatrix} T_1(\theta_1) \\ T_2(\theta_1, \theta_2) \\ \vdots \\
 		T_n(\theta_1, \dots, \theta_n) \end{bmatrix},
@@ -570,7 +592,7 @@ where $T_i\colon \mathbb{R}^i \to \mathbb{R}$. % We assume that the target and r
 Our aim is now to find the lower triangular map $\tilde{T} \in
 \mathcal{T}^{\ltri}$ such that the difference between target
 density and the pullback of the reference density is minimised. As in
-\cite{parno2014transport}, we choose the cost function
+\cite{parno2018transport}, we choose the cost function
 to be the Kullback-Leibler (KL) divergence between the posterior density and the pullback density,
 \begin{equation}
 	D_\text{KL}(\pi\|\tilde{\pi}) =
@@ -610,59 +632,57 @@ represented in the sample used to construct the map.
 The expectation in \eqref{eq:gen_map_optim}} can be
 approximated by using a Monte Carlo approximation. The form of the penalisation term promotes maps which are
 closer to the identity, and so prevents overfitting when the quality
-or size of the current sample from the posterior is not sufficient.
-
-\subsection{The structure of the map}*****CHECK HOW MUCH OF THIS IS
-IDENTICAL TO MARZOUK PAPER******
-
-Before we continue with the derivation of the optimisation problem, we consider the structure
-of the map in more detail. The lower triangular structure of the map not only guarantees monotonicity, it also allows for efficient calculation of the pullback density, as well as the inverse of the map, $\tilde{T}^{-1}$. The Jacobian of $\tilde{T}$ is a lower triangular matrix,
-\begin{equation}
-	J_T(\theta) = \begin{bmatrix}
-		\partial_{\theta_1} \tilde{T}_1(\theta) & \dots & \partial_{\theta_d} \tilde{T}_1(\theta)\\
-		\vdots & \ddots & \vdots \\
-		\partial_{\theta_1} \tilde{T}_d(\theta) & \dots & \partial_{\theta_d} \tilde{T}_d(\theta)
-	\end{bmatrix} = \begin{bmatrix}
-		\partial_{\theta_1} \tilde{T}_1(\theta) & \dots & 0\\
-		\vdots & \ddots & \vdots \\
-		\partial_{\theta_1} \tilde{T}_d(\theta) & \dots & \partial_{\theta_d} \tilde{T}_d(\theta)
-	\end{bmatrix}
-\end{equation}
-since $\partial_{\theta_n} \tilde{T}_k(\theta) = 0$ for all $n > k$. This lower triangular structure means that the determinant of the Jacobian is a product of the diagonal elements which, when we take logs, becomes
+or size of the current sample from the posterior is not
+sufficient. \edit{Moreover, we can exploit the lower triangular
+  structure, for example in the evaluation of 
 \begin{equation}\label{eqn:separable_jacobian}
 	\log\left|J_{\tilde{T}}(\theta)\right| = \sum\limits_{i=1}^d \! \log \partial_{\theta_i} \tilde{T}_i(\theta),
 \end{equation}
-where we note that this term is separable in terms of the dimension $i$.
+where we note that this term is separable in terms of the dimension
+$i$. Similarly, inverting $\tilde{T}$ at a point $r$ is simplified by the lower triangular structure of the map.
 
-Inverting $\tilde{T}$ at a point $r$ is simplified by the lower triangular structure of the map. The map component $\tilde{T}_1(\theta)$ is a univariate polynomial in $\theta_1$, so we can find the inverse of this function by solving the equation $T_1(\theta_1) = r_1$. This inversion tells us the value of $\theta_1$, which means the next component is again a univariate polynomial, $T_2(\theta_2; \theta_1)=r_2$. We can then perform $d$ root finding problems instead of a full $d$ dimensional non-linear solve.
-
-We require that the first derivatives of the map are continuous, which is easy to enforce by the choice of basis functions. Here we assume that the map will be built from a family of orthogonal polynomials, $\mathcal{P}(\theta)$, not necessarily orthogonal with respect to the target distribution. Each component of the map is defined as a multivariate polynomial expansion,
+As in \cite{parno2018transport}, we parameterise each component of the
+map $\tilde{T}_i$ with a multivariate polynomial expansion,
 \begin{equation}\label{eq:map_defn}
 	\tilde{T}_i(\theta; \gamma_i) = \sum\limits_{\mathbf{j}\in\mathcal{J}_i} \!
 \gamma_{i,\mathbf{j}}\psi_\mathbf{j}(\theta).
 \end{equation}
-The parameter $\gamma_i \in \mathbb{R}^{M_i}$ is a vector of coefficients. Each component of $\gamma_i$ corresponds to a basis function
+built from
+a family of orthogonal polynomials, $\mathcal{P}(\theta)$, not
+necessarily orthogonal with respect to the target distribution. The parameter $\gamma_i \in \mathbb{R}^{M_i}$ is a vector of coefficients. Each component of $\gamma_i$ corresponds to a basis function
 $\psi_\mathbf{j}$, indexed by the multi-index $\mathbf{j} \in
-\mathcal{J}_i \subset \mathbb{N}_0^i$. A multi-index defines a product of univariate polynomials in $\theta_k$,
-\begin{equation}
-	\psi_\mathbf{j}(\theta) = \prod\limits_{k=1}^i \! \varphi_{j_k}(\theta_k), \quad \text{for} \quad \mathbf{j} \in \mathcal{J}_i,
-\end{equation}
-and where $\varphi_{j_k}(\theta_k) \in \mathcal{P}(\theta_k)$. Since $\tilde{T}$ is lower triangular, a multi-index $\mathbf{j}\in\mathcal{J}_i$ only contains entries for univariate polynomials in $\theta_k$ for $k\leq i$.
+\mathcal{J}_i \subset \mathbb{N}_0^i$. 
+Here we stick with polynomials of total order $p$ since we work with
+low dimensional problems with the ETAIS algorithm. More details about
+the structure of the maps can be found in  \cite{parno2018transport}.}
 
-The cardinalities of the multi-index sets, $M_i = \text{card}(\mathcal{J}_i)$, give the number of unknowns in our
-optimisation problem, and so we would like to keep this number as small as possible. One option is
-to use polynomials of total order $p$,
-\begin{equation}
-	\mathcal{J}_i^\text{TO} = \left\{\mathbf{j}:\|\mathbf{j}\|_1 \leq p, j_k = 0\ \forall k > i\right\},
-\end{equation}
-which is optimal in terms of the amount of information captured by the map about the target. The cardinality of $\mathcal{J}_i^\text{TO}$ is $M_i = \binom{i+p}{p}$ which increases rapidly in $d$ and $p$, where $i = 1, \dots, d$. Smaller optimisation problems can be produced by constructing subsets of $\mathcal{J}_i^\text{TO}$. These index sets are discussed
-in~\cite{parno2014transport}. Increased information with a slower increase in the number of map parameters can be achieved with the composition of maps discussed in~\cite{parno2015transport}. Here we stick with polynomials of total order $p$ since we work with low dimensional problems with the ETAIS algorithm.
 
+% Each component of the map is defined as a multivariate polynomial expansion,
+% \begin{equation}\label{eq:map_defn}
+% 	\tilde{T}_i(\theta; \gamma_i) = \sum\limits_{\mathbf{j}\in\mathcal{J}_i} \!
+% \gamma_{i,\mathbf{j}}\psi_\mathbf{j}(\theta).
+% \end{equation}
+% The parameter $\gamma_i \in \mathbb{R}^{M_i}$ is a vector of coefficients. Each component of $\gamma_i$ corresponds to a basis function
+% $\psi_\mathbf{j}$, indexed by the multi-index $\mathbf{j} \in
+% \mathcal{J}_i \subset \mathbb{N}_0^i$. A multi-index defines a product of univariate polynomials in $\theta_k$,
+% \begin{equation}
+% 	\psi_\mathbf{j}(\theta) = \prod\limits_{k=1}^i \! \varphi_{j_k}(\theta_k), \quad \text{for} \quad \mathbf{j} \in \mathcal{J}_i,
+% \end{equation}
+% and where $\varphi_{j_k}(\theta_k) \in \mathcal{P}(\theta_k)$. Since $\tilde{T}$ is lower triangular, a multi-index $\mathbf{j}\in\mathcal{J}_i$ only contains entries for univariate polynomials in $\theta_k$ for $k\leq i$.
+
+% The cardinalities of the multi-index sets, $M_i = \text{card}(\mathcal{J}_i)$, give the number of unknowns in our
+% optimisation problem, and so we would like to keep this number as small as possible. One option is
+% to use polynomials of total order $p$,
+% \begin{equation}
+% 	\mathcal{J}_i^\text{TO} = \left\{\mathbf{j}:\|\mathbf{j}\|_1 \leq p, j_k = 0\ \forall k > i\right\},
+% \end{equation}
+% which is optimal in terms of the amount of information captured by the map about the target. The cardinality of $\mathcal{J}_i^\text{TO}$ is $M_i = \binom{i+p}{p}$ which increases rapidly in $d$ and $p$, where $i = 1, \dots, d$. Smaller optimisation problems can be produced by constructing subsets of $\mathcal{J}_i^\text{TO}$. These index sets are discussed
+% in~\cite{parno2018transport}. Increased information with a slower increase in the number of map parameters can be achieved with the composition of maps discussed in~\cite{parno2015transport}.
 
 \subsection{Implementation of the optimisation problem}\label{sec:transport_implementation}
 
 We now discuss how we can evaluate the cost function in
-Equation~\eqref{eq:gen_map_optim}. In \cite{parno2014transport}, this
+Equation~\eqref{eq:gen_map_optim}. In \cite{parno2018transport}, this
 expectation is approximated using an MCMC estimator, such that
 \begin{align}
 	C(T) &= \mathbb{E}_\pi\left[ -\log\pi_r(T(\theta)) - \log|J_T(\theta)|\right] +
@@ -689,7 +709,8 @@ all these weights. Optimisation of this cost function results in a map from $\pi
 Note that since we assume that the map is monotonic, the derivatives of each component are
 positive and so this functional is always finite. In practice it is infeasible to enforce this condition across the whole parameter space. We instead enforce this condition by ensuring that the derivatives are positive at each sample point. This means that when we sample away from these support points while in reference space, it is possible to enter a region of space where the map is not monotonic.
 
-We now return to the structure of the map components given in Equation~\eqref{eq:map_defn}. Since the basis functions are
+We now return to the structure of the map components given in equation
+\ref{eq:map_defn}. Since the basis functions are
 fixed, the optimisation problem in \eqref{eq:gen_map_optim} is really over the map components $\bar{\gamma} = (\gamma_1, \dots,
 \gamma_d)$ where $\gamma_i \in \mathbb{R}^{M_i}$. Note that $C(T)$ is the sum of $d$ expectations, and these expectations each only concern one dimension. Therefore we can rewrite \eqref{eq:gen_map_optim} as $d$ separable optimisation problems.
 \begin{align}\label{eq:gamma_map_optim}
@@ -748,7 +769,7 @@ computing the map coefficients,
 %where additionally we have introduced a factor of $\frac{1}{K}$ to the
 %regularisation term to prevent over-smoothing as the number of samples increases.
 This optimisation problem can be efficiently solved using Newton iterations. It is suggested
-in~\cite{parno2014transport} that this method usually converges in around 10-15 iterations, and we
+in~\cite{parno2018transport} that this method usually converges in around 10-15 iterations, and we
 have seen no evidence that this is not a reasonable estimate. When calculating the map several times
 during a Monte Carlo run, using previous guesses of the optimal map to seed the Newton algorithm
 results in much faster convergence, usually taking only a couple of iterations to satisfy the stopping
@@ -776,11 +797,11 @@ again $[G_i\gamma_i]^{-1}$ is taken element-wise.
 Given importance samples from the target distribution, we have demonstrated how to construct an approximate transport map from the
 target measure to a reference measure. We now consider how to
 implement an ensemble importance sampling algorithm which uses
-these maps to propose new states. In \cite{parno2014transport} it was
+these maps to propose new states. In \cite{parno2018transport} it was
 shown how approximate transport maps can be used to accelerate
 Metropolis-Hastings methods, with the map being periodically updated
 with the samples produced from the target measure. Convergence of this
-adaptation is shown in~\cite{parno2014transport}. In this Section, we
+adaptation is shown in~\cite{parno2018transport}. In this Section, we
 will show how similarly, these maps can be used to construct highly
 efficient importance sampling schemes.
 
@@ -829,14 +850,14 @@ Initialise state $\theta^{(1)}_i = \theta_0$, \quad $i = 1,\dots,M$.\;
 Initialise map $\bar{\gamma}^{(1)} = \iota$.\;
 \For{$k \leftarrow 1, \dots, N-1$}{
 	Compute $r_i = \tilde{T}(\theta^{(k)}_i; \bar{\gamma}^{(k)})$, \quad $i = 1,\dots,M$.\;
-	Sample $r'_i \sim q_r(\cdot; r_i)$.\;
-	Invert $\hat{\theta}_i^{(k)} = \tilde{T}^{-1}(r'_i; \bar{\gamma}^{(k)})$.\;
+	Sample \edit{$\hat{r}_i \sim q_r(\cdot; r_i)$.\;
+	Invert $\hat{\theta}_i^{(k)} = \tilde{T}^{-1}(\hat{r}_i; \bar{\gamma}^{(k)})$.\;
 	Calculate:
 	\begin{equation}
-		w_i^{(k)} = \frac{\pi(\hat{\theta}_i^{(k)})}{\left(\sum_{j=1}^M \! q_r(r_i'; r_j)\right)|J_{\tilde{T}}(\hat{\theta}_i^{(k)};\bar{\gamma}^{(k)})|}.
+		w_i^{(k)} = \frac{\pi(\hat{\theta}_i^{(k)})}{\left(\sum_{j=1}^M \! q_r(\hat{r}_i; r_j)\right)|J_{\tilde{T}}(\hat{\theta}_i^{(k)};\bar{\gamma}^{(k)})|}.
 	\end{equation}
 
-	Resample $r^* \leftarrow \|w^{(k)}\|^{-1}\sum\limits_{j=1}^M \! w_j^{(k)}\delta_{r'_j}(\cdot)$.\label{algline:TETAIS_resample}\;
+	Resample $r^* \leftarrow \|w^{(k)}\|^{-1}\sum\limits_{j=1}^M \! w_j^{(k)}\delta_{\hat{r}_j}(\cdot)$.\label{algline:TETAIS_resample}\;}
 	Invert $\theta^{(k+1)}_i = \tilde{T}^{-1}(r^*_i)$.\;
 	\eIf{$k\ \text{mod}\ K_U = 0$ and $k < K_\text{stop}$}{
 		\For{$i \leftarrow 1, \dots, n$}{
@@ -854,9 +875,9 @@ Initialise map $\bar{\gamma}^{(1)} = \iota$.\;
 The second option is given in Algorithm~\ref{alg:TransportETAIS2}. We
 denote the ensembles of states in target space $\theta^{(k)} =
 \{\theta^{(k)}_1,\dots,\theta^{(k)}_M\}$, and the states in the
-reference space, $r = \{r_1,\dots,r_M\}$, where $M$ is the ensemble
-size. Similarly, the proposal states are denoted $r' =
-\{r'_1,\dots,r'_M\}$ and $(w^{(k)}, \hat{\theta}^{(k)}) =
+reference space, \edit{$r = \{r_1,\dots,r_M\}$}, where $M$ is the ensemble
+size. Similarly, the proposal states are denoted $\hat{r} =
+\{\hat{r}_1,\dots,\hat{r}_M\}$ and $(w^{(k)}, \hat{\theta}^{(k)}) =
 \{(w^{(k)}_1, \hat{\theta}^{(k)}_1),\dots,(w^{(k)}_M,
 \hat{\theta}^{(k)}_M)\}$, where these pairs are the states which
 together form our sample from the target distribution. As in the standard version of the ETAIS algorithm we use the deterministic mixture weights.
@@ -946,7 +967,20 @@ relatively simple MCMC methods such as Metropolis-Hasting random walk (MH-RW). T
 reference space, in Figure~\ref{fig:R2_transport}, is an exact match
 of the original sample since we have not perturbed the sample in
 reference space. This inversion is well defined in the sampling
-region, although not necessarily outside\cite{parno2014transport}.
+region, although not necessarily outside\cite{parno2018transport}.
+
+\edit{For more challenging posterior distributions, the push forward
+  through the numerical
+approximation of the optimal map often leads to a distribution on
+reference space which still has complex structure. It has previously
+been proposed that in more favourable scenarios, the optimal approach
+is to use independent Gaussian samples on reference space, pulled back
+through the inverse map. However, when the push forward of the
+posterior differs greatly from this distribution, as we will see in
+later examples, this is not an
+efficient approach. Using ETAIS in conjunction with the transport map
+allows us to sample efficiently from the push forward measure on
+reference space.}
 
 \subsection[Numerical results]{Numerical results for convergence of
   transport map based algorithms on the Rosenbrock density}
@@ -954,7 +988,20 @@ region, although not necessarily outside\cite{parno2014transport}.
 We first find the optimal scaling parameters for the individual
 algorithms. This is done, as in \cite{cotter2015parallel}, by optimising for the effective sample size in
 the ETAIS algorithm, and by tuning the relative $L^2$ error in the MH
-algorithm. There is currently no
+algorithm. 
+\edit{The relative $L^2$ error of the PDF of the measure can be
+  approximated by $E$ where
+\begin{equation}\label{eqn:L2_error}
+	E^2 = \sum\limits_{i=1}^{n_b}\left[\displaystyle\int_{R_i} \! \pi(s|D) \, \mbox{d}s - vB_i\right]^2 \Big/ \sum\limits_{i=1}^{n_b}\left[\displaystyle\int_{R_i} \! \pi(s|D) \, \mbox{d}s\right]^2,
+\end{equation}
+where the regions $\{R_i\}_{i=1}^{n_b}$ are the $d$-dimensional
+histogram bins, so that $\bigcup_i R_i \subseteq X$ and
+$R_i\cap R_j=\emptyset$, $n_b$ is the number of bins, $v$ is the
+volume of each bin, and $B_i$ is the value of the $i$th bin. This
+metric converges to the standard definition of the relative $L^2$
+error as $v\rightarrow 0$.}
+
+There is currently no
 guidance on the best way of tuning the MH algorithm with transport map
 proposals although one might expect results similar to the standard MH
 results, especially if adaptation of the map is stopped after a given
@@ -974,7 +1021,8 @@ point. As in the ETAIS algorithm, optimising for the effective sample size might
 	ESS ratio							 & - & 0.62 & 0.71 \\
 \bottomrule
 \end{tabular}
-\caption{Optimal scaling parameters for the transport map based
+\caption{Optimal scaling parameters \edit{$\delta$ for the proposal
+    kernels with the} transport map based
   algorithms applied to $R_1$, optimising for the $L^2$ error and
   the effective sample size (ESS) for ETAIS algorithms, and for average
   acceptance rate for MH algorithms.}
@@ -996,12 +1044,19 @@ options.]{\includegraphics[width=0.45\textwidth]{images/TPAIS/R1_L2}}
 \subfigure[Comparison of Transport ETAIS option 2 with the standard algorithms.]{\includegraphics[width=0.45\textwidth]{images/TPAIS/R1_L2_all}}
 \caption{Convergence of algorithms; Transport M-H,
   Transport ETAIS option 1, algorithm \ref{alg:TransportETAIS2} for
-  density \eqref{eqn:R2_repeat}. Ensemble size $M=150$, resampling performed using the MT algorithm.}
+  density \eqref{eqn:R2_repeat}. Ensemble size $M=150$, resampling
+  performed using the MT algorithm. \edit{Plots show average
+    convergence over 32 repeats.}}
 \label{fig:R2_l2_convergence}
 \end{figure}
 
 The convergence of the three algorithms is displayed in
-Figure~\ref{fig:R2_l2_convergence}. Figure (a) shows that the two
+Figure~\ref{fig:R2_l2_convergence}. \edit{These convergence plots show
+  the error as a function of the number of samples output by each
+  algorithm. In the case of standard Metropolis-Hastings methods, this
+  corresponds to the number of iterations. In the case of ETAIS, this
+  corresponds to the number of iterations multiplied by the ensemble
+  size.} Figure (a) shows that the two
 variations of the transport based ETAIS algorithms converge with
 similar rates. The second version, which performs the resampling stage
 in reference space rather than target space, has a slightly higher
@@ -1053,8 +1108,7 @@ reactions occurring within living cells, the sporadic and discrete way
 in which reactions occur can not be well modelled by deterministic
 continuous models, such as ODEs. In such a situation, we may wish to
 model the dynamics through a discrete stochastic model, such as a
-continuous time Markov chain. \edit{Further details about continuous time
-  Markov chains are given in the supplementary material.} ****ARE THEY?****
+continuous time Markov chain.
 
 For each reaction $R_j$, for $j = 1,2,\ldots N_r$, there is a
 propensity or hazard function $\alpha_j(X(t))$ which indicates how
@@ -1140,7 +1194,7 @@ each chemical species in a system that can be well approximated by
   can be computed in a more efficient way by considering all reactions
   in the data from the same point in the state space at the same
   time. A detailed derivation of this is given in the
-  ******supplementary material******.
+  supplementary material.
 
 If we are only able to observe the slow species, then we cannot write
 down an explicit likelihood for the path. One approach is to try to
@@ -1151,10 +1205,10 @@ invoke a multiscale approximation to the dynamics. This allows us to
 approximate effective propensities for the slow reactions, and hence
 to approximate the likelihood of paths of the slow variables. A
 detailed derivation of this likelihood is also given in the
-******supplementary material******.
+supplementary material.
 
 In this work, we will consider two different multiscale
-approximations. The first is the quasi-equillibrium approximation
+approximations. The first is the quasi-equilibrium approximation
 which makes the assumption that fast reactions
 enter quasi-equilibrium on a timescale which is negligible with
 respect to the timescale on which the slow dynamics in the system are
@@ -1462,7 +1516,9 @@ for all algorithms to ensure fairness.
     %     $\tilde{T}$.]{\includegraphics[width=0.495\textwidth]{"images/Applications/CMA_L2_param_space"}}
 \includegraphics[width=0.495\textwidth]{"images/Applications/CMA_L2_log_space"}
 \caption{Convergence of four different MCMC algorithms for the CMA
-  approximation of the  posterior arising from the example in Section \ref{sec:chem_multiscale}.}
+  approximation of the  posterior arising from the example in Section
+  \ref{sec:chem_multiscale}. \edit{Plots show average
+    convergence over 32 repeats.}}
 \label{fig:chem_multiscale_L2}
 \end{figure}
 
@@ -1526,13 +1582,13 @@ $\mathcal{N}_d(0, \text{I})$ by choosing a larger $p$.
   the target distribution, and this independent sampling strategy
   will be inefficient. This motivates the use of the ETAIS algorithm
   to efficiently sample from the more complex distributions arising
-  from the push forward of the target distribution. ****HIGHLIGHT THIS
-  POINT ELSEWHERE -DEFINITELY IN THE CONCLUSIONS AND MAYBE THE INTRO/ABSTRACT?*****
+  from the push forward of the target distribution. % ****HIGHLIGHT THIS
+  % POINT ELSEWHERE -DEFINITELY IN THE CONCLUSIONS AND MAYBE THE INTRO/ABSTRACT?*****
   }
 
 \subsubsection{Comparison of the Constrained and QEA approaches}
-****GREATLY REDUCE THIS SECTION****
-****Jump straight to Bayes' factors and Figure 7.5****
+% ****GREATLY REDUCE THIS SECTION****
+% ****Jump straight to Bayes' factors and Figure 7.5****
 
 The convergence analysis in the previous section was performed for the constrained
 approximation of the posterior distribution. We now look at the
@@ -1820,7 +1876,9 @@ Due to the numerical cost of calculating the full relative $L^2$ errors for this
 % \subfigure[Sampling algorithms with no preconditioner for $\tilde{T}$.]{\includegraphics[width=0.495\textwidth]{"images/Applications/GRN_convergence"}}
 \includegraphics[width=0.495\textwidth]{"images/Applications/GRN_convergence_log"}
 \caption{Convergence of four different MCMC algorithms for the CMA
-  approximation of the  posterior arising from the example in Section \ref{sec:grn}.}
+  approximation of the  posterior arising from the example in Section
+  \ref{sec:grn}. \edit{Plots show average
+    convergence over 32 repeats.}}
 \label{fig:grn_L2}
 \end{figure}
 
@@ -1868,15 +1926,26 @@ smaller ensemble sizes. This in turn suggests that the improvements in
 performance that adaptive importance sampling schemes can deliver
 could be made applicable to a bigger class of problems.
 
-In
-particular we looked at the application of these methods to problems
-arising in inverse problems for multiscale stochastic chemical
-networks, where the posterior distributions which arise can be highly
-concentrated along curved manifolds in parameter space. Through these
-results we also demonstrated the improvement in accuracy of inference
-for multiscale problems when more sophisticated multiscale
-approximations are employed.
-Below we highlight two areas for future work.
+\edit{If good transport maps can be found, such that the push forward
+  of the posterior is close to a reference Gaussian, then the most
+  efficient approach is to draw independent samples pulled back
+  through the map onto the target space. However, for complex
+  posteriors, in particular the type that we have observed here where
+  due to sloppiness in the model, the posterior is concentrated on a
+  low-dimensional manifold, a good map is hard to find. The numerical
+  approximation of the optimal map leads to a measure on the reference
+  space which is far removed from the reference Gaussian, and requires
+  more considered exploration. Adaptive importance sampling schemes
+  such as ETAIS are able to efficiently sample from such a measure
+  more efficiently than Metropolis-Hastings equivalents.}
+
+In particular we looked at the application of these methods to
+problems arising in inverse problems for multiscale stochastic
+chemical networks, where the posterior distributions which arise can
+be highly concentrated along curved manifolds in parameter
+space. Through these results we also demonstrated the improvement in
+accuracy of inference for multiscale problems when more sophisticated
+multiscale approximations are employed. Below we highlight two areas for future work.
 
 \subsection{Sampling in higher
   dimensions}\label{sec:TETAIS_higher_dim}
@@ -1947,15 +2016,15 @@ Return $y$.\;
 \end{algorithm}
 \end{table}
 
-\subsection{Invertibility of the transport map}
-In this paper, we have considered an approach similar to that
-presented in \cite{parno2014transport}, where we aim to find an
-invertible map which approximates the true transport map between the
-reference measure and the target measure. However, this true map is
-invariably itself not invertible. However, by considering embedding
-the map in higher dimensions\cite{whitney_self-intersections_1994,nash1956imbedding,takens_detecting_1981}, these issues of non-invertibility may be
-avoided, and higher quality maps may be found which better aid
-exploration and sampling of the whole state space.
+% \subsection{Invertibility of the transport map}
+% In this paper, we have considered an approach similar to that
+% presented in \cite{parno2018transport}, where we aim to find an
+% invertible map which approximates the true transport map between the
+% reference measure and the target measure. However, this true map is
+% invariably itself not invertible. However, by considering embedding
+% the map in higher dimensions\cite{whitney_self-intersections_1994,nash1956imbedding,takens_detecting_1981}, these issues of non-invertibility may be
+% avoided, and higher quality maps may be found which better aid
+% exploration and sampling of the whole state space.
 
 \subsection{Adaptivity of ensemble sizes}
 At initialisation, our transport map approximation is equal to the

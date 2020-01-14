@@ -1,0 +1,68 @@
+\begin{thebibliography}{10}
+
+\bibitem{anderson2007modified}
+{\sc D.~Anderson}, {\em A modified next reaction method for simulating chemical
+  systems with time dependent propensities and delays}, The Journal of chemical
+  physics, 127 (2007), p.~214107.
+
+\bibitem{anderson2016product}
+{\sc D.~Anderson and S.~Cotter}, {\em Product-form stationary distributions for
+  deficiency zero networks with non-mass action kinetics}, Bulletin of
+  mathematical biology, 78 (2016), pp.~2390--2407.
+
+\bibitem{anderson2010product}
+{\sc D.~Anderson, G.~Craciun, and T.~Kurtz}, {\em Product-form stationary
+  distributions for deficiency zero chemical reaction networks}, Bulletin of
+  mathematical biology, 72 (2010), pp.~1947--1970.
+
+\bibitem{anderson2011continuous}
+{\sc D.~Anderson and T.~Kurtz}, {\em Continuous time markov chain models for
+  chemical reaction networks}, in Design and analysis of biomolecular circuits,
+  Springer, 2011, pp.~3--42.
+
+\bibitem{cao2004efficient}
+{\sc Y.~Cao, H.~Li, and L.~Petzold}, {\em Efficient formulation of the
+  stochastic simulation algorithm for chemically reacting systems}, The journal
+  of chemical physics, 121 (2004), pp.~4059--4067.
+
+\bibitem{cotter2016constrained}
+{\sc S.~Cotter}, {\em {Constrained approximation of effective generators for
+  multiscale stochastic reaction networks and application to conditioned path
+  sampling}}, Journal of Computational Physics, 323 (2016), pp.~265--282.
+
+\bibitem{cotter2016error}
+{\sc S.~Cotter and R.~Erban}, {\em Error analysis of diffusion approximation
+  methods for multiscale systems in reaction kinetics}, SIAM Journal on
+  Scientific Computing, 38 (2016), pp.~B144--B163.
+
+\bibitem{cotter2011constrained}
+{\sc S.~Cotter, K.~Zygalakis, I.~Kevrekidis, and R.~Erban}, {\em A constrained
+  approach to multiscale stochastic simulation of chemically reacting systems},
+  The Journal of Chemical Physics, 135 (2011), p.~094102.
+
+\bibitem{erban2006gene}
+{\sc R.~Erban, I.~Kevrekidis, D.~Adalsteinsson, and T.~Elston}, {\em Gene
+  regulatory networks: A coarse-grained, equation-free approach to multiscale
+  computation}, The Journal of chemical physics, 124 (2006), p.~084106.
+
+\bibitem{gillespie1977exact}
+{\sc D.~Gillespie}, {\em Exact stochastic simulation of coupled chemical
+  reactions}, The Journal of Physical Chemistry, 81 (1977), pp.~2340--2361.
+
+\bibitem{gillespie2007stochastic}
+\leavevmode\vrule height 2pt depth -1.6pt width 23pt, {\em Stochastic
+  simulation of chemical kinetics}, Annu. Rev. Phys. Chem., 58 (2007),
+  pp.~35--55.
+
+\bibitem{jahnke2007solving}
+{\sc T.~Jahnke and W.~Huisinga}, {\em Solving the chemical master equation for
+  monomolecular reaction systems analytically}, Journal of Mathematical
+  Biology, 54 (2007), pp.~1--26.
+
+\bibitem{kevrekidis2003equation}
+{\sc I.~Kevrekidis, C.W. Gear, J.~Hyman, P.~Kevrekidis, O.~Runborg,
+  C.~Theodoropoulos, et~al.}, {\em Equation-free, coarse-grained multiscale
+  computation: Enabling mocroscopic simulators to perform system-level
+  analysis}, Communications in Mathematical Sciences, 1 (2003), pp.~715--762.
+
+\end{thebibliography}
