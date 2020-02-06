@@ -1,0 +1,2968 @@
+\documentclass[final]{siamltex}
+%DIF LATEXDIFF DIFFERENCE FILE
+%DIF DEL ../TETAIS.tex   Fri Jan 18 12:54:14 2019
+%DIF ADD TETAIS.tex      Tue Jan 14 15:40:05 2020
+%test change
+\usepackage{cite}
+\usepackage{graphicx,bbm,pstricks,soul}
+\usepackage{pifont}
+\usepackage{bbm,algorithmic,mdframed,placeins,multirow,booktabs,subfigure}
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+\usepackage{tikz,hhline}
+\usepackage{tabularx}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+%DIF 12c12
+%DIF < \newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+%DIF -------
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\arraybackslash\hspace{0pt}}m{#1}} %DIF > 
+%DIF -------
+
+\setlength{\parindent}{0in}
+\usepackage{amsmath,amsfonts,amsbsy,amssymb}
+\newcommand{\RARR}[3]{#1
+  \;\displaystyle\mathop{\displaystyle\longrightarrow}^{#3}\; #2}
+\newcommand{\RARRlong}[3]{#1
+  \;\displaystyle\mathop{-\!\!\!-\!\!\!-\!\!\!-\!\!\!-\!\!\!\!\displaystyle
+  \longrightarrow}^{#3}\; #2}
+\newcommand{\LARR}[3]{#1
+  \;\displaystyle\mathop{\displaystyle\longleftarrow}^{#3}\; #2}
+\newcommand{\LRARR}[4]{{\mbox{ \raise 0.4 mm \hbox{$#1$}}} \;
+  \mathop{\stackrel{\displaystyle\longrightarrow}\longleftarrow}^{#3}_{#4}
+  \; {\mbox{\raise 0.4 mm\hbox{$#2$}}}}
+\newcommand{\bX}{{\bf X}}
+\newcommand{\vecx}{{\mathbf x}}
+\newcommand{\vecy}{{\mathbf y}}
+\newcommand{\vecz}{{\mathbf z}}
+\newcommand{\vecq}{{\mathbf q}}
+\newcommand{\bs}{{\mathbf s}}
+\newcommand{\vecr}{{\mathbf r}}
+\newcommand{\vecX}{{\mathbf X}}
+\newcommand{\vecv}{{\mathbf v}}
+\newcommand{\tick}{\ding{52}}
+\newcommand{\cross}{\ding{54}}
+\newcommand{\vecn}{{\mathbf n}}
+\newcommand{\vecp}{{\mathbf p}}
+\newcommand{\cT}{{\mathcal T}}
+\newcommand{\dt}{{\mbox{d}t}}
+\newcommand{\dx}{{\mbox{d} \vecx}}
+\newcommand{\boldnu}{{\boldsymbol \nu}}
+\newcommand{\er}{{\mathbb R}}
+\renewcommand{\div}{{\rm div}}
+\newcommand{\bnu}{{\bf \nu}}
+\newcommand{\divergence}{\mathop{\mbox{div}}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\FP}{P_{\rm{FP}}}
+\newcommand{\ME}{P_{\rm{ME}}}
+\newcommand{\MEs}{P_{\rm{ME}_{S}}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\X}{{\mathbf X}}
+\newcommand{\Y}{{\mathbf Y}}
+\newcommand{\W}{{\mathbf W}}
+\newcommand{\data}{D}
+\newcommand{\neff}{n_{\text{eff}}}
+\newcommand{\E}{{\mathbb E}}
+\renewcommand{\b}[1]{{\bf #1}}
+%DIF 61a61
+\newcommand{\edit}[1]{{\color{red} #1}}  %DIF > 
+%DIF -------
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\newcommand{\picturesAB}[6]{
+\centerline{
+\hskip #4
+\raise #3 \hbox{\raise 0.9mm \hbox{(a)}}
+\hskip #5
+\epsfig{file=#1,height=#3}
+\hskip #6
+\raise #3 \hbox{\raise 0.9mm \hbox{(b)}}
+\hskip #5
+\epsfig{file=#2,height=#3}
+}}
+\newcommand{\picturesCD}[6]{
+\centerline{
+\hskip #4
+\raise #3 \hbox{\raise 0.9mm \hbox{(c)}}
+\hskip #5
+\epsfig{file=#1,height=#3}
+\hskip #6
+\raise #3 \hbox{\raise 0.9mm \hbox{(d)}}
+\hskip #5
+\epsfig{file=#2,height=#3}
+}}
+
+\makeatletter  
+\newcommand{\xleftrightarrows}[2][]{\mathrel{%  
+ \raise.40ex\hbox{$  
+       \ext@arrow 3095\leftarrowfill@{\phantom{#1}}{#2}$}%  
+ \setbox0=\hbox{$\ext@arrow 0359\rightarrowfill@{#1}{\phantom{#2}}$}%  
+ \kern-\wd0 \lower.4ex\box0}}  
+ 
+\newcommand{\xrightleftarrows}[2][]{\mathrel{%  
+ \raise.40ex\hbox{$\ext@arrow 3095\rightarrowfill@{\phantom{#1}}{#2}$}%  
+ \setbox0=\hbox{$\ext@arrow 0359\leftarrowfill@{#1}{\phantom{#2}}$}%  
+ \kern-\wd0 \lower.4ex\box0}}  
+ 
+\def\leftrightarrowfill@{%
+ \arrowfill@\leftarrow\relbar\rightarrow%
+ }
+\newcommand*{\centerfloat}{%
+  \parindent \z@
+  \leftskip \z@ \@plus 1fil \@minus \textwidth
+  \rightskip\leftskip
+  \parfillskip \z@skip}
+\makeatother
+\makeatother 
+
+\newcommand\irregularcircle[2]{% radius, irregularity
+  \pgfextra {\pgfmathsetmacro\len{(#1)+rand*(#2)}}
+  +(0:\len pt)
+  \foreach \a in {10,20,...,350}{
+    \pgfextra {\pgfmathsetmacro\len{(#1)+rand*(#2)}}
+    -- +(\a:\len pt)
+  } -- cycle
+}
+
+\newcommand{\into}{\operatornamewithlimits{\longrightarrow}}
+\newtheorem{dfn}{Definition}[section]
+
+\newcommand{\ltri}{%
+\,\resizebox{!}{0.25\baselineskip}{%
+\begin{tikzpicture}%
+\draw[line width=1mm](0,0) -- (0,2) -- (2,0)  -- (0,0);
+\end{tikzpicture}%  
+}\xspace%
+}%
+
+\newcommand{\smallltri}{%
+\,\resizebox{!}{0.15\baselineskip}{%
+\begin{tikzpicture}%
+\draw[line width=1mm](0,0) -- (0,2) -- (2,0)  -- (0,0);
+\end{tikzpicture}%  
+}\xspace%
+}%
+
+\author{Simon L. Cotter\thanks{School of
+    Mathematics, University of Manchester, Manchester, UK. e:
+    simon.cotter@manchester.ac.uk. SLC is grateful for EPSRC First
+    grant award EP/L023393/1. SLC would like to thank the Isaac Newton
+    Institute for Mathematical Sciences for support and hospitality
+    during the programme ``Uncertainty quantification for complex systems: theory and methodologies'' when work on this paper was undertaken. This work was supported by:
+EPSRC grant number EP/K032208/1.} \and Ioannis
+G. Kevrekidis\thanks{Chemical and Biomolecular Engineering \& Applied
+  Mathematics and Statistics, Johns Hopkins University, Baltimore, MD
+  21218. The work of IGK was partially supported by the US National
+  Science Foundation, by the US AFOSR, and by DARPA.} \and Paul
+  Russell\thanks{School of
+    Mathematics, University of Manchester, Manchester, UK.}}
+
+\title{Transport map accelerated adaptive importance sampling, and application to inverse problems arising from
+  multiscale stochastic reaction networks}
+%DIF PREAMBLE EXTENSION ADDED BY LATEXDIFF
+%DIF UNDERLINE PREAMBLE %DIF PREAMBLE
+\RequirePackage[normalem]{ulem} %DIF PREAMBLE
+\RequirePackage{color}\definecolor{RED}{rgb}{1,0,0}\definecolor{BLUE}{rgb}{0,0,1} %DIF PREAMBLE
+\providecommand{\DIFadd}[1]{{\protect\color{blue}\uwave{#1}}} %DIF PREAMBLE
+\providecommand{\DIFdel}[1]{{\protect\color{red}\sout{#1}}}                      %DIF PREAMBLE
+%DIF SAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddbegin}{} %DIF PREAMBLE
+\providecommand{\DIFaddend}{} %DIF PREAMBLE
+\providecommand{\DIFdelbegin}{} %DIF PREAMBLE
+\providecommand{\DIFdelend}{} %DIF PREAMBLE
+%DIF FLOATSAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddFL}[1]{\DIFadd{#1}} %DIF PREAMBLE
+\providecommand{\DIFdelFL}[1]{\DIFdel{#1}} %DIF PREAMBLE
+\providecommand{\DIFaddbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFaddendFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelendFL}{} %DIF PREAMBLE
+\newcommand{\DIFscaledelfig}{0.5}
+%DIF HIGHLIGHTGRAPHICS PREAMBLE %DIF PREAMBLE
+\RequirePackage{settobox} %DIF PREAMBLE
+\RequirePackage{letltxmacro} %DIF PREAMBLE
+\newsavebox{\DIFdelgraphicsbox} %DIF PREAMBLE
+\newlength{\DIFdelgraphicswidth} %DIF PREAMBLE
+\newlength{\DIFdelgraphicsheight} %DIF PREAMBLE
+% store original definition of \includegraphics %DIF PREAMBLE
+\LetLtxMacro{\DIFOincludegraphics}{\includegraphics} %DIF PREAMBLE
+\newcommand{\DIFaddincludegraphics}[2][]{{\color{blue}\fbox{\DIFOincludegraphics[#1]{#2}}}} %DIF PREAMBLE
+\newcommand{\DIFdelincludegraphics}[2][]{% %DIF PREAMBLE
+\sbox{\DIFdelgraphicsbox}{\DIFOincludegraphics[#1]{#2}}% %DIF PREAMBLE
+\settoboxwidth{\DIFdelgraphicswidth}{\DIFdelgraphicsbox} %DIF PREAMBLE
+\settoboxtotalheight{\DIFdelgraphicsheight}{\DIFdelgraphicsbox} %DIF PREAMBLE
+\scalebox{\DIFscaledelfig}{% %DIF PREAMBLE
+\parbox[b]{\DIFdelgraphicswidth}{\usebox{\DIFdelgraphicsbox}\\[-\baselineskip] \rule{\DIFdelgraphicswidth}{0em}}\llap{\resizebox{\DIFdelgraphicswidth}{\DIFdelgraphicsheight}{% %DIF PREAMBLE
+\setlength{\unitlength}{\DIFdelgraphicswidth}% %DIF PREAMBLE
+\begin{picture}(1,1)% %DIF PREAMBLE
+\thicklines\linethickness{2pt} %DIF PREAMBLE
+{\color[rgb]{1,0,0}\put(0,0){\framebox(1,1){}}}% %DIF PREAMBLE
+{\color[rgb]{1,0,0}\put(0,0){\line( 1,1){1}}}% %DIF PREAMBLE
+{\color[rgb]{1,0,0}\put(0,1){\line(1,-1){1}}}% %DIF PREAMBLE
+\end{picture}% %DIF PREAMBLE
+}\hspace*{3pt}}} %DIF PREAMBLE
+} %DIF PREAMBLE
+\LetLtxMacro{\DIFOaddbegin}{\DIFaddbegin} %DIF PREAMBLE
+\LetLtxMacro{\DIFOaddend}{\DIFaddend} %DIF PREAMBLE
+\LetLtxMacro{\DIFOdelbegin}{\DIFdelbegin} %DIF PREAMBLE
+\LetLtxMacro{\DIFOdelend}{\DIFdelend} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFaddbegin}{\DIFOaddbegin \let\includegraphics\DIFaddincludegraphics} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFaddend}{\DIFOaddend \let\includegraphics\DIFOincludegraphics} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFdelbegin}{\DIFOdelbegin \let\includegraphics\DIFdelincludegraphics} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFdelend}{\DIFOaddend \let\includegraphics\DIFOincludegraphics} %DIF PREAMBLE
+\LetLtxMacro{\DIFOaddbeginFL}{\DIFaddbeginFL} %DIF PREAMBLE
+\LetLtxMacro{\DIFOaddendFL}{\DIFaddendFL} %DIF PREAMBLE
+\LetLtxMacro{\DIFOdelbeginFL}{\DIFdelbeginFL} %DIF PREAMBLE
+\LetLtxMacro{\DIFOdelendFL}{\DIFdelendFL} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFaddbeginFL}{\DIFOaddbeginFL \let\includegraphics\DIFaddincludegraphics} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFaddendFL}{\DIFOaddendFL \let\includegraphics\DIFOincludegraphics} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFdelbeginFL}{\DIFOdelbeginFL \let\includegraphics\DIFdelincludegraphics} %DIF PREAMBLE
+\DeclareRobustCommand{\DIFdelendFL}{\DIFOaddendFL \let\includegraphics\DIFOincludegraphics} %DIF PREAMBLE
+%DIF END PREAMBLE EXTENSION ADDED BY LATEXDIFF
+
+\begin{document}
+\maketitle
+\begin{abstract}
+In many applications, Bayesian inverse problems can give rise to
+probability distributions which contain complexities due to the
+Hessian varying greatly across parameter space. This complexity often manifests itself as lower
+dimensional manifolds on which the likelihood function is
+invariant, or varies very little. This can be due to trying to infer
+unobservable parameters, or due to sloppiness in the model which is
+being used to describe the data. In such a situation, standard
+sampling methods for characterising the posterior distribution, which
+do not incorporate information about this structure, will be highly
+inefficient. 
+
+In this paper, we seek to develop an approach to
+tackle this problem when using adaptive importance sampling methods,
+by using optimal transport maps to simplify
+posterior distributions which are concentrated on lower dimensional
+manifolds. This approach is applicable to a whole range of
+problems for which Monte Carlo Markov chain (MCMC) methods mix slowly.
+
+We demonstrate the approach by considering inverse problems arising
+from partially observed stochastic reaction networks. In particular,
+we consider systems which exhibit multiscale behaviour, but for which
+only the slow variables in the system are observable. We demonstrate
+that certain multiscale approximations lead to more consistent
+approximations of the posterior than others. The use of optimal
+transport maps stabilises the ensemble transform adaptive importance
+sampling (ETAIS) method, and allows for efficient sampling with
+smaller ensemble sizes.
+\end{abstract}
+\begin{keywords}Importance sampling, ensemble, transport map,
+  multiscale, stochastic reaction networks, Bayesian inverse problems
+\end{keywords}
+
+
+\section{Introduction}
+The importance of Markov chain Monte Carlo (MCMC) methods is becoming
+increasingly apparent, in a world replete with datasets which need to be
+combined with complex dynamical systems in order for us to be able
+make progress in a range of scientific fields. Different MCMC methods
+have been designed with different challenges in mind, for example high dimensional
+targets\cite{cotter2013mcmc}, or large data
+sets\cite{bierkens2016zig}. New types of stochastic processes
+have been considered, such as piecewise deterministic Markov processes
+\cite{bouchard2018bouncy}.
+Other methods are able to make very large moves informed by the
+data\cite{teh2016consistency,duane1987hybrid}, and others are able to exploit
+the geometry of the target\cite{girolami2011riemann}. Population Monte Carlo
+(pMC) methods use efficient importance sampling proposals informed by an
+ensemble of particles which have already learned about the structure
+of the target\cite{cappe2012population,cappe2008adaptive,douc2007convergence,douc2007minimum, martino2017layered, cornuet2012adaptive, martino2015adaptive}. These methods are particularly useful in the context of
+low dimensional target distributions which have complex\footnote{We
+  use ``complex'' with the meaning ``complicated'' rather than
+  containing imaginary numbers.} structure, for
+which traditional Metropolis-Hastings methods tend to struggle, for
+example when the target is multimodal or if the density is
+concentrated on a lower-dimensional manifold. Moreover, they are an
+excellent candidate for parallelisation, since the task of computing
+the likelihood for each particle in the ensemble can be distributed
+across a set of processors. This is of utmost importance in an age
+where increases in computational power are most likely to come from
+large-scale parallelisation as opposed to the large speed-ups in
+individual processors that we saw throughout the 20th century.
+
+In \cite{cotter2015parallel}, we explored ideas from adaptive MCMC
+within adaptive importance samplers, in order to construct a method which could automatically adapt to optimise
+efficiency. Alongside this, we explored the use of state-of-the-art
+resamplers\cite{reich2013nonparametric}, and the multinomial transform
+(MT), a greedy approximation of the ensemble transform method, in order to improve the quality of
+the importance sampler proposal distribution.
+
+Other approaches to challenging posterior structure have been
+proposed, including the work of Marzouk and Parno\DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
+\cite{parno2014transport}}\hspace{0pt}%DIFAUXCMD
+}\DIFdelend \DIFaddbegin \DIFadd{\mbox{%DIFAUXCMD
+\cite{parno2018transport}}\hspace{0pt}%DIFAUXCMD
+}\DIFaddend , who
+demonstrated how invertible transport maps can be constructed which
+map the target distribution close to an easily-explored reference
+density, such as a $d$-dimensional Gaussian. Since the map is
+invertible, Gaussian proposal densities on the reference space can be
+mapped to highly informed moves on the parameter space. A related idea
+is the use of the anisotropic diffusion maps\cite{singer2008non}, in
+which a map which describes the manifold is constructed using
+principle component analysis. These ideas have also been applied to
+stochastic reaction
+networks\cite{singer2009detecting,dsilva2016data}. In
+\cite{chiavazzo2017intrinsic}, these maps were used to propagate
+data-mining into unexplored regions which were predicted to be close
+to the lower-dimensional manifold. The idea is similar to that of the
+Lamperti or Girsanov transformations for SDEs\cite{flandrin2003stationarity,gardiner2009stochastic},  the aim being to map complex
+processes onto a standard one which is well understood, through a
+change of measure.
+
+\DIFdelbegin \DIFdel{In this paper, we particularly concern ourselves with the subject of
+inverse problems in stochastic reaction networks. This type of model
+is used in situations where ODE or diffusion\mbox{%DIFAUXCMD
+\cite{gillespie2000chemical}
+}\hspace{0pt}%DIFAUXCMD
+approximations of chemical reaction kinetics are not viable, usually
+because of the low concentration of one or more chemical
+species\mbox{%DIFAUXCMD
+\cite{gillespie1977exact}}\hspace{0pt}%DIFAUXCMD
+. Biochemical networks typically fall into
+this category, because of the small volume of the reactors involved (a
+single cell).
+}\DIFdelend \DIFaddbegin \edit{
+There are many applications in which complex posterior structures
+often arise. One family of such problems is those for which the
+forward model is insensitive to changes in certain directions of
+parameter space, sometimes called
+\emph{sloppiness}\cite{gutenkunst2007universally,apgar2010sloppy}. This
+sloppiness in the forward model appears in many applications in
+science and engineering\cite{constantine2014active}. Where one is
+aiming to solve an inverse problem based on such a model, this can
+lead to the posterior distribution being highly concentrated on lower
+dimensional manifolds, which represent the directions of
+sloppiness. This is particularly prevalent in partially observable
+systems, for example multiscale systems such
+as stochastic reaction networks, where only slowly changing quantities
+can be reliably observed.}
+\DIFaddend 
+
+
+
+\DIFdelbegin \DIFdel{One challenge with networks arising from these applications is that
+they often have some reactions which are occurring many times on a
+timescale in which other reactions in the system are unlikely to
+occur. This multiscale behaviour throws up two main challenges, both
+in observability in an experimental setting, but also in the context
+of modelling, where multiscale systems can make the simulation of the
+continuous time Markov chain computationally intractable.
+}\DIFdelend %DIF >  In this paper, we particularly concern ourselves with the subject of
+%DIF >  inverse problems in stochastic reaction networks. This type of model
+%DIF >  is used in situations where ODE or diffusion\cite{gillespie2000chemical}
+%DIF >  approximations of chemical reaction kinetics are not viable, usually
+%DIF >  because of the low concentration of one or more chemical
+%DIF >  species\cite{gillespie1977exact}. Biochemical networks typically fall into
+%DIF >  this category, because of the small volume of the reactors involved (a
+%DIF >  single cell).
+
+\DIFdelbegin \DIFdel{A range of numerical methods have been suggested to tackle this second
+problem, including tau-leaping\mbox{%DIFAUXCMD
+\cite{rathinam2003stiffness,cao2006efficient}}\hspace{0pt}%DIFAUXCMD
+, diffusion approximations\mbox{%DIFAUXCMD
+\cite{erban2006gene,cotter2011constrained,cotter2016error}}\hspace{0pt}%DIFAUXCMD
+, quasi-steady state
+approximations\mbox{%DIFAUXCMD
+\cite{weinan2007nested,cao2005slow}}\hspace{0pt}%DIFAUXCMD
+, and other averaging
+arguments\mbox{%DIFAUXCMD
+\cite{cotter2016constrained}}\hspace{0pt}%DIFAUXCMD
+. Some of these approaches are more
+computationally intensive than others, but this can be mitigated with the
+use of analytical results about the invariant densities of certain
+types of fast subsystems\mbox{%DIFAUXCMD
+\cite{jahnke2007solving,anderson2010product,anderson2016product}}\hspace{0pt}%DIFAUXCMD
+.
+}\DIFdelend %DIF >  One challenge with networks arising from these applications is that
+%DIF >  they often have some reactions which are occurring many times on a
+%DIF >  timescale in which other reactions in the system are unlikely to
+%DIF >  occur. This multiscale behaviour throws up two main challenges, both
+%DIF >  in observability in an experimental setting, but also in the context
+%DIF >  of modelling, where multiscale systems can make the simulation of the
+%DIF >  continuous time Markov chain computationally intractable.
+
+\DIFdelbegin \DIFdel{We would not expect the fast processes in such a system to be
+experimentally observable. In such a situation where only the slow
+variables in a system are identifiable, in an ideal world, we would be
+be able to integrate over the space of all possible trajectories of
+the fast processes. Since this is an insurmountable computational
+task, we might instead wish to approximate the likelihoods arising
+from such a set of observations by the use of an appropriate
+multiscale methodology.
+}\DIFdelend %DIF >  A range of numerical methods have been suggested to tackle this second
+%DIF >  problem, including tau-leaping\cite{rathinam2003stiffness,cao2006efficient}, diffusion approximations\cite{erban2006gene,cotter2011constrained,cotter2016error}, quasi-steady state
+%DIF >  approximations\cite{weinan2007nested,cao2005slow}, and other averaging
+%DIF >  arguments\cite{cotter2016constrained}. Some of these approaches are more
+%DIF >  computationally intensive than others, but this can be mitigated with the
+%DIF >  use of analytical results about the invariant densities of certain
+%DIF >  types of fast subsystems\cite{jahnke2007solving,anderson2010product,anderson2016product}.
+
+\DIFdelbegin \DIFdel{The partial observability of these systems lead to only
+partial-observability of the unknown parameters in the system, for
+example the reaction rates of the fast reactions. The resulting
+multiscale approximations, and the resulting approximations of the
+likelihoods arising from the inverse problem for such a network, 
+often exhibit 
+insensitivity to changes in certain directions of
+parameter space. This causes problems when aiming to sample from such
+a target, since the density is concentrated on a manifold whose
+tangential vectors point in directions of insensitivity. This
+}\emph{\DIFdel{sloppiness}}%DIFAUXCMD
+\DIFdel{\mbox{%DIFAUXCMD
+\cite{gutenkunst2007universally,apgar2010sloppy} }\hspace{0pt}%DIFAUXCMD
+of the likelihood is a challenging problem
+that appears in many applications in science and engineering\mbox{%DIFAUXCMD
+\cite{constantine2014active}}\hspace{0pt}%DIFAUXCMD
+.
+}\DIFdelend %DIF >  We would not expect the fast processes in such a system to be
+%DIF >  experimentally observable. In such a situation where only the slow
+%DIF >  variables in a system are identifiable, in an ideal world, we would be
+%DIF >  be able to integrate over the space of all possible trajectories of
+%DIF >  the fast processes. Since this is an insurmountable computational
+%DIF >  task, we might instead wish to approximate the likelihoods arising
+%DIF >  from such a set of observations by the use of an appropriate
+%DIF >  multiscale methodology.
+
+%DIF >  ****Could move this material to stochastic network section****
+\DIFaddbegin 
+
+
+
+%DIF >  The partial observability of these systems lead to only
+%DIF >  partial-observability of the unknown parameters in the system, for
+%DIF >  example the reaction rates of the fast reactions. The resulting
+%DIF >  multiscale approximations, and the resulting approximations of the
+%DIF >  likelihoods arising from the inverse problem for such a network, 
+%DIF >  often exhibit 
+%DIF >  insensitivity to changes in certain directions of
+%DIF >  parameter space. This causes problems when aiming to sample from such
+%DIF >  a target, since the density is concentrated on a manifold whose
+%DIF >  tangential vectors point in directions of insensitivity. This
+%DIF >  \emph{sloppiness}\cite{gutenkunst2007universally,apgar2010sloppy} of the likelihood is a challenging problem
+%DIF >  that appears in many applications in science and engineering\cite{constantine2014active}.
+
+%DIF >  ********Did I mean to reintroduce this last paragraph?********** NOOOOO!!!
+
+\DIFaddend In this paper, we aim to incorporate transport maps into an ensemble
+importance sampling setting, in order to develop stable algorithms which are
+capable of sampling from probability distributions with complex
+structures. These maps are constructed using an importance sample of
+the posterior distribution, and are used to simplify the posterior
+distribution, mapping them as close as possible to a reference
+Gaussian measure. Through this map, straightforward Gaussian proposal
+densities are transformed into complex densities, which match as well
+as possible the target density. Less well-informed proposal kernels means that complex
+structures in the density can only be well represented with a large
+increase in the ensemble size, increasing computational cost. If
+computational resources do not allow for such an increase, this can
+lead to stability issues in the algorithm, due to the proposal
+distribution in the importance sampler not representing well the
+target density, leading to high variance in the weights, causing slow
+convergence. Better informed proposal densities
+leads to more stable and faster converging importance sampling
+schemes, and we will demonstrate this through examples
+arising from Bayesian inverse problems on multiscale stochastic
+reaction networks. \DIFaddbegin \edit{In a perfect scenario, the numerical
+  approximation of the optimal transport map would capture all of the
+  posterior structure, and independent samples could be drawn by
+  sampling from the reference measure. However in many cases the push
+  forward of the posterior measure can still exhibit complex structure
+  which means that efficient adaptive importance sampling can be
+  preferential to this independent sampling approach.}
+\DIFaddend 
+
+
+
+%Topics to cover: parallel MCMC, pMC, PAIS
+%Transport maps, transport map MCMC
+%Stochastic reaction networks
+%Multiscale approximations, QSSA/QEA, CMA
+
+In Section \ref{sec:ETAIS}, we will briefly reintroduce the ensemble
+\DIFdelbegin \DIFdel{transport }\DIFdelend \DIFaddbegin \DIFadd{transform }\DIFaddend adaptive importance sampling (ETAIS) method. In Section \ref{sec:map} we show how an appropriate transport map can
+be constructed from importance samples which maps the posterior close
+to a reference Gaussian measure. In Section \ref{sec:TETAIS} we show
+how such a map can be incorporated into a sophisticated parallel MCMC
+infrastructure in order to accelerate mixing, and improve stability. In Section
+\ref{sec:conv} we seek to show the advantages of this approach through
+the analysis of a challenging test problem. In Section
+\ref{sec:multi} we consider how likelihoods can be approximated using
+ multiscale methodologies in order to carry out inference for
+multiscale and/or partially observed stochastic reaction networks. In
+Section \ref{sec:num} we present some numerical examples, which serve
+to demonstrate the increased efficiency of the described sampling
+methodologies, as well as investigating the posterior approximations
+discussed in the previous section. We conclude with a discussion in
+Section \ref{sec:conc}.
+
+\section{Ensemble \DIFdelbegin \DIFdel{Transport }\DIFdelend \DIFaddbegin \DIFadd{Transform }\DIFaddend Adaptive Importance Sampling}\label{sec:ETAIS}
+Ensemble \DIFdelbegin \DIFdel{transport }\DIFdelend \DIFaddbegin \DIFadd{transform }\DIFaddend adaptive importance sampling
+(ETAIS)\cite{cotter2015parallel} is an adaptive importance sampling framework
+which uses an ensemble of particles and state-of-the-art resampling
+methods to construct a mixture proposal distribution which closely
+matches the target distribution. 
+
+In importance sampling, we aim to sample from a target $\pi$, by
+sampling from a chosen proposal distribution $\chi$. Each sample $\theta^{(k)} \sim \chi$ is then weighted by
+$w_k = \frac{\pi(\theta^{(k)})}{\chi(\theta^{(k)})}$, to take account of the bias of
+sampling from a different distribution to $\pi$. Monte Carlo estimates
+using a sample of size $N$
+of a function $f$ with respect to $\pi$ can then be made through the
+formula
+\DIFdelbegin \[\DIFdel{\mathbb{E}_\pi(f) \approx \frac{1}{\bar{w}} \sum_{k=1}^N
+  w_kf(\theta^{(k)}),}\]
+%DIFAUXCMD
+\DIFdelend \DIFaddbegin \begin{equation} \DIFadd{\mathbb{E}_\pi(f) \approx \frac{1}{\bar{w}} \sum_{k=1}^N
+  w_kf(\theta^{(k)}),}\end{equation}
+\DIFaddend where $\bar{w} = \sum_{k=1}^N w_k$ is the total weight.
+This method works well when $\pi$ and $\chi$ are close, but can be
+excruciatingly slow when they are not. The idea behind adaptive
+importance sampling methods is
+to construct a good proposal distribution, either from the entire
+history of the algorithm up to the current point, or to use the
+current state of a whole ensemble of $M$ particles in the system.  \DIFaddbegin \edit{A nice illustrative figure of how adaptive
+  importance sampling algorithms work is given in \cite{bugallo2017adaptive}.}
+\DIFaddend 
+
+In ETAIS, the proposal distribution $\chi$ is chosen to be the equally
+weighted mixture of set of proposal kernels. If $\theta^{(k)} = [\theta_1^{(k)},
+\theta_2^{(k)}, \ldots, \theta_M^{(k)}]^\top$ is the current state of the
+ensemble, and we wish to use a mixture of the proposal density $q(\cdot ;
+\cdot, \beta)$ then 
+\DIFdelbegin \[\DIFdel{\chi^{(k)} = \frac{1}{M} \sum_{i=1}^M q(\cdot ; \theta_i^{(k)},
+\beta).}\]
+%DIFAUXCMD
+\DIFdelend \DIFaddbegin \begin{equation}\DIFadd{\chi^{(k)} = \frac{1}{M} \sum_{i=1}^M q(\cdot ; \theta_i^{(k)},
+\beta).}\end{equation}
+\DIFaddend Usually the kernel $q(\cdot ;
+x,\beta)$ is centred at, or has mean equal to $x$, and whose variance
+scales with $\beta$. Good values for the
+algorithmic parameter(s) $\beta$ can be
+found by optimising for the effective sample size of the importance
+sample that is produced (see \cite{cotter2015parallel, russ2017parallel} for more details).
+
+If the ensemble is large enough, and the chain has entered
+probabilistic stationarity, then the current state of the ensemble is
+a good rough discrete approximation of the target density, and in turn
+$\chi^{(k)}$ is close enough to $\pi$ to produce an efficient importance
+sample $\{(\hat{\theta}^{(k)},w^{(k)})\}$,  where $\theta^{(k)} =
+[\theta_1^{(k)}, \ldots, \theta_M^{(k)}]^\top$ and $w^{(k)} =
+[w_1^{(k)}, \ldots, w_M^{(k)}]^\top$. It can be advantageous to use stratified sampling of the
+mixture in order to
+ensure that the sample made is as representative as possible of the
+target density, i.e.
+\DIFdelbegin \[ \DIFdel{\theta_i^{(k)} \sim q(\cdot ; \theta_i^{(k)},\beta)}\]
+%DIFAUXCMD
+\DIFdelend \DIFaddbegin \begin{equation} \DIFadd{\hat{\theta}_i^{(k)} \sim q(\cdot ; \theta_i^{(k)},\beta)}\end{equation}
+\DIFaddend for each $i = 1,2,\ldots,M$.  We now have a weighted sample, and it
+would be inadvisable to use an equally weighted mixture of proposal
+distributions from each of these points. Therefore, before starting
+the next iteration, the importance sample
+$\{(\theta^{(k)},w^{(k)})\}$ is resampled to produce an equally
+weighted sample, ready for the next iteration of the algorithm. In
+ETAIS, a state-of-the-art resampler is used, which uses optimal
+transport methods to find the equally weighted discrete sample which
+best represents the statistics of the importance
+sample\cite{reich2013nonparametric}. For larger ensemble sizes $M$ this can become
+expensive, in which case a greedy approximation of this algorithm, the
+Multinomial Transformation (MT) can be
+implemented\cite{cotter2015parallel}. The output of the resampler is then denoted
+$\theta^{(k+1)}$ and the algorithm is ready for the next
+iteration. The ETAIS is summarised in Algorithm \ref{alg:ETAIS}, where
+the importance samples $\{(\hat{\theta}^{(k)},w^{(k)})\}$ are stored as
+the output.
+
+\begin{table}[!h]
+\centering
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\BlankLine
+	Initialise $\theta^{(1)} \sim \pi_0$.\;
+	\DIFdelbeginFL %DIFDELCMD < \For{$k=1,\ldots,N$}{
+%DIFDELCMD < 		Sample $\hat{\theta}_i^{(k)} \sim q(\cdot; \theta_j^{(k)}, \beta)$, for $i = 1,\dots, M$.\label{algline:ETAIS_propose}\;
+%DIFDELCMD < 		Calculate $w^{(k)} = (w_1^{(k)}, \ldots, w_M^{(k)})^\top$, where
+%DIFDELCMD < 			\[
+%DIFDELCMD < 				w^{(k)}_i = \frac{\pi(\hat{\theta}^{(k)}_i)}{\chi^{(k)}(\hat{\theta}^{(k)}_i; \theta^{(k)}, \beta)}.
+%DIFDELCMD < 			\]
+%DIFDELCMD < 		\label{algline:ETAIS_weights}
+%DIFDELCMD < 
+
+%DIFDELCMD < 		Resample $\theta^{(k+1)} \leftarrow \| w^{(k)}\|_1^{-1}\sum_{j=1}^M w_j^{(k)}\delta_{\hat{\theta}_j^{(k)}}(\cdot)$.\label{algline:ETAIS_resample}\;
+%DIFDELCMD < 	}
+%DIFDELCMD < 	%%%
+\DIFdelendFL \DIFaddbeginFL \For{$k=1,\ldots,N$}{
+		Sample $\hat{\theta}_i^{(k)} \sim q(\cdot; \theta_i^{(k)}, \beta)$, for $i = 1,\dots, M$.\label{algline:ETAIS_propose}\;
+		Calculate $w^{(k)} = (w_1^{(k)}, \ldots, w_M^{(k)})^\top$, where
+			\begin{equation}
+				w^{(k)}_i = \frac{\pi(\hat{\theta}^{(k)}_i)}{\chi^{(k)}(\hat{\theta}^{(k)}_i; \theta^{(k)}, \beta)}.
+			\end{equation}
+		\label{algline:ETAIS_weights}
+
+		Resample $\theta^{(k+1)} \leftarrow \| w^{(k)}\|_1^{-1}\sum_{j=1}^M w_j^{(k)}\delta_{\hat{\theta}_j^{(k)}}(\cdot)$.\label{algline:ETAIS_resample}\;
+	}
+	\DIFaddendFL Output $\{(\hat{\theta}^{(n)},w^{(n)})\}_{n=1}^N$.
+\caption{The ETAIS Algorithm.\label{alg:ETAIS}}
+\end{algorithm}
+\end{table}
+
+\DIFaddbegin \edit{The choice of proposal kernel $q$ can affect the convergence of
+  the algorithm. In particular, it is important that the tails of the
+  proposal distribution are as fat as the target distribution. In this
+  work we will primarily use Gaussian kernels, but we have previously
+  made comparisons with more complex kernels, such as MALA or
+  HMC\cite{cotter2015parallel,russ2017parallel}. There is minimal
+  benefit from using these more complex kernels, which come at
+  additional cost.}
+
+
+
+\DIFaddend One problem with the ETAIS and other similar methods can become apparent if
+the target density has highly curved manifolds on which the density is
+concentrated. In this
+case, unless the proposal densities $q$ are informed by this local
+structure, the mixture distribution proposal may not well approximate
+$\pi$ without a very large ensemble size $M$, which can become
+prohibitively expensive. Some methods have been
+proposed\cite{douc2007minimum}
+which use samples local to each particle to inform local covariance
+structure.
+
+\DIFdelbegin \DIFdel{In this paper, we investigate the use of transport maps to learn local
+covariances across the whole of the domain, in order to stabilise
+adaptive importance sampling methods, and make these methods more applicable to a wider
+range of more challenging inference problems.
+}\DIFdelend \DIFaddbegin \edit{In this paper, we investigate the use of transport maps which allows
+us to learn the local correlation structures of the posterior in
+currently explored regions. Using these transport maps, we can
+stabilise adaptive importance sampling methods, and make these methods
+more applicable to a wider range of more challenging inference problems.}
+\DIFaddend 
+
+\section{Construction of transport maps in importance sampling} \label{sec:map}
+%Follow the other papers, show adaptation(s)
+In this Section, we describe the construction of transport maps which
+allow for the simplification of complex posterior distributions in
+order to allow for improved sampling, in particular for methods based
+on importance sampling.
+In~\cite{el2012bayesian} the transport map was introduced to provide a transformation from the prior
+distribution to the posterior distribution, the idea being that one could draw a moderately sized
+sample from the prior distribution and use this sample to approximate a map onto the target space.
+Once this map was known to the desired accuracy, a larger sample from the prior could be used to
+investigate the posterior distribution. This
+methodology was adapted in~\DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
+\cite{parno2014transport} }\hspace{0pt}%DIFAUXCMD
+}\DIFdelend \DIFaddbegin \DIFadd{\mbox{%DIFAUXCMD
+\cite{parno2018transport} }\hspace{0pt}%DIFAUXCMD
+}\DIFaddend to form a new proposal method for MH
+algorithms. In this case, rather than transforming a sample from the prior into a sample from the target
+distribution, the map transforms a sample from the posterior onto a reference space.
+The reference density is chosen to allow efficient proposals using a simple proposal
+distribution such as a Gaussian centred at the previous state. Proposed states can then be mapped back into a sample from the posterior by applying the inverse of the transport map.
+
+Proposing new states in this way allows us to make large, informed
+moves, even when sampling from probability distributions with complex structure.
+If a very good such map can be found, it is also possible that the
+push forward of the posterior density through the map is close enough
+to the reference Gaussian that we can efficiently
+propose moves using a proposal distribution which is independent of
+the current state, for example sampling from the reference Gaussian
+itself, or a slightly more diffuse distribution.
+
+In this Section we outline the methodology in
+\DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
+\cite{parno2014transport} }\hspace{0pt}%DIFAUXCMD
+}\DIFdelend \DIFaddbegin \DIFadd{\mbox{%DIFAUXCMD
+\cite{parno2018transport} }\hspace{0pt}%DIFAUXCMD
+}\DIFaddend for approximately coupling the target
+measure with density
+$\pi_{\theta}$, with the reference distribution with density $\pi_r$, and
+show how the map can be constructed using a weighted sample
+and hence how we can incorporate the map into importance sampling schemes.
+
+\begin{dfn}[Transport Map $T$]
+	A transport map $T$ is a smooth function $T\colon
+        \mathcal{X}\rightarrow\mathbb{R}^d$ such that the {\it
+          pullback} of the reference measure with density $\phi(\cdot)$,
+	\begin{equation}\label{eq:pullback}
+		\tilde{\pi}(\theta) = \phi(T(\theta))|J_T(\theta)|,
+	\end{equation}
+	is equal to the target density $\pi(\theta)$ for all $\theta \in \mathcal{X}$. The pullback is defined in terms of the determinant of the Jacobian of $T$,
+	\DIFdelbegin \[
+		\DIFdel{|J_T(\theta)| = \text{det}\begin{bmatrix} \partial_{\theta_1} T_1(\theta) & \dots & \partial_{\theta_d} T_1(\theta) \\ \vdots & \ddots & \vdots \\ \partial_{\theta_1} T_d(\theta) & \dots & \partial_{\theta_d} T_d(\theta) \end{bmatrix}.
+	}\]
+%DIFAUXCMD
+\DIFdelend \DIFaddbegin \begin{equation}
+		\DIFadd{|J_T(\theta)| = \text{det}\begin{bmatrix} \partial_{\theta_1} T_1(\theta) & \dots & \partial_{\theta_d} T_1(\theta) \\ \vdots & \ddots & \vdots \\ \partial_{\theta_1} T_d(\theta) & \dots & \partial_{\theta_d} T_d(\theta) \end{bmatrix}.
+	}\end{equation}
+\DIFaddend \end{dfn}
+
+% In the case that we have an invertible map,
+% $T\in\mathcal{T}$ where $\mathcal{T}$ is the space of all invertible
+% maps, we are able to draw a sample from $\pi_r = \phi$, the density of
+% the reference distribution, which could be picked to be the
+% standardised Gaussian distribution for example, and map these samples back
+% onto target space using $T^{-1}$. These proposed samples are then distributed according to the target distribution.
+
+\begin{dfn}[Target and Reference Space]
+	The transport map pushes a sample from a {\it target space} $\mathcal{X}$, that is a subset of $\mathbb{R}^d$ equipped with a target density $\pi_{\theta}$, onto a {\it reference space}, $R$, again a subset of $\mathbb{R}^d$ equipped with the reference density $\pi_r$.
+\end{dfn}
+
+Armed with such a map, independent samples can be made of the target
+measure, using the pullback of the reference density $\phi$ through $T^{-1}$.
+Clearly the pullback only exists when $T$ is monotonic, i.e. has a positive definite Jacobian, and has continuous first derivatives.
+Not all maps satisfy these conditions, so we define a smaller space of
+maps, $\mathcal{T}^\uparrow \subset \mathcal{T}$\DIFdelbegin \DIFdel{which contains all
+invertible maps. This space does not necessarily contain an exact
+coupling between target and reference space, and so we are motivated to formulate an optimisation problem to find the map $\tilde{T}
+\in \mathcal{T}^\uparrow$ which most closely maps the target density
+to the reference density.
+}\DIFdelend \DIFaddbegin \DIFadd{, }\edit{ where $\mathcal{T}$ which contains all
+invertible maps. It is an intractable problem to find the
+  Knothe–Rosenblatt rearrangement, and so we numerically approximate
+  it by formulating an optimisation problem to find the map $\tilde{T}
+\in \mathcal{T}^\uparrow$ which most closely maps the target density
+to the reference density.}
+\DIFaddend 
+
+% We attempt to find the deterministic coupling of two continuous
+% probability distributions, $(\mu_\theta, \hat{\mu_r})$, such that
+% $\hat{\mu_r} = T\mu_\theta$ where the distance between $\mu_r$ (the
+% desired reference measure) and $\hat{\mu_r}$ (the achieved reference
+% measure) is minimised, for $T \in \mathcal{T}^\uparrow$. As in
+%DIF <  \cite{parno2014transport} we aim to minimise the Kullback-Liebler (KL)
+%DIF >  \cite{parno2018transport} we aim to minimise the Kullback-Liebler (KL)
+% divergence between the density of $\mu_{\theta}$ and the pullback of
+% the density of $\mu_{r}$, i.e. the distance between $\pi(\theta)$ and
+% $\tilde{\pi}(\theta)$. For two absolutely continuous measures with
+% densities $\pi_1$ and $\pi_2$ respectively, the KL
+% divergence is given by
+%DIF <  \[D_\text{KL}(\pi_1\|\pi_2) = 
+%DIF <  		\mathbb{E}_{\pi_1}\left[\log\left(\frac{\pi_1(\theta)}{\pi_2(\theta)}\right)\right].\]
+%DIF >  \begin{equation}D_\text{KL}(\pi_1\|\pi_2) = 
+%DIF >  		\mathbb{E}_{\pi_1}\left[\log\left(\frac{\pi_1(\theta)}{\pi_2(\theta)}\right)\right].\end{equation}
+% The KL divergence is not itself a norm, since
+% it is not symmetric, i.e. $D_\text{KL}(\pi_1\|\pi_2) \neq
+% D_\text{KL}(\pi_2\|\pi_1)$ in general. However, it is still a useful
+% measure of the similarity of two probability distributions, not least since the
+% square root of the KL-divergence is an upperbound to the Hellinger
+% distance metric.
+
+As in previous work in \DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
+\cite{parno2014transport}}\hspace{0pt}%DIFAUXCMD
+}\DIFdelend \DIFaddbegin \DIFadd{\mbox{%DIFAUXCMD
+\cite{parno2018transport}}\hspace{0pt}%DIFAUXCMD
+}\DIFaddend , we can ensure
+invertibility if we restrict the map to be \DIFdelbegin \DIFdel{lower triangular}\DIFdelend \DIFaddbegin \edit{lower triangular\cite{bogachev2005triangular}}\DIFaddend , i.e. $\tilde{T} \in \mathcal{T}^{\ltri}\subset\mathcal{T}^\uparrow$. \DIFaddbegin \edit{There are a number of different
+  approaches to guaranteeing monotonicity\cite{y.17:_handb_uncer_quant}, but here we follow
+  the approach taken in \cite{parno2018transport}.} \DIFaddend This lower triangular map has the form,
+\DIFdelbegin \[
+	\DIFdel{\tilde{T}(\theta_1, \dots, \theta_n) = \begin{bmatrix} T_1(\theta_1) \\ T_2(\theta_1, \theta_2) \\ \vdots \\
+		T_n(\theta_1, \dots, \theta_n) \end{bmatrix},
+}\]
+%DIFAUXCMD
+\DIFdelend \DIFaddbegin \begin{equation}
+	\DIFadd{\tilde{T}(\theta_1, \dots, \theta_n) = \begin{bmatrix} T_1(\theta_1) \\ T_2(\theta_1, \theta_2) \\ \vdots \\
+		T_n(\theta_1, \dots, \theta_n) \end{bmatrix},
+}\end{equation}
+\DIFaddend where $T_i\colon \mathbb{R}^i \to \mathbb{R}$. % We assume that the target and reference probability densities are absolutely continuous on
+% $\mathbb{R}^d$. Under this formulation, with appropriate
+% regularisation (which will be detailed later), we are guaranteed a unique invertible map $\tilde{T}$ with the property that
+%DIF <  \[
+%DIF >  \begin{equation}
+% 	\tilde{T}\mu_{\theta} \approx \mu_r.
+%DIF <  \]
+%DIF >  \end{equation}
+% % Relaxing the equality constraint to finding the approximate map
+% % $\tilde{T} \in \mathcal{T}^{\ltri}$ which minimises $C(T)$, gives us a
+% % practical route to finding a good candidate map.
+
+\subsection{The optimisation problem}
+Our aim is now to find the lower triangular map $\tilde{T} \in
+\mathcal{T}^{\ltri}$ such that the difference between target
+density and the pullback of the reference density is minimised. As in
+\DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
+\cite{parno2014transport}}\hspace{0pt}%DIFAUXCMD
+}\DIFdelend \DIFaddbegin \DIFadd{\mbox{%DIFAUXCMD
+\cite{parno2018transport}}\hspace{0pt}%DIFAUXCMD
+}\DIFaddend , we choose the cost function
+to be the Kullback-Leibler (KL) divergence between the posterior density and the pullback density,
+\DIFdelbegin \[
+	\DIFdel{D_\text{KL}(\pi\|\tilde{\pi}) =
+		\mathbb{E}_\pi\left[\log\left(\frac{\pi(\theta)}{\tilde{\pi}(\theta)}\right)\right].
+}\]
+%DIFAUXCMD
+\DIFdelend \DIFaddbegin \begin{equation}
+	\DIFadd{D_\text{KL}(\pi\|\tilde{\pi}) =
+		\mathbb{E}_\pi\left[\log\left(\frac{\pi(\theta)}{\tilde{\pi}(\theta)}\right)\right].
+}\end{equation}
+\DIFaddend This divergence results in some nice properties which we will explore in the following derivation. The KL divergence is not a true metric since it is not symmetric, however it is commonly used to measure the distance between probability distributions due to its relatively simple form, and because it provides a bound for the square of the Hellinger distance by Pinsker's inequality~\cite{pinsker1960information},
+\DIFdelbegin \[
+	\DIFdel{D_{KL}(p\|q) \geq D_H^2(p,q),
+}\]
+%DIFAUXCMD
+\DIFdelend \DIFaddbegin \begin{equation}
+	\DIFadd{D_{KL}(p\|q) \geq D_H^2(p,q),
+}\end{equation}
+\DIFaddend which is a true distance metric on probability distributions.
+Given the form of the pullback in Equation~\eqref{eq:pullback}, now taken through an approximate map $\tilde{T}$, the divergence becomes
+\DIFdelbegin \[
+	\DIFdel{D_\text{KL}(\pi\|\tilde{\pi}) = \mathbb{E}_\pi\left[\log\pi(\theta) - \log\pi_r(\tilde{T}(\theta)) -
+		\log\left|J_{\tilde{T}}(\theta)\right|\right].
+}\]
+%DIFAUXCMD
+\DIFdelend \DIFaddbegin \begin{equation}
+	\DIFadd{D_\text{KL}(\pi\|\tilde{\pi}) = \mathbb{E}_\pi\left[\log\pi(\theta) - \log\pi_r(\tilde{T}(\theta)) -
+		\log\left|J_{\tilde{T}}(\theta)\right|\right].
+}\end{equation}
+\DIFaddend We note the posterior density is independent of $\tilde{T}$, and so it is not necessary for us to compute it when optimising this cost function. This expression is a complicated integral with respect to the target distribution, for which the normalisation constant is unknown. However this is exactly the scenario for which we would turn to MCMC methods for a solution.
+
+To find the best coupling, $\tilde{T} \in \mathcal{T}^{\ltri}$, we solve the optimisation problem,
+\DIFdelbegin \[
+	\DIFdel{\tilde{T} = \arg\min_{T \in \mathcal{T}^{\smallltri}} \mathbb{E}_\pi\left[-\log\pi_r(T(\theta)) -
+		\log\left|J_T(\theta)\right|\right]
+}\]
+%DIFAUXCMD
+\DIFdelend \DIFaddbegin \begin{equation}
+	\DIFadd{\tilde{T} = \arg\min_{T \in \mathcal{T}^{\smallltri}} \mathbb{E}_\pi\left[-\log\pi_r(T(\theta)) -
+		\log\left|J_T(\theta)\right|\right]
+}\end{equation}
+\DIFaddend which has a unique solution since the cost function is convex. We also include a regularisation term, which is required for reasons which will become clear later. The optimisation problem now takes the form
+\begin{equation}\label{eq:gen_map_optim}
+	\tilde{T} = \arg\min_{T\in\mathcal{T}^{\smallltri}} \left[
+		 \mathbb{E}_\pi\left[-\log\pi_r(T(\theta)) -
+		\log\left|J_T(\theta)\right|\right] + \beta\mathbb{E}(T(\theta)- \theta)^2 \right].
+\end{equation}
+\DIFdelbegin \DIFdel{The parameter $\beta>0$ does not need to be tuned, as experimentation has shown that the choice
+$\beta=1$ is sufficient for most problems. This expectation }\DIFdelend \DIFaddbegin \edit{The parameter $\beta>0$ does not need to be tuned, as experimentation has shown that the choice
+$\beta=1$ is sufficient for most problems. Note that this
+regularisation term is necessary to avoid overfitting of the transport
+map to what is often an incomplete and poorly converged sample from
+the posterior, and smaller values of $\beta$ may lead to maps which
+hinder further exploration of the state space beyond that already
+represented in the sample used to construct the map.
+
+The expectation in \eqref{eq:gen_map_optim}} \DIFaddend can be
+approximated by using \DIFdelbegin \DIFdel{an MCMC }\DIFdelend \DIFaddbegin \DIFadd{a Monte Carlo }\DIFaddend approximation. The form of the penalisation term promotes maps which are
+closer to the identity, and so prevents overfitting when the quality
+or size of the current sample from the posterior is not
+sufficient. \DIFaddbegin \edit{Moreover, we can exploit the lower triangular
+  structure, for example in the evaluation of 
+\begin{equation}\label{eqn:separable_jacobian}
+	\log\left|J_{\tilde{T}}(\theta)\right| = \sum\limits_{i=1}^d \! \log \partial_{\theta_i} \tilde{T}_i(\theta),
+\end{equation}
+where we note that this term is separable in terms of the dimension
+$i$. Similarly, inverting $\tilde{T}$ at a point $r$ is simplified by the lower triangular structure of the map.
+
+As in \cite{parno2018transport}, we parameterise each component of the
+map $\tilde{T}_i$ with a multivariate polynomial expansion,
+\begin{equation}\label{eq:map_defn}
+	\tilde{T}_i(\theta; \gamma_i) = \sum\limits_{\mathbf{j}\in\mathcal{J}_i} \!
+\gamma_{i,\mathbf{j}}\psi_\mathbf{j}(\theta).
+\end{equation}
+built from
+a family of orthogonal polynomials, $\mathcal{P}(\theta)$, not
+necessarily orthogonal with respect to the target distribution. The parameter $\gamma_i \in \mathbb{R}^{M_i}$ is a vector of coefficients. Each component of $\gamma_i$ corresponds to a basis function
+$\psi_\mathbf{j}$, indexed by the multi-index $\mathbf{j} \in
+\mathcal{J}_i \subset \mathbb{N}_0^i$. 
+Here we stick with polynomials of total order $p$ since we work with
+low dimensional problems with the ETAIS algorithm. More details about
+the structure of the maps can be found in  \cite{parno2018transport}.}
+\DIFaddend 
+
+
+\DIFdelbegin \subsection{\DIFdel{The structure of the map}}
+%DIFAUXCMD
+\addtocounter{subsection}{-1}%DIFAUXCMD
+\DIFdelend %DIF >  Each component of the map is defined as a multivariate polynomial expansion,
+%DIF >  \begin{equation}\label{eq:map_defn}
+%DIF >  	\tilde{T}_i(\theta; \gamma_i) = \sum\limits_{\mathbf{j}\in\mathcal{J}_i} \!
+%DIF >  \gamma_{i,\mathbf{j}}\psi_\mathbf{j}(\theta).
+%DIF >  \end{equation}
+%DIF >  The parameter $\gamma_i \in \mathbb{R}^{M_i}$ is a vector of coefficients. Each component of $\gamma_i$ corresponds to a basis function
+%DIF >  $\psi_\mathbf{j}$, indexed by the multi-index $\mathbf{j} \in
+%DIF >  \mathcal{J}_i \subset \mathbb{N}_0^i$. A multi-index defines a product of univariate polynomials in $\theta_k$,
+%DIF >  \begin{equation}
+%DIF >  	\psi_\mathbf{j}(\theta) = \prod\limits_{k=1}^i \! \varphi_{j_k}(\theta_k), \quad \text{for} \quad \mathbf{j} \in \mathcal{J}_i,
+%DIF >  \end{equation}
+%DIF >  and where $\varphi_{j_k}(\theta_k) \in \mathcal{P}(\theta_k)$. Since $\tilde{T}$ is lower triangular, a multi-index $\mathbf{j}\in\mathcal{J}_i$ only contains entries for univariate polynomials in $\theta_k$ for $k\leq i$.
+
+\DIFdelbegin \DIFdel{Before we continue with the derivation of the optimisation problem, we consider the structure
+of the map in more detail. The lower triangular structure of the map not only guarantees monotonicity, it also allows for efficient calculation of the pullback density, as well as the inverse of the map, $\tilde{T}^{-1}$. The Jacobian of $\tilde{T}$ is a lower triangular matrix,
+}\[
+	\DIFdel{J_T(\theta) = \begin{bmatrix}
+		\partial_{\theta_1} \tilde{T}_1(\theta) & \dots & \partial_{\theta_d} \tilde{T}_1(\theta)\\
+		\vdots & \ddots & \vdots \\
+		\partial_{\theta_1} \tilde{T}_d(\theta) & \dots & \partial_{\theta_d} \tilde{T}_d(\theta)
+	\end{bmatrix} = \begin{bmatrix}
+		\partial_{\theta_1} \tilde{T}_1(\theta) & \dots & 0\\
+		\vdots & \ddots & \vdots \\
+		\partial_{\theta_1} \tilde{T}_d(\theta) & \dots & \partial_{\theta_d} \tilde{T}_d(\theta)
+	\end{bmatrix}
+}\]
+%DIFAUXCMD
+\DIFdel{since $\partial_{\theta_n} \tilde{T}_k(\theta) = 0$ for all $n > k$. This lower triangular structure means that the determinant of the Jacobian is a product of the diagonal elements which, when we take logs, becomes
+}\begin{displaymath}\DIFdel{
+	\log\left|J_{\tilde{T}}(\theta)\right| = \sum\limits_{i=1}^d \! \log \partial_{\theta_i} \tilde{T}_i(\theta),
+}\end{displaymath}
+%DIFAUXCMD
+\DIFdel{where we note that this term is separable in terms of the dimension $i$.
+}\DIFdelend %DIF >  The cardinalities of the multi-index sets, $M_i = \text{card}(\mathcal{J}_i)$, give the number of unknowns in our
+%DIF >  optimisation problem, and so we would like to keep this number as small as possible. One option is
+%DIF >  to use polynomials of total order $p$,
+%DIF >  \begin{equation}
+%DIF >  	\mathcal{J}_i^\text{TO} = \left\{\mathbf{j}:\|\mathbf{j}\|_1 \leq p, j_k = 0\ \forall k > i\right\},
+%DIF >  \end{equation}
+%DIF >  which is optimal in terms of the amount of information captured by the map about the target. The cardinality of $\mathcal{J}_i^\text{TO}$ is $M_i = \binom{i+p}{p}$ which increases rapidly in $d$ and $p$, where $i = 1, \dots, d$. Smaller optimisation problems can be produced by constructing subsets of $\mathcal{J}_i^\text{TO}$. These index sets are discussed
+%DIF >  in~\cite{parno2018transport}. Increased information with a slower increase in the number of map parameters can be achieved with the composition of maps discussed in~\cite{parno2015transport}.
+
+\DIFdelbegin \DIFdel{Inverting $\tilde{T}$ at a point $r$ is simplified by the lower triangular structure of the map. The map component $\tilde{T}_1(\theta)$ is a univariate polynomial in $\theta_1$, so we can find the inverse of this function by solving the equation $T_1(\theta_1) = r_1$. This inversion tells us the value of $\theta_1$, which means the next component is again a univariate polynomial, $T_2(\theta_2; \theta_1)=r_2$. We can then perform $d$ root finding problems instead of a full $d$ dimensional non-linear solve.
+}%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{We require that the first derivatives of the map are continuous, which is easy to enforce by the choice of basis functions. Here we assume that the map will be built from a family of orthogonal polynomials, $\mathcal{P}(\theta)$, not necessarily orthogonal with respect to the target distribution. Each component of the map is defined as a multivariate polynomial expansion,
+}\begin{displaymath}\DIFdel{
+	\tilde{T}_i(\theta; \gamma_i) = \sum\limits_{\mathbf{j}\in\mathcal{J}_i} \!
+\gamma_{i,\mathbf{j}}\psi_\mathbf{j}(\theta).
+}\end{displaymath}
+%DIFAUXCMD
+\DIFdel{The parameter $\gamma_i \in \mathbb{R}^{M_i}$ is a vector of coefficients. Each component of $\gamma_i$ corresponds to a basis function
+$\psi_\mathbf{j}$, indexed by the multi-index $\mathbf{j} \in
+\mathcal{J}_i \subset \mathbb{N}_0^i$. A multi-index defines a product of univariate polynomials in $\theta_k$,
+}\[
+	\DIFdel{\psi_\mathbf{j}(\theta) = \prod\limits_{k=1}^i \! \varphi_{j_k}(\theta_k), \quad \text{for} \quad \mathbf{j} \in \mathcal{J}_i,
+}\]
+%DIFAUXCMD
+\DIFdel{and where $\varphi_{j_k}(\theta_k) \in \mathcal{P}(\theta_k)$. Since $\tilde{T}$ is lower triangular, a multi-index $\mathbf{j}\in\mathcal{J}_i$ only contains entries for univariate polynomials in $\theta_k$ for $k\leq i$.
+}%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{The cardinalities of the multi-index sets, $M_i = \text{card}(\mathcal{J}_i)$, give the number of unknowns in our
+optimisation problem, and so we would like to keep this number as small as possible. One option is
+to use polynomials of total order $p$,
+}\[
+	\DIFdel{\mathcal{J}_i^\text{TO} = \left\{\mathbf{j}:\|\mathbf{j}\|_1 \leq p, j_k = 0\ \forall k > i\right\},
+}\]
+%DIFAUXCMD
+\DIFdel{which is optimal in terms of the amount of information captured by the map about the target. The cardinality of $\mathcal{J}_i^\text{TO}$ is $M_i = \binom{i+p}{p}$ which increases rapidly in $d$ and $p$, where $i = 1, \dots, d$. Smaller optimisation problems can be produced by constructing subsets of $\mathcal{J}_i^\text{TO}$. These index sets are discussed
+in~\mbox{%DIFAUXCMD
+\cite{parno2014transport}}\hspace{0pt}%DIFAUXCMD
+. Increased information with a slower increase in the number of map parameters can be achieved with the composition of maps discussed in~\mbox{%DIFAUXCMD
+\cite{parno2015transport}}\hspace{0pt}%DIFAUXCMD
+. Here we stick with polynomials of total order $p$ since we work with low dimensional problems with the ETAIS algorithm.
+}%DIFDELCMD < 
+
+%DIFDELCMD < 
+%DIFDELCMD < %%%
+\DIFdelend \subsection{Implementation of the optimisation problem}\label{sec:transport_implementation}
+
+We now discuss how we can evaluate the cost function in
+Equation~\eqref{eq:gen_map_optim}. In \DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
+\cite{parno2014transport}}\hspace{0pt}%DIFAUXCMD
+}\DIFdelend \DIFaddbegin \DIFadd{\mbox{%DIFAUXCMD
+\cite{parno2018transport}}\hspace{0pt}%DIFAUXCMD
+}\DIFaddend , this
+expectation is approximated using an MCMC estimator, such that
+\begin{align}
+	C(T) &= \mathbb{E}_\pi\left[ -\log\pi_r(T(\theta)) - \log|J_T(\theta)|\right] +
+			\beta\mathbb{E}(T(\theta)-\theta)^2 \notag \\
+		&\approx \frac{1}{K}\sum\limits_{i=1}^d \! \sum\limits_{k=1}^K \left[-\log\pi_r(T_i(\theta^{(k)})) -
+			\log\left|\frac{\partial T_i}{\partial \theta_i}(\theta^{(k)})\right| + \beta(T_i(\theta^{(k)})-\theta^{(k)})^2\right]. 
+\end{align}
+Here we diverge from previous work, as we aim to build a map from
+samples from an importance sampling scheme. Such samples no longer
+carry equal weight, and as such the Monte Carlo estimator becomes
+\begin{equation}\label{eqn:TM_full_cost}
+	C(T) = \frac{1}{\bar{w}}\sum\limits_{i=1}^d \! \sum\limits_{k=1}^K
+		w_k \left[-\log\pi_r(T_i(\theta^{(k)})) -
+			\log\left|\frac{\partial T_i}{\partial \theta_i}(\theta^{(k)})\right| + \beta(T_i(\theta^{(k)})-\theta^{(k)})^2\right],
+\end{equation}
+where $w_k$ are the weights associated with each sample $\theta^{(k)}$, and $\bar{w}$ is the sum of
+all these weights. Optimisation of this cost function results in a map from $\pi$ to some reference density $\pi_r$. By choosing the reference density to be a Gaussian density, we can simplify this expression greatly. Substitution of the Gaussian density into Equation~\eqref{eqn:TM_full_cost} leads to
+\begin{equation}\label{eqn:TETAIS_objective}
+	C(T) = \frac{1}{\bar{w}}\sum\limits_{i=1}^d \! \sum\limits_{k=1}^K
+		w_k\left[\frac{1}{2}T_i^2(\theta^{(k)}) - \log\frac{\partial
+		T_i}{\partial\theta_i}(\theta^{(k)}) + \beta(T_i(\theta^{(k)})-\theta^{(k)})^2\right],
+\end{equation}
+
+Note that since we assume that the map is monotonic, the derivatives of each component are
+positive and so this functional is always finite. In practice it is infeasible to enforce this condition across the whole parameter space. We instead enforce this condition by ensuring that the derivatives are positive at each sample point. This means that when we sample away from these support points while in reference space, it is possible to enter a region of space where the map is not monotonic.
+
+We now return to the structure of the map components given in \DIFdelbegin \DIFdel{Equation~}%DIFDELCMD < \eqref{eq:map_defn}%%%
+\DIFdelend \DIFaddbegin \DIFadd{equation
+\ref{eq:map_defn}}\DIFaddend . Since the basis functions are
+fixed, the optimisation problem in \eqref{eq:gen_map_optim} is really over the map components $\bar{\gamma} = (\gamma_1, \dots,
+\gamma_d)$ where $\gamma_i \in \mathbb{R}^{M_i}$. Note that $C(T)$ is the sum of $d$ expectations, and these expectations each only concern one dimension. Therefore we can rewrite \eqref{eq:gen_map_optim} as $d$ separable optimisation problems.
+\begin{align}\label{eq:gamma_map_optim}
+	&\arg\min_{\gamma_i\in\mathbb{R}^{M_i}} \frac{1}{\bar{w}}\sum\limits_{k=1}^K
+		w_k \left[\frac{1}{2}T_i^2(\theta^{(k)}; \gamma_i) - \log\frac{\partial T_i}{\partial\theta_i}(\theta^{(k)}; \gamma_i) + \beta(T_i(\theta^{(k)};
+		\gamma_i)-\theta^{(k)})^2\right], \\
+	&\text{subject to} \quad \frac{\partial T_i}{\partial\theta_i}(\theta^{(k)};
+		\gamma_i) > 0 \ \text{for all}\ k=1,\dots,K,\ i=1,\dots,d.
+		\notag
+\end{align}
+The sum in Equation~\eqref{eq:map_defn} is an inner
+product between the vector of map coefficients, and the evaluations of the basis function at a
+particular $\theta^{(k)}$. If we organise our basis evaluations into two matrices,
+\DIFdelbegin \[
+	\DIFdel{(F_i)_{k,\mathbf{j}} = \psi_\mathbf{j}(\theta^{(k)}), \quad \text{and} \quad (G_i)_{k,\mathbf{j}} =
+\frac{\partial\psi_\mathbf{j}}{\partial\theta_i}(\theta^{(k)}),
+}\]
+%DIFAUXCMD
+\DIFdelend \DIFaddbegin \begin{equation}
+	\DIFadd{(F_i)_{k,\mathbf{j}} = \psi_\mathbf{j}(\theta^{(k)}), \quad \text{and} \quad (G_i)_{k,\mathbf{j}} =
+\frac{\partial\psi_\mathbf{j}}{\partial\theta_i}(\theta^{(k)}),
+}\end{equation}
+\DIFaddend for all $\mathbf{j}
+\in \mathcal{J}_i^\text{TO}$, and $k = 1,\dots,K$, then we have that
+\DIFdelbegin \[
+	\DIFdel{T_i(\theta^{(k)}) = (F_i)_{k\cdot}\gamma_i \quad \text{and} \quad \frac{\partial T_i}{\partial \theta_i}(\theta^{(k)}; \gamma_i) = (G_i)_{k\cdot}\gamma_i,
+}\]
+%DIFAUXCMD
+\DIFdelend \DIFaddbegin \begin{equation}
+	\DIFadd{T_i(\theta^{(k)}) = (F_i)_{k\cdot}\gamma_i \quad \text{and} \quad \frac{\partial T_i}{\partial \theta_i}(\theta^{(k)}; \gamma_i) = (G_i)_{k\cdot}\gamma_i,
+}\end{equation}
+\DIFaddend so \eqref{eq:gamma_map_optim} becomes
+\begin{align}\label{eq:blas_map_optim}
+	&\arg\min_{\gamma_i\in\mathbb{R}^{M_i}}
+          \frac{1}{2}(F_i\gamma_i)^\top W (F_i\gamma_i) -
+		{\bf w}^\top\log(G_i\gamma_i) + \frac{\beta}{\bar{w}}\sum\limits_{k=1}^K \!
+		w_k(F_i\gamma_i-\theta^{(k)})^\top(F_i\gamma_i-\theta^{(k)}), \\
+	&\text{subject to} \quad G_i\gamma_i > 0. \notag
+\end{align}
+In this expression, the vector ${\bf w} = [w_1, w_2, \ldots,
+w_K]^\top$ is the vector of the weights, $W$ is the diagonal matrix $W
+= \text{diag}(w)$ and $\log(G_i\gamma_i)$ is to be
+evaluated element-wise. As more importance samples are made, new rows can be appended to the
+$F_i$ and $G_i$ matrices, and $F_i^\top W F_i$ can be efficiently updated via the addition of rank-1 matrices.
+
+The regularisation term in Equation~\eqref{eq:blas_map_optim} can be approximated using Parseval's identity,
+\DIFdelbegin \[
+	\DIFdel{\frac{1}{\bar{w}}\sum\limits_{k=1}^K \! w_k
+        (F_i\gamma_i-\theta^{(k)})^\top(F_i\gamma_i-\theta^{(k)})
+        \xrightarrow[K \to \infty]{}
+		\int_{\mathbb{R}^n} |T(\theta)-\theta|^2 \text{d}\pi_\theta =
+		\sum\limits_{\mathbf{j}\in\mathcal{J}_i^\text{TO}} (\gamma_{i,\mathbf{j}}-\iota_\mathbf{j})^2,
+}\]
+%DIFAUXCMD
+\DIFdelend \DIFaddbegin \begin{equation}
+	\DIFadd{\frac{1}{\bar{w}}\sum\limits_{k=1}^K \! w_k
+        (F_i\gamma_i-\theta^{(k)})^\top(F_i\gamma_i-\theta^{(k)})
+        \xrightarrow[K \to \infty]{}
+		\int_{\mathbb{R}^n} |T(\theta)-\theta|^2 \text{d}\pi_\theta =
+		\sum\limits_{\mathbf{j}\in\mathcal{J}_i^\text{TO}} (\gamma_{i,\mathbf{j}}-\iota_\mathbf{j})^2,
+}\end{equation}
+\DIFaddend where $\iota$ is the vector of coefficients for the identity map. This is of course only true when
+the polynomial family $\mathcal{P}(\theta)$ is chosen to be orthonormal with respect to $\pi_\theta$; however this
+approximation prevents the map from collapsing onto a Dirac when the expectation is badly approximated by a small number of samples.% If we do not normalise the MC estimator by $K$, we can allow this regularisation term to be dominated by the rest of the cost function as $K$ increases.
+
+These simplifications result in the efficiently implementable, regularised optimisation problem for
+computing the map coefficients, 
+\begin{align}\label{eq:weighted_map_optim}
+	&\arg\min_{\gamma_i\in\mathbb{R}^{M_i}} \frac{1}{2\bar{w}}\gamma_i^\top F_i^\top WF_i\gamma_i -
+		\frac{w^\top}{\bar{w}}\log(G_i\gamma_i) + \beta\|\gamma_i-\iota\|^2, \\
+	&\text{subject to} \quad G_i\gamma_i > 0. \notag
+\end{align}
+%where additionally we have introduced a factor of $\frac{1}{K}$ to the
+%regularisation term to prevent over-smoothing as the number of samples increases.
+This optimisation problem can be efficiently solved using Newton iterations. It is suggested
+in~\DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
+\cite{parno2014transport} }\hspace{0pt}%DIFAUXCMD
+}\DIFdelend \DIFaddbegin \DIFadd{\mbox{%DIFAUXCMD
+\cite{parno2018transport} }\hspace{0pt}%DIFAUXCMD
+}\DIFaddend that this method usually converges in around 10-15 iterations, and we
+have seen no evidence that this is not a reasonable estimate. When calculating the map several times
+during a Monte Carlo run, using previous guesses of the optimal map to seed the Newton algorithm
+results in much faster convergence, usually taking only a couple of iterations to satisfy the stopping
+criteria.
+
+The Hessian takes the
+form
+\begin{equation}\label{eqn:TETAIS_hessian}
+	HC_i(\gamma_i) = \frac{1}{\bar{w}}\left[F_i^\top WF_i + G_i^\top
+		W\text{diag}([G_i\gamma_i]^{-2})G_i\right] + \beta I,
+\end{equation}
+where $[G_i\gamma_i]^{-2}$ is to be taken element-wise, and $I$ is the $M_i\times M_i$
+identity matrix. The first derivative of $C_i(T)$ is
+\DIFdelbegin \[
+	\DIFdel{\nabla C_i(\gamma_i) = \frac{1}{\bar{w}}\left[F_i^\top WF_i\gamma_i - G_i^\top
+		W}[\DIFdel{G_i\gamma_i}]\DIFdel{^{-1}\right] + \beta(\gamma_i - \iota),
+}\]
+%DIFAUXCMD
+\DIFdelend \DIFaddbegin \begin{equation}
+	\DIFadd{\nabla C_i(\gamma_i) = \frac{1}{\bar{w}}\left[F_i^\top WF_i\gamma_i - G_i^\top
+		W}[\DIFadd{G_i\gamma_i}]\DIFadd{^{-1}\right] + \beta(\gamma_i - \iota),
+}\end{equation}
+\DIFaddend again $[G_i\gamma_i]^{-1}$ is taken element-wise.
+
+
+
+\section[Transport map MCMC]{Transport map usage in ETAIS
+  and other importance sampling algorithms}\label{sec:TETAIS}
+
+Given importance samples from the target distribution, we have demonstrated how to construct an approximate transport map from the
+target measure to a reference measure. We now consider how to
+implement an ensemble importance sampling algorithm which uses
+these maps to propose new states. In \DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
+\cite{parno2014transport} }\hspace{0pt}%DIFAUXCMD
+}\DIFdelend \DIFaddbegin \DIFadd{\mbox{%DIFAUXCMD
+\cite{parno2018transport} }\hspace{0pt}%DIFAUXCMD
+}\DIFaddend it was
+shown how approximate transport maps can be used to accelerate
+Metropolis-Hastings methods, with the map being periodically updated
+with the samples produced from the target measure. Convergence of this
+adaptation is shown in~\DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
+\cite{parno2014transport}}\hspace{0pt}%DIFAUXCMD
+}\DIFdelend \DIFaddbegin \DIFadd{\mbox{%DIFAUXCMD
+\cite{parno2018transport}}\hspace{0pt}%DIFAUXCMD
+}\DIFaddend . In this Section, we
+will show how similarly, these maps can be used to construct highly
+efficient importance sampling schemes.
+
+In particular, we will show how we can use the transport map derived in Equation~\eqref{eq:weighted_map_optim} to
+design a proposal scheme for the ETAIS algorithm. In this case we have a choice in how to proceed; we
+propose new samples on reference space and resample on target space, or we both propose and resample on reference space, mapping onto target space to output the samples. The first option allows us to reuse much of the framework
+from the standard ETAIS algorithm and in the numerics later we see that this performs better than
+both the Transport MH algorithm, and the standard ETAIS algorithm. The second option requires some
+restructuring, but can result in improved performance from the resampler.
+
+%DIF >  \begin{table}
+%DIF >  \begin{algorithm}[H]
+%DIF >  \DontPrintSemicolon
+%DIF >  \BlankLine
+%DIF >  Initialise state $\theta^{(1)}_i = \theta_0$, \quad $i = 1,\dots,M$.\;
+%DIF >  Initialise map $\bar{\gamma}^{(1)} = \iota$.\;
+%DIF >  \For{$k \leftarrow 1, \dots, L-1$}{
+%DIF >  	Compute $r_i = \tilde{T}(\theta^{(k)}_i; \bar{\gamma}^{(k)})$, \quad $i = 1,\dots,M$.\;
+%DIF >  	Sample $r'_i \sim q_r(\cdot; r_i)$.\;
+%DIF >  	Invert $\hat{\theta}_i^{(k)} = \tilde{T}^{-1}(r'_i; \bar{\gamma}^{(k)})$.\;
+%DIF >  	Calculate:
+%DIF >  	\begin{equation}
+%DIF >  		w_i^{(k)} = \frac{\pi(\hat{\theta}_i^{(k)})}{\left(\sum_{j=1}^M \! q_r(r_i'; r_j)\right)|J_{\tilde{T}}(\hat{\theta}_i^{(k)};\bar{\gamma}^{(k)})|}.
+%DIF >  	\end{equation}
+\DIFaddbegin 
+
+%DIF >  	Resample $\theta^{(k+1)} \leftarrow \|w^{(k)}\|^{-1}\sum\limits_{j=1}^M \! w_j^{(k)}\delta_{\hat{\theta}^{(k)}_j}(\cdot)$.\;
+
+%DIF >  	\eIf{$k\ \text{mod}\ K_U = 0$ and $k < K_\text{stop}$}{
+%DIF >  		\For{$i \leftarrow 1, \dots, n$}{
+%DIF >  			Solve \eqref{eq:weighted_map_optim} with $\{(w^{(1)},\hat{\theta}^{(1)}), \dots, (w^{(k+1)},\hat{\theta}^{(k+1)})\}$
+%DIF >  				and update $\gamma_i^{(k+1)}$.\;
+%DIF >  		}
+%DIF >  	}{
+%DIF >  		$\bar{\gamma}^{(k+1)} = \bar{\gamma}^{(k)}$.\;
+%DIF >  	}
+%DIF >  }
+%DIF >  \caption{ETAIS algorithm with adaptive transport map. Option 1.\label{alg:TransportETAIS1}}
+%DIF >  \end{algorithm}
+%DIF >  \end{table}
+
+\DIFaddend \begin{table}
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\BlankLine
+Initialise state $\theta^{(1)}_i = \theta_0$, \quad $i = 1,\dots,M$.\;
+Initialise map $\bar{\gamma}^{(1)} = \iota$.\;
+\DIFdelbeginFL %DIFDELCMD < \For{$k \leftarrow 1, \dots, L-1$}{
+%DIFDELCMD < 	Compute $r_i = \tilde{T}(\theta^{(k)}_i; \bar{\gamma}^{(k)})$, \quad $i = 1,\dots,M$.\;
+%DIFDELCMD < 	Sample $r'_i \sim q_r(\cdot; r_i)$.\;
+%DIFDELCMD < 	Invert $\hat{\theta}_i^{(k)} = \tilde{T}^{-1}(r'_i; \bar{\gamma}^{(k)})$.\;
+%DIFDELCMD < 	Calculate:
+%DIFDELCMD < 	\[
+%DIFDELCMD < 		w_i^{(k)} = \frac{\pi(\hat{\theta}_i^{(k)})}{\left(\sum_{j=1}^M \! q_r(r_i'; r_j)\right)|J_{\tilde{T}}(\hat{\theta}_i^{(k)};\bar{\gamma}^{(k)})|}.
+%DIFDELCMD < 	\]
+%DIFDELCMD < 
+
+%DIFDELCMD < 	Resample $\theta^{(k+1)} \leftarrow \|w^{(k)}\|^{-1}\sum\limits_{j=1}^M \! w_j^{(k)}\delta_{\hat{\theta}^{(k)}_j}(\cdot)$.\;
+%DIFDELCMD < 
+
+%DIFDELCMD < 	\eIf{$k\ \text{mod}\ K_U = 0$ and $k < K_\text{stop}$}{
+%DIFDELCMD < 		\For{$i \leftarrow 1, \dots, n$}{
+%DIFDELCMD < 			Solve \eqref{eq:weighted_map_optim} with $\{(w^{(1)},\hat{\theta}^{(1)}), \dots, (w^{(k+1)},\hat{\theta}^{(k+1)})\}$
+%DIFDELCMD < 				and update $\gamma_i^{(k+1)}$.\;
+%DIFDELCMD < 		}
+%DIFDELCMD < 	}{
+%DIFDELCMD < 		$\bar{\gamma}^{(k+1)} = \bar{\gamma}^{(k)}$.\;
+%DIFDELCMD < 	}
+%DIFDELCMD < }
+%DIFDELCMD < %%%
+\DIFdelendFL \DIFaddbeginFL \For{$k \leftarrow 1, \dots, N-1$}{
+	Compute $r_i = \tilde{T}(\theta^{(k)}_i; \bar{\gamma}^{(k)})$, \quad $i = 1,\dots,M$.\;
+	Sample \edit{$\hat{r}_i \sim q_r(\cdot; r_i)$.\;
+	Invert $\hat{\theta}_i^{(k)} = \tilde{T}^{-1}(\hat{r}_i; \bar{\gamma}^{(k)})$.\;
+	Calculate:
+	\begin{equation}
+		w_i^{(k)} = \frac{\pi(\hat{\theta}_i^{(k)})}{\left(\sum_{j=1}^M \! q_r(\hat{r}_i; r_j)\right)|J_{\tilde{T}}(\hat{\theta}_i^{(k)};\bar{\gamma}^{(k)})|}.
+	\end{equation}
+
+	Resample $r^* \leftarrow \|w^{(k)}\|^{-1}\sum\limits_{j=1}^M \! w_j^{(k)}\delta_{\hat{r}_j}(\cdot)$.\label{algline:TETAIS_resample}\;}
+	Invert $\theta^{(k+1)}_i = \tilde{T}^{-1}(r^*_i)$.\;
+	\eIf{$k\ \text{mod}\ K_U = 0$ and $k < K_\text{stop}$}{
+		\For{$i \leftarrow 1, \dots, n$}{
+			Solve \eqref{eq:weighted_map_optim} with $\{(w^{(1)},\hat{\theta}^{(1)}), \dots, (w^{(k+1)},\hat{\theta}^{(k+1)})\}$
+				and update $\gamma_i^{(k+1)}$.\;
+		}
+	}{
+		$\bar{\gamma}^{(k+1)} = \bar{\gamma}^{(k)}$.\;
+	}
+}
+\DIFaddendFL \caption{ETAIS algorithm with adaptive transport map. Option \DIFdelbeginFL \DIFdelFL{1.}%DIFDELCMD < \label{alg:TransportETAIS1}%%%
+\DIFdelendFL \DIFaddbeginFL \DIFaddFL{2.}\label{alg:TransportETAIS2}\DIFaddendFL }
+\end{algorithm}
+\end{table}
+
+The \DIFdelbegin \DIFdel{first }\DIFdelend \DIFaddbegin \DIFadd{second }\DIFaddend option is given in Algorithm~\DIFdelbegin \DIFdel{\ref{alg:TransportETAIS1}}\DIFdelend \DIFaddbegin \DIFadd{\ref{alg:TransportETAIS2}}\DIFaddend . We
+denote the ensembles of states in target space $\theta^{(k)} =
+\{\theta^{(k)}_1,\dots,\theta^{(k)}_M\}$, and the states in the
+reference space, \DIFdelbegin \DIFdel{$r = \{r_1,\dots,r_M\}$}\DIFdelend \DIFaddbegin \edit{$r = \{r_1,\dots,r_M\}$}\DIFaddend , where $M$ is the ensemble
+size. Similarly, the proposal states are denoted \DIFdelbegin \DIFdel{$r' =
+\{r'_1,\dots,r'_M\}$ }\DIFdelend \DIFaddbegin \DIFadd{$\hat{r} =
+\{\hat{r}_1,\dots,\hat{r}_M\}$ }\DIFaddend and $(w^{(k)}, \hat{\theta}^{(k)}) =
+\{(w^{(k)}_1, \hat{\theta}^{(k)}_1),\dots,(w^{(k)}_M,
+\hat{\theta}^{(k)}_M)\}$, where these pairs are the states which
+together form our sample from the target distribution. As in the standard version of the ETAIS algorithm we use the deterministic mixture weights.
+
+
+\DIFdelbegin %DIFDELCMD < \begin{table}
+%DIFDELCMD < \begin{algorithm}[H]
+%DIFDELCMD < \DontPrintSemicolon
+%DIFDELCMD < \BlankLine
+%DIFDELCMD < %%%
+\DIFdelFL{Initialise state $\theta^{(1)}_i = \theta_0$, }%DIFDELCMD < \quad %%%
+\DIFdelFL{$i = 1,\dots,M$.\;
+Initialise map $\bar{\gamma}^{(1)} = \iota$.\;
+}%DIFDELCMD < \For{$k \leftarrow 1, \dots, N-1$}{
+%DIFDELCMD < 	Compute $r_i = \tilde{T}(\theta^{(k)}_i; \bar{\gamma}^{(k)})$, \quad $i = 1,\dots,M$.\;
+%DIFDELCMD < 	Sample $r'_i \sim q_r(\cdot; r_i)$.\;
+%DIFDELCMD < 	Invert $\hat{\theta}_i^{(k)} = \tilde{T}^{-1}(r'_i; \bar{\gamma}^{(k)})$.\;
+%DIFDELCMD < 	Calculate:
+%DIFDELCMD < 	\[
+%DIFDELCMD < 		w_i^{(k)} = \frac{\pi(\hat{\theta}_i^{(k)})}{\left(\sum_{j=1}^M \! q_r(r_i'; r_j)\right)|J_{\tilde{T}}(\hat{\theta}_i^{(k)};\bar{\gamma}^{(k)})|}.
+%DIFDELCMD < 	\]
+%DIFDELCMD < 
+
+%DIFDELCMD < 	Resample $r^* \leftarrow \|w^{(k)}\|^{-1}\sum\limits_{j=1}^M \! w_j^{(k)}\delta_{r'_j}(\cdot)$.\label{algline:TETAIS_resample}\;
+%DIFDELCMD < 	Invert $\theta^{(k+1)}_i = \tilde{T}^{-1}(r^*_i)$.\;
+%DIFDELCMD < 	\eIf{$k\ \text{mod}\ K_U = 0$ and $k < K_\text{stop}$}{
+%DIFDELCMD < 		\For{$i \leftarrow 1, \dots, n$}{
+%DIFDELCMD < 			Solve \eqref{eq:weighted_map_optim} with $\{(w^{(1)},\hat{\theta}^{(1)}), \dots, (w^{(k+1)},\hat{\theta}^{(k+1)})\}$
+%DIFDELCMD < 				and update $\gamma_i^{(k+1)}$.\;
+%DIFDELCMD < 		}
+%DIFDELCMD < 	}{
+%DIFDELCMD < 		$\bar{\gamma}^{(k+1)} = \bar{\gamma}^{(k)}$.\;
+%DIFDELCMD < 	}
+%DIFDELCMD < }
+%DIFDELCMD < %%%
+%DIFDELCMD < \caption{%
+{%DIFAUXCMD
+\DIFdelFL{ETAIS algorithm with adaptive transport map. Option 2.}%DIFDELCMD < \label{alg:TransportETAIS2}%%%
+}
+%DIFAUXCMD
+%DIFDELCMD < \end{algorithm}
+%DIFDELCMD < \end{table}
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdelend The second option, \DIFdelbegin \DIFdel{Algorithm~\ref{alg:TransportETAIS2}, }\DIFdelend is similar to
+the first except on Line~\ref{algline:TETAIS_resample} where rather
+than resampling in target space we resample in reference
+space. Assuming a good transport map, the push forward of the target
+measure onto 
+reference space has no strong correlations, and the
+Gaussian marginals are easy to approximate with fewer ensemble
+members. This means that the resampling step will be more efficient in
+moderately higher dimensions, which we discuss in
+Section~\ref{sec:TETAIS_higher_dim}.
+
+\DIFaddbegin \edit{The choice of ensemble size can be problem dependent, but the
+  behaviour of the algorithm is quite clear when the ensemble size is
+  too small, because the proposal distribution poorly represents the
+  targets, and the variance of the weights is high. The ensemble size
+  can also be made to be adaptive, so that when the variances grow too
+high the ensemble size can increase. The ensemble size needs to be
+controlled since the cost of the resampling step is often polynomial
+in the ensemble size.}
+
+\DIFaddend \section[Convergence of transport MCMC]{Convergence of the transport proposal based MCMC algorithms}\label{sec:conv}
+
+In this Section we study the convergence of the transport based
+proposal distributions which we have described in
+Section~\ref{sec:TETAIS}.
+We take as a test problem the ubiquitous Rosenbrock banana-shaped
+density. This target density is given by
+\begin{equation}\label{eqn:R2_repeat}
+	\pi(\theta) = \frac{\sqrt{10}}{\pi}\exp\left\{ -(1 - \theta_1)^2 - 10(\theta_2 - \theta_1^2)^2 \right\}.
+\end{equation}
+A contour plot of the target density is given in Figure~\ref{fig:R2_posterior}.
+\begin{figure}
+\centering
+\subfigure[Marginal density function for $\theta_1$.]{\includegraphics[width=0.31\textwidth]{"images/TPAIS/R2_marginal_1"}}
+\subfigure[Marginal density function for $\theta_2$.]{\includegraphics[width=0.31\textwidth]{"images/TPAIS/R2_marginal_2"}}
+\subfigure[Contour plot for Rosenbrock density.]{\includegraphics[width=0.31\textwidth]{images/TPAIS/R2_posterior}}
+\caption{Visualisation of the Rosenbrock density as given in Equation~\eqref{eqn:R2_repeat}.}
+\label{fig:R2_posterior}
+\end{figure}
+This problem is challenging to sample from since it has a highly peaked and curved ridge, and is often used
+as a test problem in optimisation and MCMC communities.
+
+\subsection{Implementation details}
+
+Before looking at the performance of the algorithms, we demonstrate some properties of the transport maps we will be using. We draw 1 million samples from the density \eqref{eqn:R2_repeat}, and use this sample in the framework of Section~\ref{sec:map} to build a transport map. We use this map to push forward the original sample onto the reference space, where we will be able to see how well the map has performed at converting the original sample to a standard Gaussian. We then pull the sample back on to target space using the inverse map to check that our map is invertible and well behaved.
+
+For this example, we use an index set of total order 3 with monomial
+basis functions. It is important that total order is an odd number,
+since otherwise the map will not be surjective. This results in a map of the form
+\DIFdelbegin \[
+	\DIFdel{T(\theta_1, \theta_2) = \begin{bmatrix} T_1(\theta_1) \\ T_2(\theta_1, \theta_2) \end{bmatrix},
+}\]
+%DIFAUXCMD
+\DIFdel{where
+}\begin{align*}
+		\DIFdel{T_1(\theta_1) }&\DIFdel{= \gamma_{1,1} + \gamma_{1,2}\theta_1 + \gamma_{1,3}\theta_1^2 + \gamma_{1,4}\theta_1^3, }\\
+		\DIFdel{T_2(\theta_1, \theta_2) }&\DIFdel{= \gamma_{2,1} + \gamma_{2,2}\theta_1 + \gamma_{2,3}\theta_1^2 + \gamma_{2,4}\theta_1^3
+					+ \gamma_{2,5}\theta_2 + \gamma_{2,6}\theta_1\theta_2 }\\
+				 & \DIFdel{\qquad \quad + \gamma_{2,7}\theta_1^2\theta_2 + \gamma_{2,8}\theta_2^2 + \gamma_{2,9}\theta_1\theta_2^2 +
+					 \gamma_{2,10}\theta_2^3.
+}\end{align*}
+%DIFAUXCMD
+\DIFdelend \DIFaddbegin \begin{equation}
+	\DIFadd{T(\theta_1, \theta_2) = \begin{bmatrix} T_1(\theta_1) \\ T_2(\theta_1, \theta_2) \end{bmatrix},
+}\end{equation}
+\DIFadd{where
+}\begin{align}
+		\DIFadd{T_1(\theta_1) }&\DIFadd{= \gamma_{1,1} + \gamma_{1,2}\theta_1 + \gamma_{1,3}\theta_1^2 + \gamma_{1,4}\theta_1^3, }\\
+		\DIFadd{T_2(\theta_1, \theta_2) }&\DIFadd{= \gamma_{2,1} + \gamma_{2,2}\theta_1 + \gamma_{2,3}\theta_1^2 + \gamma_{2,4}\theta_1^3
+					+ \gamma_{2,5}\theta_2 + \gamma_{2,6}\theta_1\theta_2 }\\
+				 & \DIFadd{\qquad \quad + \gamma_{2,7}\theta_1^2\theta_2 + \gamma_{2,8}\theta_2^2 + \gamma_{2,9}\theta_1\theta_2^2 +
+					 \gamma_{2,10}\theta_2^3.
+}\end{align}
+\DIFaddend Clearly even with only basis functions of total order 3, we have a large number of unknowns in our optimisation problem, $\bar{\gamma} \in \mathbb{R}^{14}$. If we were to increase the dimension of $\theta$ further we would need to reduce the number of terms we include in the expansion by, for example, removing all the ``cross'' terms. This reduces the quality of our map but since we only require an approximate map we can afford to reduce the accuracy.
+
+\begin{figure}[htpb]
+\centering
+\subfigure[Original sample $\theta$ from MH-RW algorithm.]{\includegraphics[width=0.31\textwidth]{"images/TPAIS/R2_transport_orig"}}\quad
+\subfigure[Push forward of $\theta$ onto reference space.]{\includegraphics[width=0.31\textwidth]{"images/TPAIS/R2_transport_ref"}}\quad
+\subfigure[Pull back of reference sample onto target space.]{\includegraphics[width=0.31\textwidth]{images/TPAIS/R2_transport_pullback}}
+\caption{The effect of the approximate transport map $\tilde{T}$ on a
+  sample from the Rosenbrock target density as described in Equation~\eqref{eqn:R2_repeat}.}
+\label{fig:R2_transport}
+\end{figure}
+
+Figure~\ref{fig:R2_transport} shows the output of the approximate
+transport map. Even though we have truncated the infinite expansion in
+the monomial basis down to 4 and 10 terms in respective dimensions,
+the push forward of the sample is still a unimodal distribution
+centred at the origin with standard deviation 1. As one moves out into
+the tails of the reference density more non-Gaussian features are
+clearly visible. However, overall, the push forward of the target
+density does not look a challenging one to sample from, with even
+relatively simple MCMC methods such as Metropolis-Hasting random walk (MH-RW). The pullback from
+reference space, in Figure~\ref{fig:R2_transport}, is an exact match
+of the original sample since we have not perturbed the sample in
+reference space. This inversion is well defined in the sampling
+region, although not necessarily outside\DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
+\cite{parno2014transport}}\hspace{0pt}%DIFAUXCMD
+}\DIFdelend \DIFaddbegin \DIFadd{\mbox{%DIFAUXCMD
+\cite{parno2018transport}}\hspace{0pt}%DIFAUXCMD
+}\DIFaddend .
+
+\DIFaddbegin \edit{For more challenging posterior distributions, the push forward
+  through the numerical
+approximation of the optimal map often leads to a distribution on
+reference space which still has complex structure. It has previously
+been proposed that in more favourable scenarios, the optimal approach
+is to use independent Gaussian samples on reference space, pulled back
+through the inverse map. However, when the push forward of the
+posterior differs greatly from this distribution, as we will see in
+later examples, this is not an
+efficient approach. Using ETAIS in conjunction with the transport map
+allows us to sample efficiently from the push forward measure on
+reference space.}
+
+\DIFaddend \subsection[Numerical results]{Numerical results for convergence of
+  transport map based algorithms on the Rosenbrock density}
+
+We first find the optimal scaling parameters for the individual
+algorithms. This is done, as in \cite{cotter2015parallel}, by optimising for the effective sample size in
+the ETAIS algorithm, and by tuning the relative $L^2$ error in the MH
+algorithm. 
+\DIFaddbegin \edit{The relative $L^2$ error of the PDF of the measure can be
+  approximated by $E$ where
+\begin{equation}\label{eqn:L2_error}
+	E^2 = \sum\limits_{i=1}^{n_b}\left[\displaystyle\int_{R_i} \! \pi(s|D) \, \mbox{d}s - vB_i\right]^2 \Big/ \sum\limits_{i=1}^{n_b}\left[\displaystyle\int_{R_i} \! \pi(s|D) \, \mbox{d}s\right]^2,
+\end{equation}
+where the regions $\{R_i\}_{i=1}^{n_b}$ are the $d$-dimensional
+histogram bins, so that $\bigcup_i R_i \subseteq X$ and
+$R_i\cap R_j=\emptyset$, $n_b$ is the number of bins, $v$ is the
+volume of each bin, and $B_i$ is the value of the $i$th bin. This
+metric converges to the standard definition of the relative $L^2$
+error as $v\rightarrow 0$.}
+
+\DIFaddend There is currently no
+guidance on the best way of tuning the MH algorithm with transport map
+proposals although one might expect results similar to the standard MH
+results, especially if adaptation of the map is stopped after a given
+point. As in the ETAIS algorithm, optimising for the effective sample size might be the best option.
+
+\begin{table}[!ht]
+\centering
+\begin{tabular}{lrrr}
+\toprule
+	Statistic \quad / \quad Algorithm & Transport M-H &
+                                                           \DIFdelbeginFL \DIFdelFL{Alg. \ref{alg:TransportETAIS1} }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Transport
+                                                            ETAIS
+                                                            option 1 }\DIFaddendFL & Alg. \ref{alg:TransportETAIS2}  \\ \cmidrule(lr){1-4}
+	$\delta_{L^2}$				 & 1.0e-0 & 1.1e-1 & 3.5e-1 \\
+	$\delta_{\text{ESS}}$				 & - & 1.0e-1 & 5.2e-1 \\ \cmidrule(lr){1-4}
+	Acc. rate							 & 0.23 & - & - \\
+	ESS ratio							 & - & 0.62 & 0.71 \\
+\bottomrule
+\end{tabular}
+\caption{Optimal scaling parameters \DIFdelbeginFL \DIFdelFL{for the }\DIFdelendFL \DIFaddbeginFL \edit{$\delta$ for the proposal
+    kernels with the} \DIFaddendFL transport map based
+  algorithms applied to $R_1$, optimising for the $L^2$ error and
+  the effective sample size (ESS) for ETAIS algorithms, and for average
+  acceptance rate for MH algorithms.}
+\label{tab:R2_opt_scaling}
+\end{table}
+
+The optimal scaling parameters are given in
+Table~\ref{tab:R2_opt_scaling}. Here we see that the effective sample
+size is much lower than we see in the one-dimensional examples with
+the ETAIS algorithms. However, in the Rosenbrock density
+\eqref{eqn:R2_repeat} we are dealing with a much more complicated
+curved structure, as well as a very slowly decaying tail in
+$\theta_2$. From our experiments, we have observed that the standard ETAIS-RW required an ensemble size of $M=500$ to overcome the problems in this density, however the transport map transforms the tails to be more like those of a Gaussian which can be approximated well by a smaller ensemble size of $M=150$.
+
+\begin{figure}[!ht]
+\centering
+\subfigure[Comparison of the two Transport ETAIS
+options.]{\includegraphics[width=0.45\textwidth]{images/TPAIS/R1_L2}}
+\DIFdelbeginFL %DIFDELCMD < \subfigure[Comparison of Transport ETAIS option (3) with the standard algorithms.]{\includegraphics[width=0.45\textwidth]{images/TPAIS/R1_L2_all}}
+%DIFDELCMD < %%%
+\DIFdelendFL \DIFaddbeginFL \subfigure[Comparison of Transport ETAIS option 2 with the standard algorithms.]{\includegraphics[width=0.45\textwidth]{images/TPAIS/R1_L2_all}}
+\DIFaddendFL \caption{Convergence of algorithms; Transport M-H,
+  \DIFdelbeginFL \DIFdelFL{algorithm \ref{alg:TransportETAIS1}}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Transport ETAIS option 1}\DIFaddendFL , algorithm \ref{alg:TransportETAIS2} for
+  density \eqref{eqn:R2_repeat}. Ensemble size $M=150$, resampling
+  performed using the MT algorithm. \DIFaddbeginFL \edit{Plots show average
+    convergence over 32 repeats.}\DIFaddendFL }
+\label{fig:R2_l2_convergence}
+\end{figure}
+
+The convergence of the three algorithms is displayed in
+Figure~\ref{fig:R2_l2_convergence}. \DIFaddbegin \edit{These convergence plots show
+  the error as a function of the number of samples output by each
+  algorithm. In the case of standard Metropolis-Hastings methods, this
+  corresponds to the number of iterations. In the case of ETAIS, this
+  corresponds to the number of iterations multiplied by the ensemble
+  size.} \DIFaddend Figure (a) shows that the two
+variations of the transport based ETAIS algorithms converge with
+similar rates. The second version, which performs the resampling stage
+in reference space rather than target space, has a slightly higher
+ESS, and is more stable than option (1). This version also has a
+property that we can exploit in Section~\ref{sec:TETAIS_higher_dim}.
+
+Figure~\ref{fig:R2_l2_convergence} (b) compares the performance of
+RWMH, transport map-accelerated RWMH, ETAIS-RW and transport
+map-accelerated ETAIS-RW. The difference in performance between RWMH
+and its accelerated version is relatively negligible, in part because
+this version of the Rosenbrock is not overtly pathological. The story
+is different for the ETAIS algorithms. The slowly decaying tails of
+the Rosenbrock cause a problem for ETAIS since these are not
+well-represented in the proposal distributions, leading to high weight
+variance and poor convergence. A much larger
+ensemble would be required to ensure a stable ETAIS implementation for this
+problem, which leads to high overhead costs for the resampling step
+and evaluation of the importance weights. The transport map-accelerated
+ETAIS, on the other hand, is stabilised by the map, which transforms the proposal
+distributions in order to adequately approximate the slowly decaying
+tails of the target. This stabilisation allows us to benefit from the
+improved convergence of the ETAIS methodology, with a smaller ensemble
+size. 
+
+
+%\section{Transport map-accelerated Parallel Adaptive Importance
+  %Sampling (TETAIS)}\label{sec:TETAIS}
+
+\section{\DIFdelbegin \DIFdel{Multiscale Methods }\DIFdelend \DIFaddbegin \DIFadd{Inverse Problems }\DIFaddend for \DIFaddbegin \DIFadd{Multiscale }\DIFaddend Stochastic Chemical Reaction
+  Networks}\label{sec:multi}
+\DIFdelbegin \DIFdel{In this Section, we discuss some recent advances in multiscale methods
+for stochastic reaction networks. Inverse problems arising in this
+area often lead to complex posterior
+distributions, which traditional MCMC methods can struggle to sample
+from. We will then go on to solve some inverse problems related to
+this in Section \ref{sec:num}, using the transport map versions of the
+ETAIS algorithm, as described in Section \ref{sec:TETAIS}.
+}\DIFdelend \DIFaddbegin \edit{In this Section, we briefly introduce the idea of a continuous
+  time Markov chain model for stochastic reaction networks. We consider the formulation of the Bayesian inference of
+  the reaction parameters given exact data. In particular we consider
+  the case where only slow variables in the system are observable, and
+  hence the true likelihood function is intractable. In this case, the
+  likelihood can be approximated using multiscale methods. The data in
+  these scenarios is often insufficient to identify all of the
+  parameters, and this can lead to posterior distributions which are
+  heavily concentrated close to lower dimensional manifolds, which are
+  challenging to sample from, and which motivated the development of
+  the methodology outlined in this paper.}
+\DIFaddend 
+
+We consider chemical reaction networks of $N_s$ chemical species $\{S_j\}_{j=1}^{N_s}$,
+with population numbers given by $X(t) = [X_1(t), X_2(t), \ldots, X_{N_s}(t)]^\top \in
+\mathbb{N}_0^{N_s}$ reacting in a small reactor, through $N_r$ different reaction
+channels. When population numbers of one or more of the chemical
+species in the reactor is small, as is the case with chemical
+reactions occurring within living cells, the sporadic and discrete way
+in which reactions occur can not be well modelled by deterministic
+continuous models, such as ODEs. In such a situation, we may wish to
+model the dynamics through a discrete stochastic model, such as a
+continuous time Markov chain.
+
+For each reaction $R_j$, for $j = 1,2,\ldots N_r$, there is a
+propensity or hazard function $\alpha_j(X(t))$ which indicates how
+likely that reaction is to fire, defined by
+\DIFdelbegin \[\DIFdel{\alpha_j(X(t)) = \lim_{dt \to 0} \mathbb{P}(\text{Reaction $R_j$ in
+    the time interval  } \quad s \in }[\DIFdel{t, t+ dt}] \DIFdel{).}\] %DIFAUXCMD
+\DIFdel{If a system
+satisfies what is called }\emph{\DIFdel{mass action kinetics}}%DIFAUXCMD
+\DIFdel{, then the form of
+the function $\alpha_j$ is determined, up to a rate constant, by the
+reactants involved in that reaction:
+}\DIFdelend \begin{equation}\DIFdelbegin %DIFDELCMD < \label{eq:MAK}
+%DIFDELCMD < %%%
+\DIFdelend \alpha_j(X\DIFaddbegin \DIFadd{(t}\DIFaddend )\DIFaddbegin \DIFadd{) }\DIFaddend = \DIFdelbegin \DIFdel{k_j \prod_{m=1}^{N_s} \prod_{n=0}^{\nu_{j,m} -1} }\DIFdelend \DIFaddbegin \DIFadd{\lim_{dt \to 0} \mathbb{P}}\DIFaddend (\DIFdelbegin \DIFdel{X_m - n)}\DIFdelend \DIFaddbegin \DIFadd{\text{Reaction $R_j$ in
+    the time interval  } }\quad \DIFadd{s \in }[\DIFadd{t}\DIFaddend , \DIFaddbegin \DIFadd{t+ dt}] \DIFadd{).}\DIFaddend \end{equation} \DIFdelbegin \DIFdel{where $\nu_{j,m}$ is the $m$th component of the stoichiometric vector
+$\nu_j$, $X_m$ is the $m$th component of the state vector $X$, and the
+$k_j$ are rate constants.
+}\DIFdelend %DIF >  If a system
+%DIF >  satisfies what is called \emph{mass action kinetics}, then the form of
+%DIF >  the function $\alpha_j$ is determined, up to a rate constant, by the
+%DIF >  reactants involved in that reaction:
+%DIF >  \begin{equation}\label{eq:MAK}
+%DIF >  \alpha_j(X) = k_j \prod_{m=1}^{N_s} \prod_{n=0}^{\nu_{j,m} -1} (X_m - n),
+%DIF >  \end{equation}
+%DIF >  where $\nu_{j,m}$ is the $m$th component of the stoichiometric vector
+%DIF >  $\nu_j$, $X_m$ is the $m$th component of the state vector $X$, and the
+%DIF >  $k_j$ are rate constants.
+
+Following each reaction $R_j$ there is an instantaneous change in the
+current state, as the reactants of the reaction are consumed, and the
+products produced. This is modelled by a change in the state vector
+$X(t) = X(t) + \nu_j$ where $\nu_j$ is that stoichiometric vector for
+reaction $R_j$.
+
+The model can be represented as the following expression involving
+$N_r$ different unit rate Poisson
+processes\cite{anderson2011continuous} $Y_j$, given by:
+\begin{equation}\label{eq:RTC}
+X(t) = X(0) + \sum_{j=1}^{N_r} \nu_j \DIFaddbegin \DIFadd{Y_j }\left (\DIFaddend \int_0^t
+  \alpha_j(X(s)) \DIFaddbegin \right ) \DIFaddend ds.
+\end{equation}
+
+The master equation for this model is only solvable in certain
+situations, for example monomolecular networks\cite{jahnke2007solving}, or for
+steady-state solutions for weakly reversible deficiency
+zero networks\cite{anderson2010product,anderson2016product}. Trajectories for this system can be
+sampled exactly, for instance using the Gillespie SSA\cite{gillespie1977exact}, or
+its
+variants\cite{gillespie2007stochastic,cao2004efficient,anderson2007modified}. 
+\DIFdelbegin \DIFdel{However, if the system is stiff, i.e. there
+are some reactions which are firing many times on a timescale for
+which others are unlikely to fire at all, then trajectories can become
+prohibitively expensive to simulate, since these methods simulate
+every single reaction event with the same cost. In such a system, one
+might employ multiscale methods in order to approximate trajectories
+at a lower cost than the exact algorithms.
+}\DIFdelend 
+
+
+\DIFdelbegin \DIFdel{One common approach is to induce the quasi-equilibrium approximation
+QEA. This approximation makes the assumption that fast reactions
+enter quasi-equilibrium on a timescale which is negligible with
+respect to the timescale on which the slow dynamics in the system are
+evolving. This amounts to taking the asymptotic limit that the
+propensities of the ``slow'' reaction channels are equal to zero. This
+allows us to sample approximate trajectories of the slow reactions
+without the need to compute many fast reaction events.
+}\DIFdelend %DIF >  However, if the system is stiff, i.e. there
+%DIF >  are some reactions which are firing many times on a timescale for
+%DIF >  which others are unlikely to fire at all, then trajectories can become
+%DIF >  prohibitively expensive to simulate, since these methods simulate
+%DIF >  every single reaction event with the same cost. In such a system, one
+%DIF >  might employ multiscale methods in order to approximate trajectories
+%DIF >  at a lower cost than the exact algorithms.
+
+\DIFdelbegin \DIFdel{This approach can work well when there is a large timescale gap
+between the fast and slow reactions in a system, but where the
+timescale gap is less pronounced, it can lead to significant
+errors\mbox{%DIFAUXCMD
+\cite{cotter2016error}}\hspace{0pt}%DIFAUXCMD
+. Another approach is the
+constrained multiscale algorithm (CMA)\mbox{%DIFAUXCMD
+\cite{cotter2011constrained,cotter2016constrained}}\hspace{0pt}%DIFAUXCMD
+, based in part on the
+equation-free approach to multiscale computations\mbox{%DIFAUXCMD
+\cite{kevrekidis2003equation,erban2006gene}}\hspace{0pt}%DIFAUXCMD
+. This approach also assumes quasi-equilibrium in the
+system, but takes into account the effect that the slow reactions can
+have on the invariant distribution of the fast variables in the
+system. For a more detailed description of this method, please refer
+to the literature\mbox{%DIFAUXCMD
+\cite{cotter2016constrained}}\hspace{0pt}%DIFAUXCMD
+.
+}\DIFdelend %DIF >  One common approach is to induce the quasi-equilibrium approximation
+%DIF >  QEA. This approximation makes the assumption that fast reactions
+%DIF >  enter quasi-equilibrium on a timescale which is negligible with
+%DIF >  respect to the timescale on which the slow dynamics in the system are
+%DIF >  evolving. This amounts to taking the asymptotic limit that the
+%DIF >  propensities of the ``slow'' reaction channels are equal to zero. This
+%DIF >  allows us to sample approximate trajectories of the slow reactions
+%DIF >  without the need to compute many fast reaction events.
+
+
+
+\DIFdelbegin \DIFdel{Multiscale methods are not only of use when forward evaluations of the
+dynamics are costly, but can also be of use where we attempt to solve
+an inverse problem where the fast variables are unobservable. One
+approach in this situation would be to integrate over all possible
+trajectories of the fast variables, but this would almost always be
+prohibitively expensive. Another approach would be to use an
+appropriate multiscale approximation, so that the effective dynamics
+of the slow variables can be approximate without the need to consider
+the rapid fluctuations of the fast variables in the system.
+}\DIFdelend %DIF >  Multiscale methods are not only of use when forward evaluations of the
+%DIF >  dynamics are costly, but can also be of use where we attempt to solve
+%DIF >  an inverse problem where the fast variables are unobservable. One
+%DIF >  approach in this situation would be to integrate over all possible
+%DIF >  trajectories of the fast variables, but this would almost always be
+%DIF >  prohibitively expensive. Another approach would be to use an
+%DIF >  appropriate multiscale approximation, so that the effective dynamics
+%DIF >  of the slow variables can be approximate without the need to consider
+%DIF >  the rapid fluctuations of the fast variables in the system.
+
+\subsection{Likelihoods arising from \DIFaddbegin \DIFadd{multiscale }\DIFaddend stochastic reaction networks}
+Suppose that we are able to exactly observe the number of molecules of
+each chemical species in a system \DIFdelbegin \DIFdel{which satisfies mass action
+kinetics, and which }\DIFdelend \DIFaddbegin \DIFadd{that }\DIFaddend can be well approximated by
+\eqref{eq:RTC}. \DIFdelbegin \DIFdel{Suppose that we wish to be able to infer the value of
+the rate constants of each reaction from these observations. Even with no observational noise, since the dynamics
+of the system are stochastic, this still leads to a Bayesian inverse
+problem where we can only infer a joint probability distributions on the
+reaction parameters.
+}%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{Suppose that we are in state $X(t) = X_0$. There are two independent
+univariate random variables which decide when and what the next
+reaction in the system is. There is the $j$th waiting time $\tau_j$ to the
+next reaction, which is given by an exponential random variable
+}\[\DIFdel{\tau_j \sim \exp \left ( \frac{1}{\alpha_0(X(t))} \right ),}\]
+%DIFAUXCMD
+\DIFdel{where $\alpha_0(X(t)) =\sum_{i}^{N_r} \alpha_i(X(t))$ is the total
+propensity in the system. The second is a multinomial random variable $r_j$
+which dictates which reaction has occurred during the $j$th reaction,
+which takes the value
+$i \in \{1,2,\ldots,N_r\}$ with probability
+}\[\DIFdel{\mathbb{P}(r_j = i) = \frac{\alpha_i(X(t))}{\alpha_0(X(t))}.}\]
+%DIFAUXCMD
+\DIFdel{As such, in order to compute the likelihood of a particular trajectory
+given a possible realisation of the reaction parameters, it is
+sufficient to have access to the total time spent in each state, and
+the frequency of each reaction which led to leaving each state.
+}%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{From this formulation, we see that the random variables $(\tau_j, r_j)$ only depend on the states $\mathbf{X}(t_{j-1})$ and so are Markovian. This conditional independence means that we can group events together by what state the system was in when the event happened. We define two new random variables which depend on a state $\mathbf{Y} \in \mathcal{S}$, first the total time spent in state $\mathbf{Y}$,
+}\[
+	\DIFdel{T(\mathbf{Y}) = \sum\limits_{j=1}^M \tau_j\; \text{I}(\mathbf{X}(t_{j-1}) = \mathbf{Y}).
+}\]
+%DIFAUXCMD
+\DIFdel{This random variable, $T(\mathbf{Y})$, is a sum of exponentially
+distributed random variable, each with the rate $\alpha_0(\mathbf{Y};\mathbf{k})$, and hence follows the Gamma distribution,
+}\begin{displaymath}\DIFdel{\label{eqn:chem_time_dist}
+	T(\mathbf{Y}) \sim \text{Gamma}\left(\alpha=K(\mathbf{Y}),~\beta = \alpha_0(\mathbf{Y}; \mathbf{k})\right),
+}\end{displaymath}
+%DIFAUXCMD
+\DIFdel{where $K(\mathbf{Y}) = \sum\limits_{j=1}^M \text{I}(\mathbf{X}(t_{j-1}) = \mathbf{Y})$.
+}%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{Similarly, we can define the reactions which occurred when the system was in state $\mathbf{Y}$ as $\mathbf{r}(\mathbf{Y}) = [r_1(\mathbf{Y}), \ldots, r_{N_r}(\mathbf{Y})]^\top$ where
+}\[
+	\DIFdel{r_i(\mathbf{Y}) = \sum\limits_{j=1}^M \text{I}(r_j = i \textbf{ and }\mathbf{X}(t_{j-1}) = \mathbf{Y}).
+}\]
+%DIFAUXCMD
+\DIFdel{Here all the random variables $r_j$ follow the same multinomial distribution, and so
+}\begin{displaymath}\DIFdel{\label{eqn:chem_react_dist}
+	\mathbf{r}(\mathbf{Y}) \sim \text{Multinomial}(K(\mathbf{Y}),~\mathbf{p}(\mathbf{Y})). 
+}\end{displaymath}
+%DIFAUXCMD
+\DIFdel{The random variables defined in Equations~}%DIFDELCMD < \eqref{eqn:chem_time_dist} %%%
+\DIFdel{and }%DIFDELCMD < \eqref{eqn:chem_react_dist} %%%
+\DIFdel{are sufficient statistics for the posterior distribution $\pi(\mathbf{k}|D)$. With these definitions we define two new structures
+}\[
+	\DIFdel{\mathbf{T} = }[\DIFdel{T(\mathbf{Y}_1), \dots, T(\mathbf{Y}_K)}]\DIFdel{^\top, \quad \text{and} \quad \mathbf{R} = }[\DIFdel{\mathbf{r}(\mathbf{Y}_1), \dots, \mathbf{r}(\mathbf{Y}_K)}]\DIFdel{^\top,
+}\]
+%DIFAUXCMD
+\DIFdel{where $K = |\mathcal{S}|$, the number of states in $\mathcal{S}$, and each state $\mathbf{Y}_i \in \mathcal{S}$ has been enumerated. We use these structures to define shorter notation,
+}\[
+	\DIFdel{\mathbf{T}_i = T(\mathbf{Y}_i), \quad \mathbf{R}_{ij} = r_j(\mathbf{Y}_i), \quad \text{and} \quad \mathbf{K}_i = K(\mathbf{Y}_i).
+}\]
+%DIFAUXCMD
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{To construct the posterior distribution for the reaction rates, $\mathbf{k}$, in the chemical system, we formulate the likelihood using the sufficient statistics derived in the previous section. Due to the non-negativity of these reaction rates, we assign a Gamma prior distribution to each rate. Given the distributions in Equations~}%DIFDELCMD < \eqref{eqn:chem_time_dist} %%%
+\DIFdel{and~}%DIFDELCMD < \eqref{eqn:chem_react_dist} %%%
+\DIFdel{for our data, the likelihood of observing the data $\mathbf{R}$ and $\mathbf{T}$ is
+}\[
+	\DIFdel{\ell(\mathbf{R}, \mathbf{T}|\mathbf{k}) \propto \prod\limits_{i=1}^K \text{Multi}(\mathbf{R}_{i\cdot}; \mathbf{K}_i, \mathbf{p}(\mathbf{Y}_i))\text{Gamma}(\mathbf{T}_i; \mathbf{K}_i, \alpha_0(\mathbf{Y}_i)),
+}\]
+%DIFAUXCMD
+\DIFdel{where again $\mathbf{Y}_i \in \mathcal{S}$ and the propensities
+$\alpha_i$ and probabilities $p_i$ depend on the reaction rates
+$\mathbf{k} = [k_1, k_2, \ldots k_{N_r}]^\top$ through the concept of
+mass action kinetics given in }%DIFDELCMD < \eqref{eq:MAK}%%%
+\DIFdel{.
+}%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{Our choice of Gamma prior distributions with hyper-parameters $(a_i, b_i)$ results in the posterior distribution of the form
+}\begin{align*}
+	\DIFdel{\pi(\mathbf{k}|\mathbf{R}, \mathbf{T}) }&\DIFdel{\propto \ell(\mathbf{R}, \mathbf{T}|\mathbf{k})
+	\prod_{i=1}^{N_r} \! \text{Gamma}(k_i; a_i, b_i) \notag }\\
+		&\DIFdel{\propto \exp\Bigg\{\sum\limits_{i=1}^K \Bigg[
+				\mathbf{K}_i\log \alpha_0(\mathbf{Y}_i; \mathbf{k}) - \mathbf{T}_i\alpha_0(\mathbf{Y}_i; \mathbf{k}) %DIF < \notag \\
+%DIF < 		& \qquad\qquad\qquad
+				+\sum_{j=1}^{N_r} \mathbf{R}_{ij}\log\mathbf{p}_j(\mathbf{Y}_i; \mathbf{k})
+			\Bigg]  \notag}\\
+		&	\DIFdel{\qquad\qquad\qquad{} + \sum_{i=1}^{N_r} ((a_i-1)\log k_i - b_ik_i)\Bigg\}. \label{eqn:chem_posterior}
+}\end{align*}
+%DIFAUXCMD
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\subsection{\DIFdel{Approximation of likelihoods in multiscale chemical
+  networks}}
+%DIFAUXCMD
+\addtocounter{subsection}{-1}%DIFAUXCMD
+\DIFdel{Suppose now that we only observe the slower variables in a
+multiscale chemical system of this type. Suppose that $n_r < N_r$ is the number of slow
+reactions in the system, and the slow reactions are given by $\{R_{s_1},
+R_{s_2}, \ldots R_{s_{n_r}} \} \subset \{R_1, R_2, \ldots , R_{N_r}
+\}$. The propensities of the slow
+reactions $\alpha_{s_i}$ may depend on the value of the fast variables which is
+unknown. However, the invariant distribution of the fast variables
+conditioned on the slow variables in the system can be approximated
+using a multiscale method, such as the QEA or the CMA, as described
+briefly in Section \ref{sec:multi}. Once the approximations have been
+made, we arrive at approximate }\emph{\DIFdel{effective}} %DIFAUXCMD
+\DIFdel{propensities $\bar{\alpha}_{s_i}$, which
+have been averaged over the computed invariant distributions of the
+fast variables. Then the approximate effective dynamics on the slow variable $S(t)$ are given by 
+}\begin{displaymath}\DIFdel{%DIFDELCMD < \label{eq:RTCS}%%%
+
+S(t) = S(0) + \sum_{j=1}^{n_r} \nu_{s_j} \int_0^t \bar{\alpha}_{s_j}(S(s)) ds.
+}\end{displaymath}
+%DIFAUXCMD
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{In turn, the approximate posterior distribution on the reaction
+parameters $\mathbf{k}$ is then given by
+}\begin{align*}
+	\DIFdel{\pi(\mathbf{k}|\mathbf{R}, \mathbf{T}) }&\DIFdel{\propto \ell(\mathbf{R}, \mathbf{T}|\mathbf{k})
+	\prod_{i=1}^{n_r} \! \text{Gamma}(k_i; a_i, b_i) \notag }\\
+		&\DIFdel{\propto \exp\Bigg\{\sum\limits_{i=1}^K \Bigg[
+				\mathbf{K}_i\log
+                  \bar{\alpha}_0(\mathbf{Y}_i; \mathbf{k}) -
+                  \mathbf{T}_i \bar{\alpha}_0(\mathbf{Y}_i; \mathbf{k}) %DIF < \notag \\
+%DIF < 		& \qquad\qquad\qquad
+				+\sum_{j=1}^{n_r} \mathbf{R}_{ij}\log \bar{\mathbf{p}}_j(\mathbf{Y}_i; \mathbf{k})
+			\Bigg]  \notag}\\
+		&	\DIFdel{\qquad\qquad\qquad{} + \sum_{i=1}^{n_r} ((a_i-1)\log k_i - b_ik_i)\Bigg\}, %DIFDELCMD < \label{eq:Apos}%%%
+
+}\end{align*}
+%DIFAUXCMD
+\DIFdel{where $\bar{\alpha}_0(\mathbf{Y}_i; \mathbf{k}) = \sum_{j=1}^{n_r}
+\bar{\alpha}_j(\mathbf{Y}_i; \mathbf{k})$ is the total of the
+effective propensities, $n_r$ is the number of slow reactions,
+$\bar{\mathbf{p}}(\mathbf{Y}_i; \mathbf{k})$ is the multiscale
+approximation of the expected proportion of each slow reaction at
+state $\mathbf{Y}_i$ and with reaction rates $\mathbf{k}$ and the
+data is limited only to changes in the slow variable due to the
+occurrence of slow reactions.
+}\DIFdelend \DIFaddbegin \edit{Each reaction in the system involves the firing
+  of a Poisson process with rate which is a function of the number of
+  reactant molecules present, and the reaction rates. The likelihood
+  of each reaction is simply the product of the probability density of
+  an exponential random
+  variable which gives the waiting time since the last reaction, with
+  the mass function of a
+  multinomial distribution describing the likelihood of each type of
+  reaction from that state. Since the
+  reactions are assumed to be independent, the likelihood of the whole
+  path is a product of all the individual reaction likelihoods. This
+  can be computed in a more efficient way by considering all reactions
+  in the data from the same point in the state space at the same
+  time. A detailed derivation of this is given in the
+  supplementary material.
+
+If we are only able to observe the slow species, then we cannot write
+down an explicit likelihood for the path. One approach is to try to
+simultaneously infer the
+missing data of the fast variables, but this is computationally
+intractable in all but the simplest of cases. The other option is to
+invoke a multiscale approximation to the dynamics. This allows us to
+approximate effective propensities for the slow reactions, and hence
+to approximate the likelihood of paths of the slow variables. A
+detailed derivation of this likelihood is also given in the
+supplementary material.
+
+In this work, we will consider two different multiscale
+approximations. The first is the quasi-equilibrium approximation
+which makes the assumption that fast reactions
+enter quasi-equilibrium on a timescale which is negligible with
+respect to the timescale on which the slow dynamics in the system are
+evolving. This approximation is the basis of several
+methods\cite{weinan2007nested,cao2005slow}. This approach can work well when there is a large timescale gap
+between the fast and slow reactions in a system, but where the
+timescale gap is less pronounced, it can lead to significant
+errors\cite{cotter2016error}. Another approach is the
+constrained multiscale algorithm (CMA)\cite{cotter2011constrained,cotter2016constrained}, based in part on the
+equation-free approach to multiscale computations\cite{kevrekidis2003equation,erban2006gene}. This approach also assumes quasi-equilibrium in the
+system, but takes into account the effect that the slow reactions can
+have on the invariant distribution of the fast variables in the
+system. For a more detailed description of this method, please refer
+to the literature\cite{cotter2016constrained}.
+
+
+}
+\DIFaddend \section{Numerical Examples}\label{sec:num}
+In this section we look at two examples of chemical systems to
+demonstrate the effectiveness of transport ETAIS algorithms for
+sampling from the
+challenging posterior distribution on the reaction parameters that
+arise. 
+
+% The first example will only contain at most mono-molecular reactions,
+% i.e. reactions which convert one species into another species at a
+% particular rate. As shown in~\cite{jahnke2007solving} these systems
+% have a Poisson invariant distributions on the populations, given by
+% \begin{equation}\label{eqn:mono_stat_dist}
+% 	\mathbb{P}(X_1=x_1, \ldots, X_n=x_n) = \left(\prod_{i=1}^n \! \frac{\bar{c}_i^{x_i}}{x_i!}\right)\exp\left(-\sum_i^n \! \bar{c}_i\right),
+% \end{equation}
+% where $x_i \in \mathbb{N}$ and $\bar{c}_i$ are the complex balances or the concentration of chemical $X_i$ according to the solution of a steady state approximation of the system. We make use of this distribution to formulate posteriors for the chemical reaction rates using the constrained multiscale approach, as in~\cite{cotter2016constrained}.
+
+%%%%%
+
+\subsection{A Multiscale Chemical System}\label{sec:chem_multiscale}
+
+First we consider a simple multiscale example involving two chemical
+species $S_1$ and $S_2$,
+\begin{equation}\label{eqn:full_system}
+	\emptyset \xrightarrow{k_1} S_1 \xleftrightarrows[k_3]{k_2} S_2 \xrightarrow{k_4} \emptyset.
+\end{equation}
+Each arrow represents a reaction from a reactant to a product, with
+some rate constant $k_i$, and where mass action kinetics is
+assumed. The parameters $k_i$ are non-negative, and $\mathbf{k} =
+[k_1,\dots,k_4]^\top \in \mathbb{R}_+^4 = \mathcal{X}$. We denote the
+population count of
+species $S_i$ by $X_i \in \mathbb{N}_0$. 
+We consider this system with the following parameters:
+\begin{equation}\label{eq:params1}
+k_1V = 100, \qquad k_2 = k_3 = 10, \qquad k_4 = 1,
+\end{equation} 
+where $V$ is the volume of the reactor.
+ In this 
+parameter regime the reactions $R_2\colon S_1\rightarrow S_2$ and $R_3\colon S_2\rightarrow S_1$ occur
+more frequently than the other reactions. Notice that both
+chemical species are involved in fast reactions. However, the quantity
+$S = X_1 + X_2$, is conserved by both of the fast reactions,
+and as such, this is the slowly changing quantity in this system.
+
+We observe this system over the time period $t \in [0,500]$ with
+initial condition $S_1(0) = S_2(0) = 0$, but we assume that we are only able to observe
+the slow variable $S(t) = S_1(t) + S_2(t)$. 
+The effective dynamics of $S$ can be approximated by a system of only
+two reactions:
+\begin{equation}\label{eqn:QSSA_system}
+	\emptyset \xrightarrow{\alpha_1(S)} S \xrightarrow{\bar{\alpha}_4(S)} \emptyset,
+\end{equation}
+where here the propensities are shown as opposed to the rates.
+
+The effective propensity $\bar{\alpha}_4(S)$ can be  approximated through
+application of a multiscale approximation, as detailed in \DIFdelbegin \DIFdel{Section
+\ref{sec:multi}}\DIFdelend \DIFaddbegin \edit{the
+  supplementary material}\DIFaddend , and in more detail in \cite{cotter2016constrained}. These effective
+propensities can often be computed without the need for expensive
+simulations, in particular when the fast subsystem is deficiency zero,
+which is often the case\cite{anderson2010product,anderson2016product}. For this very
+simple example, the dependance of these effective
+propensities on the original rate parameters can be explicitly
+understood. Under the QEA,
+the effective rate of degradation of the slow variable $S$ is given by
+\DIFdelbegin \[
+	\DIFdel{\bar{\alpha}_4^{\text{QEA}}(s) = \frac{k_2k_4s}{k_2+k_3}.
+}\]
+%DIFAUXCMD
+\DIFdelend \DIFaddbegin \begin{equation}
+	\DIFadd{\bar{\alpha}_4^{\text{QEA}}(s) = \frac{k_2k_4s}{k_2+k_3}.
+}\end{equation}
+\DIFaddend Similarly, the analysis of the constrained system as discussed in~\cite{cotter2016constrained} yields the effective propensity
+\begin{equation}\label{eqn:chem_CMA_rate}
+	\bar{\alpha}_4^{\text{CMA}}(s) = \mathbb{E}_{\text{CMA}}\left[k_4X_2|S=s\right] = \frac{k_2k_4s}{k_2+k_3+k_4}.
+\end{equation}
+
+Our observations are uninformative about the reaction rates $k_2,
+k_3$, and $k_4$, as for each multiscale approximation there
+is a manifold $\mathcal{M} \subset \mathcal{X}$ along which the effective propensity
+$\hat{\alpha}_4$ is invariant, leading to a highly ill-posed inverse
+problem. This type of problem is notoriously difficult to
+sample from using standard MH algorithms, as the algorithms quickly
+gravitate towards the manifold $\mathcal{M}$ but then
+exploration around $\mathcal{M}$ is slow.
+
+We aim to recover three different posterior distributions. In the
+first, \DIFdelbegin \DIFdel{which is of the form }%DIFDELCMD < \eqref{eqn:chem_posterior}%%%
+\DIFdel{, }\DIFdelend we assume that we can fully and exactly observe the whole state
+vector for the whole of the observation time window $t \in [0,T]$. In
+the second and
+third, the same data are used, but projected down to one dimensional observations of the slow
+variable $S = X_1 + X_2$. In these last two examples, we approximate the
+posterior using \DIFdelbegin %DIFDELCMD < \eqref{eq:Apos} %%%
+\DIFdel{with }\DIFdelend QEA and CMA approximations of the
+effective dynamics respectively.
+
+In all three cases, we find the posterior distribution for $\mathbf{k}
+\in \mathcal{X} = \mathbb{R}_+^4$. These four parameters are assigned Gamma prior distributions,
+\DIFdelbegin \[
+	\DIFdel{k_i \sim \text{Gamma}(\cdot; \alpha_i, \beta_i), \quad \text{for} \quad i = 1, \dots, 4.
+}\]
+%DIFAUXCMD
+\DIFdelend \DIFaddbegin \begin{equation}
+	\DIFadd{k_i \sim \text{Gamma}(\cdot; \alpha_i, \beta_i), \quad \text{for} \quad i = 1, \dots, 4.
+}\end{equation}
+\DIFaddend The hyper-parameters corresponding to each of these prior distributions are given in Table~\ref{tab:multiscale_priors}. These priors are the same for each of the three posterior distributions.
+
+\begin{table}
+\centering
+\DIFdelbeginFL %DIFDELCMD < \begin{tabular}{|l|R{2em}R{2em}R{2em}R{2em}|}
+%DIFDELCMD < 	\hline
+%DIFDELCMD < 	%%%
+\DIFdelendFL %DIF >  \begin{tabular}{|l|R{2em}R{2em}R{2em}R{2em}|}
+\DIFaddbeginFL 
+
+\begin{tabular}{lrrrr} 
+	\toprule
+	\DIFaddendFL Parameter$\backslash$Dimension $i$ & 1 & 2 & 3 & 4  \\ \DIFdelbeginFL %DIFDELCMD < \hline
+%DIFDELCMD < 	%%%
+\DIFdelendFL \DIFaddbeginFL \cmidrule\DIFaddFL{(lr)}{\DIFaddFL{1-5}} 
+	\DIFaddendFL $\alpha_i$ & 150 & 5 & 5 & 3 \\
+	$\beta_i$ & $\frac{15}{9}$ & $\frac{5}{12}$ & $\frac{5}{12}$ & $1$ \\ \DIFdelbeginFL %DIFDELCMD < \hline 
+%DIFDELCMD < %%%
+\DIFdelendFL \DIFaddbeginFL \bottomrule 
+\DIFaddendFL \end{tabular}
+\caption{Hyper-parameters in the prior distributions for the multiscale problem described in Section~\ref{sec:chem_multiscale}.}
+\label{tab:multiscale_priors}
+\end{table}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.9\textwidth]{"images/Applications/CMA_posterior"}
+\caption{CMA approximation \DIFdelbeginFL %DIFDELCMD < \eqref{eq:Apos} %%%
+\DIFdelendFL of the posterior arising from observations of
+  the slow variable $S = X_1 + X_2$ for system
+  \eqref{eqn:full_system}  with true rates given by \eqref{eq:params1}.}
+\label{fig:chem_CMA_posterior}
+\end{figure}
+
+Figure~\ref{fig:chem_CMA_posterior} shows how this posterior looks
+when we use the CMA to model the effective degradation propensity
+$\bar{\alpha}_4$. Although this posterior does not appear to be
+pathologically difficult to sample using MCMC from these plots, it most certainly is. The posterior
+density is concentrated close to a curved manifold. Since the manifold
+is curved, the joint marginals do not look unreasonable, where in fact
+the density has very differing derivatives in different directions
+when evaluated close to this manifold.
+
+We consider several different algorithms for sampling from these
+distributions. First we implement both the ETAIS and MH algorithms with
+a Gaussian proposal distribution. In the case of the ETAIS algorithm,
+this is a Gaussian mixture proposal distribution, and in the MH
+algorithm this is equivalent to a vanilla random walk. The proposal
+distribution uses a covariance matrix which has been constructed using
+the sample covariance of a sample produced using a standard MH-RW
+algorithm. This is necessary since these algorithms otherwise fail to
+converge in a reasonable time for
+this problem. We also compare the ETAIS and MH algorithms when using a
+transport map proposal distribution, as was discussed in detail in Chapter~\ref{sec:TETAIS}.
+
+\DIFdelbegin %DIFDELCMD < \begin{figure}
+%DIFDELCMD < 	\centering
+%DIFDELCMD < 	\begin{tikzpicture}
+%DIFDELCMD < 		\pgfmathsetseed{1}
+%DIFDELCMD < 
+
+%DIFDELCMD < 		\node[inner sep=1.5cm,outer sep=0] (A) at (0,0) {$\mathcal{X}$};
+%DIFDELCMD < 		\node[inner sep=1.5cm,outer sep=0] (B) at (5,0) {$R$};
+%DIFDELCMD < 
+
+%DIFDELCMD < 		\draw (A) \irregularcircle{1cm}{2.5mm};
+%DIFDELCMD < 		\draw (B) \irregularcircle{1cm}{0.5mm};
+%DIFDELCMD < 
+
+%DIFDELCMD < 		\draw [->] (A) -- (B);
+%DIFDELCMD < 
+
+%DIFDELCMD < 		\node at (2.5,1) {$T\colon\mathcal{X}\rightarrow R$};
+%DIFDELCMD < 
+
+%DIFDELCMD < 		\node at (0,-1.5) {$\mathbf{k}\in\mathcal{X}\subset\mathbb{R}_+^d$};
+%DIFDELCMD < 		\node at (5,-1.5) {$r\in R\subset\mathbb{R}^d$};
+%DIFDELCMD < 	\end{tikzpicture}
+%DIFDELCMD < %%%
+\DIFdelendFL %DIF >  \begin{figure}
+%DIF >  	\centering
+%DIF >  	\begin{tikzpicture}
+%DIF >  		\pgfmathsetseed{1}
+
+\DIFdelbeginFL %DIFDELCMD < \begin{tikzpicture}
+%DIFDELCMD < 		\pgfmathsetseed{1}
+%DIFDELCMD < 
+
+%DIFDELCMD < 		\node[inner sep=1.5cm,outer sep=0] (A) at (0,0) {$\mathcal{X}$};
+%DIFDELCMD < 		\node[inner sep=1.5cm,outer sep=0] (B) at (5,0) {$\mathcal{Y}$};
+%DIFDELCMD < 		\node[inner sep=1.5cm,outer sep=0] (C) at (10,0) {$R$};
+%DIFDELCMD < 
+
+%DIFDELCMD < 		\draw (A) \irregularcircle{1cm}{2.5mm};
+%DIFDELCMD < 		\draw (B) \irregularcircle{1cm}{1.1mm};
+%DIFDELCMD < 		\draw (C) \irregularcircle{1cm}{0.5mm};
+%DIFDELCMD < 
+
+%DIFDELCMD < 		\draw [->] (A) -- (B);
+%DIFDELCMD < 		\draw [->] (B) -- (C);
+%DIFDELCMD < 
+
+%DIFDELCMD < 		\node at (2.5,1) {$\log\colon\mathcal{X}\rightarrow\mathcal{Y}$};
+%DIFDELCMD < 		\node at (7.5,1) {$T\colon\mathcal{Y}\rightarrow R$};
+%DIFDELCMD < 
+
+%DIFDELCMD < 		\node at (0,-1.5) {$\mathbf{k}\in\mathcal{X}\subset\mathbb{R}_+^d$};
+%DIFDELCMD < 		\node at (5,-1.5) {$X\in\mathcal{Y}\subset\mathbb{R}^d$};
+%DIFDELCMD < 		\node at (10,-1.5) {$r\in R \subset\mathbb{R}^d$};
+%DIFDELCMD < 	\end{tikzpicture}
+%DIFDELCMD < 	%%%
+%DIFDELCMD < \caption{%
+{%DIFAUXCMD
+\DIFdelFL{Couplings between parameter space and reference
+          when using the transport map with (bottom) and without (top)
+        a log preconditioner.}}
+	%DIFAUXCMD
+%DIFDELCMD < \label{fig:chem_coupling}
+%DIFDELCMD < \end{figure}
+%DIFDELCMD < %%%
+\DIFdelend %DIF >  		\node[inner sep=1.5cm,outer sep=0] (A) at (0,0) {$\mathcal{X}$};
+%DIF >  		\node[inner sep=1.5cm,outer sep=0] (B) at (5,0) {$R$};
+
+\DIFdelbegin \DIFdel{Figure~\ref{fig:chem_coupling} (top) shows how we define a bijective map,
+$\hat{T}$, between parameter space $\mathcal{X}$ and a reference space
+$R$. When using the transport map proposal distribution, we prefix the proposal method with a T, e.g. MH-RW  and MH-TRW, as well as ETAIS-RW and ETAIS-TRW. }\DIFdelend %DIF >  		\draw (A) \irregularcircle{1cm}{2.5mm};
+%DIF >  		\draw (B) \irregularcircle{1cm}{0.5mm};
+\DIFaddbegin 
+
+%DIF >  		\draw [->] (A) -- (B);
+
+%DIF >  		\node at (2.5,1) {$T\colon\mathcal{X}\rightarrow R$};
+
+%DIF >  		\node at (0,-1.5) {$\mathbf{k}\in\mathcal{X}\subset\mathbb{R}_+^d$};
+%DIF >  		\node at (5,-1.5) {$r\in R\subset\mathbb{R}^d$};
+%DIF >  	\end{tikzpicture}
+
+%DIF >  	\begin{tikzpicture}
+%DIF >  		\pgfmathsetseed{1}
+
+%DIF >  		\node[inner sep=1.5cm,outer sep=0] (A) at (0,0) {$\mathcal{X}$};
+%DIF >  		\node[inner sep=1.5cm,outer sep=0] (B) at (5,0) {$\mathcal{Y}$};
+%DIF >  		\node[inner sep=1.5cm,outer sep=0] (C) at (10,0) {$R$};
+
+%DIF >  		\draw (A) \irregularcircle{1cm}{2.5mm};
+%DIF >  		\draw (B) \irregularcircle{1cm}{1.1mm};
+%DIF >  		\draw (C) \irregularcircle{1cm}{0.5mm};
+
+%DIF >  		\draw [->] (A) -- (B);
+%DIF >  		\draw [->] (B) -- (C);
+
+%DIF >  		\node at (2.5,1) {$\log\colon\mathcal{X}\rightarrow\mathcal{Y}$};
+%DIF >  		\node at (7.5,1) {$T\colon\mathcal{Y}\rightarrow R$};
+
+%DIF >  		\node at (0,-1.5) {$\mathbf{k}\in\mathcal{X}\subset\mathbb{R}_+^d$};
+%DIF >  		\node at (5,-1.5) {$X\in\mathcal{Y}\subset\mathbb{R}^d$};
+%DIF >  		\node at (10,-1.5) {$r\in R \subset\mathbb{R}^d$};
+%DIF >  	\end{tikzpicture}
+%DIF >  	\caption{Couplings between parameter space and reference
+%DIF >            when using the transport map with (bottom) and without (top)
+%DIF >          a log preconditioner.}
+%DIF >  	\label{fig:chem_coupling}
+%DIF >  \end{figure}
+
+%DIF >  Figure~\ref{fig:chem_coupling} (top) shows how we define a bijective map,
+%DIF >  $\hat{T}$, between parameter space $\mathcal{X}$ and a reference space
+%DIF >  $R$.
+\DIFaddend In practice we cannot ensure that the approximate map $\tilde{T}$
+is uniquely invertible over the whole of $R$ and so $\tilde{T}$ is not
+truly bijective. This leads to problems for our strictly positive
+state space, $\mathcal{X} \subset \mathbb{R}_+^d$, since proposals in
+$R$ do not necessarily map back onto $\mathcal{X}$. \DIFaddbegin \edit{This can be
+  avoided, however, by employing a logarithmic preconditioner for the
+  transport map. The proposal distributions are labelled with a T for transport map and when using the intermediate space we prepend `log' to the proposal method, e.g. MH-logRW and MH-logTRW, with, ETAIS-logRW and ETAIS-logTRW.}
+\DIFaddend 
+
+
+\DIFdelbegin \DIFdel{Therefore we also consider how these algorithms perform when the transport map
+is preconditioned by the logarithmic function applied to the parameters. We choose to use this log
+preconditioner since it converts our strictly positive parameter
+space, $\mathcal{X}$, into an intermediate space $\mathcal{Y} \subset
+\mathbb{R}^d$. This allows us to define $T$ between two subsets of
+$\mathbb{R}^d$, which means that all proposals made on the reference
+space are mapped to valid
+proposals on the true parameter space. It also reduces the work required of the map, which since
+we use only a finite dimensional approximation, can improve
+performance and stability. As before, the proposal distributions are labelled with a T for transport map and when using the intermediate space we prepend `log' to the proposal method, e.g. MH-logRW and MH-logTRW, with, ETAIS-logRW and ETAIS-logTRW.
+}\DIFdelend %DIF >  Therefore we also consider how these algorithms perform when the transport map
+%DIF >  is preconditioned by the logarithmic function applied to the parameters. We choose to use this log
+%DIF >  preconditioner since it converts our strictly positive parameter
+%DIF >  space, $\mathcal{X}$, into an intermediate space $\mathcal{Y} \subset
+%DIF >  \mathbb{R}^d$. This allows us to define $T$ between two subsets of
+%DIF >  $\mathbb{R}^d$, which means that all proposals made on the reference
+%DIF >  space are mapped to valid
+%DIF >  proposals on the true parameter space. It also reduces the work required of the map, which since
+%DIF >  we use only a finite dimensional approximation, can improve
+%DIF >  performance and stability.
+
+\DIFdelbegin \DIFdel{Figure~\ref{fig:chem_coupling} (bottom) displays the composition of maps
+when we include this $\log$ preconditioner leading to an intermediate space $\mathcal{Y}$. The inclusion of this additional map }\DIFdelend %DIF >  Figure~\ref{fig:chem_coupling} (bottom) displays the composition of maps
+%DIF >  when we include this $\log$ preconditioner leading to an intermediate space $\mathcal{Y}$. 
+\DIFaddbegin 
+
+\edit{ The inclusion of the composition with the logarithmic map} \DIFaddend means that we must \DIFdelbegin \DIFdel{again }\DIFdelend alter our importance weight definition to reflect the pullback from $R$ through $\mathcal{Y}$. The weight is now
+\DIFdelbegin \[
+	\DIFdel{w_i(\theta) = \frac{\pi(\theta|\mathbf{R},\mathbf{T})}{\chi(\tilde{T}\circ\log(\theta)|\tilde{T}\circ\log(\theta^{(i-1)}))|J_{\tilde{T}\circ\log}(\theta)|},
+}\]
+%DIFAUXCMD
+\DIFdelend \DIFaddbegin \begin{equation}
+	\DIFadd{w_i(\theta) = \frac{\pi(\theta|\mathbf{R},\mathbf{T})}{\chi(\tilde{T}\circ\log(\theta)|\tilde{T}\circ\log(\theta^{(i-1)}))|J_{\tilde{T}\circ\log}(\theta)|},
+}\end{equation}
+\DIFaddend where $\theta$ is a proposed new state, $\theta^{(i-1)}$ is the ensemble of states from the previous iteration, and $J_{\tilde{T}\circ\log}(\theta)$ is the Jacobian of the composition of the two maps. This Jacobian is straightforward to calculate,
+\DIFdelbegin \[
+	\DIFdel{|J_{\tilde{T}\circ\log}(\theta')| = |J_{\tilde{T}}(\log(\theta'))||J_{\log}(\theta')|,
+}\]
+%DIFAUXCMD
+\DIFdelend \DIFaddbegin \begin{equation}
+	\DIFadd{|J_{\tilde{T}\circ\log}(\theta')| = |J_{\tilde{T}}(\log(\theta'))||J_{\log}(\theta')|,
+}\end{equation}
+\DIFaddend where the first determinant is computed as in
+\eqref{eqn:separable_jacobian}, and the second is given by
+\DIFdelbegin \[
+	\DIFdel{|J_{\log}(\theta')| = \prod\limits_{i=1}^d \frac{1}{\theta'_i}.
+}\]
+%DIFAUXCMD
+\DIFdelend \DIFaddbegin \begin{equation}
+	\DIFadd{|J_{\log}(\theta')| = \prod\limits_{i=1}^d \frac{1}{\theta'_i}.
+}\end{equation}
+\DIFaddend 
+
+% choices made in transport map
+For this problem, we continue to use monomials in each dimension in our transport map construction. We use polynomials of total order $p=3$ as the basis functions, i.e.
+\DIFdelbegin \[
+	\DIFdel{T_i(\theta) = \sum_{\mathbf{j}\in\mathcal{J}^{\text{TO}}_i(p)} \gamma_{i,\mathbf{j}}\psi_{\mathbf{j}}(\theta) \quad \text{where} \quad \psi_\mathbf{j}(\theta) = \prod\limits_{k=1}^i \theta_k^{j_k},
+}\]
+%DIFAUXCMD
+\DIFdel{and
+}\[
+	\DIFdel{\mathcal{J}^{\text{TO}}_i(p) = \{\mathbf{j} \in \mathbb{N}^d_0\ |\ \|\mathbf{j}\|_1 \leq p, \ \text{and}\ j_k = 0\ \forall k > i\}.
+}\]
+%DIFAUXCMD
+\DIFdelend \DIFaddbegin \begin{equation}
+	\DIFadd{T_i(\theta) = \sum_{\mathbf{j}\in\mathcal{J}^{\text{TO}}_i(p)} \gamma_{i,\mathbf{j}}\psi_{\mathbf{j}}(\theta) \quad \text{where} \quad \psi_\mathbf{j}(\theta) = \prod\limits_{k=1}^i \theta_k^{j_k},
+}\end{equation}
+\DIFadd{and
+}\begin{equation}
+	\DIFadd{\mathcal{J}^{\text{TO}}_i(p) = \{\mathbf{j} \in \mathbb{N}^d_0\ |\ \|\mathbf{j}\|_1 \leq p, \ \text{and}\ j_k = 0\ \forall k > i\}.
+}\end{equation}
+\DIFaddend 
+
+% choice of resampler?
+We will use the MT\cite{russ2017parallel} resampler with an ensemble size of
+$M=500$. This increase in ensemble size in comparison with the previous
+example in Section \ref{sec:conv} is to allow for the increase in parameter dimension.
+
+% analysis method
+To measure the convergence of the sampling methods in this section, we
+will compare the convergence of the mean of each parameter. We
+approximate $\mathbb{E}(\mathbf{k})$ using 2.4 billion samples from
+the MH-RW algorithm. We do this for each of the eight algorithms we
+have so far discussed. Convergence is shown only for the CMA
+approximation of the posterior \DIFdelbegin %DIFDELCMD < \eqref{eq:Apos} %%%
+\DIFdelend with effective rate for
+the degradation of $S$ given by \eqref{eqn:chem_CMA_rate}, but we
+expect very similar results for the other multiscale approximation of
+posterior distributions
+discussed.
+
+\begin{table}[!h]
+\centering
+\begin{tabular}{rrrrrr}
+\toprule
+	\multicolumn{1}{l}{Algorithm} & \multicolumn{3}{c}{MH} & \multicolumn{2}{c}{ETAIS} \\ \cmidrule(lr){2-4} \cmidrule(lr){5-6}
+	& & $\delta$ & & $\delta$ & ESS \\ \midrule
+	\DIFdelbeginFL \DIFdelFL{RW }%DIFDELCMD < & & %%%
+\DIFdelFL{5.5e-3 }%DIFDELCMD < & & %%%
+\DIFdelFL{1.0e-0 }%DIFDELCMD < & %%%
+\DIFdelFL{9.0e-3 }%DIFDELCMD < \\
+%DIFDELCMD < 	%%%
+\DIFdelFL{TRW }%DIFDELCMD < & & %%%
+\DIFdelFL{1.2e-0 }%DIFDELCMD < & & %%%
+\DIFdelFL{4.0e-1 }%DIFDELCMD < & %%%
+\DIFdelFL{1.2e-3 }%DIFDELCMD < \\
+%DIFDELCMD < 	%%%
+\DIFdelendFL %DIF >  RW & & 5.5e-3 & & 1.0e-0 & 9.0e-3 \\
+	%DIF >  TRW & & 1.2e-0 & & 4.0e-1 & 1.2e-3 \\
+	logRW & & 1.7e-1 & & 1.2e-0 & 6.0e-2 \\
+	logTRW & & 2.7e-2 & & 1.5e-1 & 3.5e-1 \\
+\bottomrule
+\end{tabular}
+\caption{Optimal scaling parameters for the MH and ETAIS algorithms applied to the constrained multiscale problem in Section~\ref{sec:chem_multiscale}. MH parameters optimised by acceptance rate, and ETAIS parameters optimised using effective sample size.}
+\label{tab:chem_multiscale_scaling}
+\end{table}
+
+The optimal scaling parameters for the proposal distributions are
+given in Table~\ref{tab:chem_multiscale_scaling}. These are
+precomputed by running the algorithms for different parameter
+values. MH-RW based algorithms are tuned to an acceptance rate close
+to the optimal $23.4\%$, and ETAIS algorithms are tuned to maximise the
+effective sample size (ESS). The optimal parameter values for the MH
+algorithms are not particularly informative about their performance,
+since they relate to algorithms operating on different
+transformations. The ESS is highest for the logTRW variant
+of the ETAIS algorithm, as we would hope. We note here that as
+outlined in \cite{cotter2015parallel}, it is possible to construct
+adaptive versions of ETAIS which automatically tune these algorithmic
+parameters, but we compare against the static optimal parameter values
+for all algorithms to ensure fairness.
+
+\begin{figure}[!htb]
+\centering
+\DIFdelbeginFL %DIFDELCMD < \subfigure[Sampling algorithms with no preconditioner for $\tilde{T}$.]{\includegraphics[width=0.495\textwidth]{"images/Applications/CMA_L2_param_space"}}
+%DIFDELCMD < \subfigure[Sampling algorithms with a $\log$ preconditioner for $\tilde{T}$.]{\includegraphics[width=0.495\textwidth]{"images/Applications/CMA_L2_log_space"}}
+%DIFDELCMD < %%%
+\DIFdelendFL %DIF >  \subfigure[Sampling algorithms with no preconditioner for
+    %DIF >      $\tilde{T}$.]{\includegraphics[width=0.495\textwidth]{"images/Applications/CMA_L2_param_space"}}
+\DIFaddbeginFL \includegraphics[width=0.495\textwidth]{"images/Applications/CMA_L2_log_space"}
+\DIFaddendFL \caption{Convergence of \DIFdelbeginFL \DIFdelFL{eight }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{four }\DIFaddendFL different MCMC algorithms for the CMA
+  approximation of the  posterior arising from the example in Section
+  \ref{sec:chem_multiscale}. \DIFaddbeginFL \edit{Plots show average
+    convergence over 32 repeats.}\DIFaddendFL }
+\label{fig:chem_multiscale_L2}
+\end{figure}
+
+\DIFdelbegin \DIFdel{Convergence of the eight algorithms for this example are shown in
+Figure~\ref{fig:chem_multiscale_L2}. We first note the poor
+performance of the MH based algorithms, despite being preconditioned
+with a pre-computed sample covariance. Only the MH-TRW is at all competitive with the ETAIS algorithms. During the simulation interval, the MH-TRW algorithm has not settled down to the expected $\mathcal{O}(1/\sqrt{N})$ rate which means that the estimate is still biased by the long burn-in time. As we have seen in previous examples, the burn-in time for the ETAIS algorithm is negligible.
+}\DIFdelend \DIFaddbegin \edit{
+Convergence of the four algorithms for this example are shown in
+Figure~\ref{fig:chem_multiscale_L2}. We first note the poor
+performance of the MH based algorithms, despite being preconditioned
+with a pre-computed sample covariance. Only the MH-TRW is at all competitive with the ETAIS algorithms. During the simulation interval, the MH-TRW algorithm has not settled down to the expected $\mathcal{O}(1/\sqrt{N})$ rate which means that the estimate is still biased by the long burn-in time. As we have seen in previous examples, the burn-in time for the ETAIS algorithm is negligible.
+
+% The ETAIS variants with RW and TRW proposals perform similarly on both
+% sample spaces. When sampling without a preconditioner, the transport map is not
+% quite as efficient, largely due to the difficulties discussed in the
+% previous section i.e. many proposals are made which do result in
+% negative reaction rates. Sampling with transport maps with a $\log$
+% preconditioner leads to more comparable Monte Carlo errors, with the
+% logTRW being apparently slightly less stable. 
+This proposal method
+becomes more stable as we increase either the ensemble size, or the
+number of iterations between updates of the transport map,
+$T$. Overall we see the smallest Monte Carlo errors for a given number
+of likelihood evaluations coming from the ETAIS-logTRW algorithm.
+}
+\DIFaddend 
+
+\DIFdelbegin \DIFdel{The ETAIS variants with RW and TRW proposals perform similarly on both
+sample spaces. When sampling without a preconditioner, the transport map is not
+quite as efficient, largely due to the difficulties discussed in the
+previous section i.e. many proposals are made which do result in
+negative reaction rates. Sampling with transport maps with a $\log$
+preconditioner leads to more comparable Monte Carlo errors, with the
+logTRW being apparently slightly less stable. This proposal method
+becomes more stable as we increase either the ensemble size, or the
+number of iterations between updates of the transport map,
+$T$. Overall we see the smallest Monte Carlo errors for a given number
+of likelihood evaluations coming from the ETAIS-logTRW algorithm.
+}%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdelend \begin{figure}[!htb]
+\centering
+\DIFdelbeginFL %DIFDELCMD < \subfigure[Push forward of the posterior sample through $\hat{T}$ with
+%DIFDELCMD < no log
+%DIFDELCMD < preconditioner.]{\includegraphics[width=0.8\textwidth]{"images/Applications/CMA_ref_space_MHTRW"}}
+%DIFDELCMD < \\
+%DIFDELCMD < %%%
+\DIFdelendFL %DIF >  \subfigure[Push forward of the posterior sample through $\hat{T}$ with
+%DIF >  no log
+%DIF >  preconditioner.]{\includegraphics[width=0.8\textwidth]{"images/Applications/CMA_ref_space_MHTRW"}}
+%DIF >  \\
+\subfigure[Push forward of the posterior sample through $\hat{T}$ with log preconditioner.]{\includegraphics[width=0.8\textwidth]{"images/Applications/CMA_ref_space_MHlogTRW"}}
+\caption{\DIFdelbeginFL \DIFdelFL{Push forward of the target measure on reference space for the the CMA
+  approximation of the  posterior arising from the example in Section \ref{sec:chem_multiscale}, found using the TRW and logTRW proposal distributions. Components are linked by the relation $r_i = T_i(k_i)$ in (a) and $r_i = T_i\circ\log(k_i)$ in (b).}\DIFdelendFL \DIFaddbeginFL \edit{Push forward of the target measure on reference space for the the CMA
+  approximation of the  posterior arising from the example in Section \ref{sec:chem_multiscale}, found using the logTRW proposal distributions. Components are linked by the relation $r_i = T_i\circ\log(k_i)$.}\DIFaddendFL }
+\label{fig:chem_reference_spaces}
+\end{figure}
+
+\DIFdelbegin \DIFdel{We now look at the proposal distributions of the transport map accelerated algorithms. In Figure~\ref{fig:chem_reference_spaces}, we see the reference spaces found by; (a) mapping the posterior through the map $\hat{T}$, (b) by mapping the posterior through $T\circ\log$. }\DIFdelend \DIFaddbegin \edit{
+We now look at the proposal distributions of the transport map accelerated algorithm. In Figure~\ref{fig:chem_reference_spaces}, we see the reference space found by mapping the posterior through $T\circ\log$.} \DIFaddend For the most part, each of these marginal distributions can be recognised as a Gaussian. However, with the exception of $\mathbb{P}(r_2,r_3)$, we would not consider them to be close to a standardised $\mathcal{N}(0, \text{I})$ distribution. Before thinking that the transport map has not helped us to find a `nicer' space on which to propose new values we should consider that the dimensions are now (1) largely uncorrelated, and (2) the variances in each dimension are much more similar than they are in Figure~\ref{fig:chem_CMA_posterior}.
+
+
+\DIFdelbegin \DIFdel{In Figure~\ref{fig:chem_reference_spaces} (b) we see that
+$\text{var}(r_1)$ and $\text{var}(r_4)$ are much smaller than
+$\text{var}(r_2)$ and $\text{var}(r_3)$. To combat this we have a
+number of choices. }\DIFdelend \DIFaddbegin \edit{We see that
+$\text{var}(r_1)$ and $\text{var}(r_4)$ are much smaller than
+$\text{var}(r_2)$ and $\text{var}(r_3)$. To combat this we have a
+number of choices.} \DIFaddend We might wish to learn the covariance structure of
+the push forward of the target onto the reference space, and
+incorporate this information into the covariances of the mixture
+components in an adaptive scheme. Another option is to increase the
+total order of our index set. For these numerics we have chosen $p=3$,
+but we can obtain reference spaces which are closer to
+$\mathcal{N}_d(0, \text{I})$ by choosing a larger $p$.
+
+\DIFaddbegin \edit{At this point, we note that if the transport map found is equal
+  or close to the Knothe-Rosenblatt rearrangement, then the most
+  efficient sampling strategy is clearly to independently sample from the
+  reference measure and pull these samples back through the map onto
+  (or close to) the target. However we see from Figure
+  \ref{fig:chem_reference_spaces} that in practice for very complex
+  targets, the approximation of the transport map is not as good, and
+  as such the push forward of the target onto the reference
+  space differs greatly from the the intended reference measure. In
+  this case, the pull back of the reference measure will be far from
+  the target distribution, and this independent sampling strategy
+  will be inefficient. This motivates the use of the ETAIS algorithm
+  to efficiently sample from the more complex distributions arising
+  from the push forward of the target distribution. % ****HIGHLIGHT THIS
+  % POINT ELSEWHERE -DEFINITELY IN THE CONCLUSIONS AND MAYBE THE INTRO/ABSTRACT?*****
+  }
+
+\DIFaddend \subsubsection{Comparison of the Constrained and QEA approaches}
+%DIF >  ****GREATLY REDUCE THIS SECTION****
+%DIF >  ****Jump straight to Bayes' factors and Figure 7.5****
+
+The convergence analysis in the previous section was performed for the constrained
+approximation of the posterior distribution. We now look at the
+differences in the CMA and QEA approximations of the posterior distribution
+arising in this problem. Recall that the approaches differed only in the form of the effective degradation propensity $\hat{\alpha}_4$,
+\DIFdelbegin \[
+	\DIFdel{\hat{\alpha}_4^{\text{QEA}}(s) = \frac{k_2k_4s}{k_2+k_3} \quad \text{and} \quad \hat{\alpha}_4^{\text{CMA}}(s) = \frac{k_2k_4s}{k_2+k_3+k_4}.
+}\]
+%DIFAUXCMD
+\DIFdelend \DIFaddbegin \begin{equation}
+	\DIFadd{\hat{\alpha}_4^{\text{QEA}}(s) = \frac{k_2k_4s}{k_2+k_3} \quad \text{and} \quad \hat{\alpha}_4^{\text{CMA}}(s) = \frac{k_2k_4s}{k_2+k_3+k_4}.
+}\end{equation}
+\DIFaddend This difference in the denominator causes a shift in the manifold on
+which the posterior is concentrated\DIFdelbegin \DIFdel{, as can be seen in
+Figure~\ref{fig:chem_diff}, in which we plot the difference in the 
+posteriors densities
+}\begin{displaymath}\DIFdel{\label{eqn:chem_diff}\pi^{\text{CMA}}(\mathbf{k}|\mathbf{R},\mathbf{T}) - \pi^{\text{QEA}}(\mathbf{k}|\mathbf{R},\mathbf{T}).
+}\end{displaymath}
+%DIFAUXCMD
+\DIFdelend \DIFaddbegin \DIFadd{.
+  %DIF >  , as can be seen in
+%DIF >  Figure~\ref{fig:chem_diff}, in which we plot the difference in the 
+%DIF >  posteriors densities
+%DIF >  \begin{equation}\label{eqn:chem_diff}\pi^{\text{CMA}}(\mathbf{k}|\mathbf{R},\mathbf{T}) - \pi^{\text{QEA}}(\mathbf{k}|\mathbf{R},\mathbf{T}).
+%DIF >  \end{equation}
+}\DIFaddend 
+
+\DIFdelbegin %DIFDELCMD < \begin{figure}[htb]
+%DIFDELCMD < \centering
+%DIFDELCMD < \includegraphics[width=0.9\textwidth]{"images/Applications/Diff_CMA_QEA"}
+%DIFDELCMD < %%%
+%DIFDELCMD < \caption{%
+{%DIFAUXCMD
+\DIFdelFL{Difference between the CMA and QEA posteriors as defined in Equation~}%DIFDELCMD < \eqref{eqn:chem_diff}%%%
+\DIFdelFL{.}}
+%DIFAUXCMD
+%DIFDELCMD < \label{fig:chem_diff}
+%DIFDELCMD < \end{figure}
+%DIFDELCMD < %%%
+\DIFdelend %DIF >  \begin{figure}[htb]
+%DIF >  \centering
+%DIF >  \includegraphics[width=0.9\textwidth]{"images/Applications/Diff_CMA_QEA"}
+%DIF >  \caption{Difference between the CMA and QEA posteriors as defined in Equation~\eqref{eqn:chem_diff}.}
+%DIF >  \label{fig:chem_diff}
+%DIF >  \end{figure}
+
+\DIFdelbegin \DIFdel{Since the two posteriors have been approximated using an MCMC sample,
+there is a visible amount of Monte Carlo static, particularly in the tails of
+the distributions. We can see that the differences in the marginals
+for $k_1, k_2,$ and $k_3$ are relatively small, but the marginal for
+$k_4$ varies by a significant amount. 
+}\DIFdelend %DIF >  Since the two posteriors have been approximated using an MCMC sample,
+%DIF >  there is a visible amount of Monte Carlo static, particularly in the tails of
+%DIF >  the distributions. We can see that the differences in the marginals
+%DIF >  for $k_1, k_2,$ and $k_3$ are relatively small, but the marginal for
+%DIF >  $k_4$ varies by a significant amount. 
+
+In the QEA approximation, the effective rate of degradation of $S$ is
+given by $\hat{k}_4^{\text{QEA}} = k_2k_4/(k_2+k_3)$, and as such, our
+observations should be informative about this quantity. Using the CMA,
+this effective rate is approximated by $\hat{k}_4^{\text{CMA}} =
+k_2k_4/(k_2+k_3+k_4)$. To validate our inferences on $k_2$, $k_3$ and
+$k_4$ we would like to discover which model is most accurate and
+informative about these quantities, and which model gives us results
+which are most similar to that which can be obtained from the full
+model, with all reactions (including fast reactions) observed.
+
+    %DIF >      The Bayes factor,
+%DIF >  $B_{1,2}$, between two models, $\mathcal{M}_1$ and $\mathcal{M}_2$,
+%DIF >  given data $D$, can be interpreted as a ratio of the normalisation constants of the posterior distributions given each model,
+%DIF >  \begin{equation}
+%DIF >  	B_{1,2} = \frac{\mathbb{P}(D|\mathcal{M}_1)}{\mathbb{P}(D|\mathcal{M}_2)}, \quad \text{where} \quad \mathbb{P}(D|\mathcal{M}_k) = \int_\mathcal{X} \mathbb{P}(D|\theta_k,\mathcal{M}_k)\mathbb{P}(\theta_k|\mathcal{M}_k) \, \text{d}\theta_k.
+%DIF >  \end{equation}
+%DIF >  Under the ETAIS framework, it is straightforward to calculate these factors using the Monte Carlo estimator for the normalisation constants. From~\cite{robert2013monte} these normalisation constants take the form
+%DIF >  \begin{equation}
+%DIF >  	Z_k \approx \hat{Z}_k\frac{1}{NM}\sum_{i=1}^N\sum_{j=1}^M w_j^{(i)}(\mathcal{M}_k),
+%DIF >  \end{equation}
+%DIF >  where $w_j^{(i)}(\mathcal{M}_k)$ is the weight under model $\mathcal{M}_k$ corresponding to the $j$-th ensemble member on the $i$-th iteration. Hence, $B_{1,2} \approx \hat{Z}_1/\hat{Z}_2$. We can compare more than two models in this way by selecting the model with the largest marginal distribution as the best model.
+\DIFaddbegin 
+
+%DIF >  We now label the constrained model as $\mathcal{M}_1$, the model
+%DIF >  arising from the QEA as $\mathcal{M}_2$, and the full data model as
+%DIF >  $\mathcal{M}_0$. Model $\mathcal{M}_1$ is dependent on the parameter
+%DIF >  $\theta_1 = (k_1, \hat{k}_4^{\text{CMA}})^\top$, and model
+%DIF >  $\mathcal{M}_2$ is dependent on the parameters $\theta_2 = (k_1,
+%DIF >  \hat{k}_4^{\text{QEA}})^\top$. The full model $\mathcal{M}_0$ is
+%DIF >  dependent on all four parameters $\theta_0 = (k_1, k_2, k_3, k_4)^\top$. 
+
+\DIFaddend A conventional way to compare two models under a Bayesian framework is
+to calculate the Bayes factors~\cite{chen2012monte}. The \DIFdelbegin \DIFdel{Bayes factor,
+$B_{1,2}$, between two models, $\mathcal{M}_1$ and $\mathcal{M}_2$,
+given data $D$, can be interpreted as a ratio of the normalisation constants of the posterior distributions given each model,
+}\[
+	\DIFdel{B_{1,2} = \frac{\mathbb{P}(D|\mathcal{M}_1)}{\mathbb{P}(D|\mathcal{M}_2)}, \quad \text{where} \quad \mathbb{P}(D|\mathcal{M}_k) = \int_\mathcal{X} \mathbb{P}(D|\theta_k,\mathcal{M}_k)\mathbb{P}(\theta_k|\mathcal{M}_k) \, \text{d}\theta_k.
+}\]
+%DIFAUXCMD
+\DIFdel{Under the ETAIS framework, it is straightforward to calculate these factors using the Monte Carlo estimator for the normalisation constants. From~\mbox{%DIFAUXCMD
+\cite{robert2013monte} }\hspace{0pt}%DIFAUXCMD
+these normalisation constants take the form
+}\[
+	\DIFdel{Z_k \approx \hat{Z}_k\frac{1}{NM}\sum_{i=1}^N\sum_{j=1}^M w_j^{(i)}(\mathcal{M}_k),
+}\]
+%DIFAUXCMD
+\DIFdel{where $w_j^{(i)}(\mathcal{M}_k)$ is the weight under model $\mathcal{M}_k$ corresponding to the $j$-th ensemble member on the $i$-th iteration. Hence, $B_{1,2} \approx \hat{Z}_1/\hat{Z}_2$. We can compare more than two models in this way by selecting the model with the largest marginal distribution as the best model.
+}%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{We now label the constrained model as $\mathcal{M}_1$, the model
+arising from the QEA as $\mathcal{M}_2$, and the full data model as
+$\mathcal{M}_0$. Model $\mathcal{M}_1$ is dependent on the parameter
+$\theta_1 = (k_1, \hat{k}_4^{\text{CMA}})^\top$, and model
+$\mathcal{M}_2$ is dependent on the parameters $\theta_2 = (k_1,
+\hat{k}_4^{\text{QEA}})^\top$. The full model $\mathcal{M}_0$ is
+dependent on all four parameters $\theta_0 = (k_1, k_2, k_3, k_4)^\top$. The marginal }\DIFdelend \DIFaddbegin \DIFadd{marginal }\DIFaddend densities for the data, evaluated at the observed data, given the models are displayed in Table~\ref{tab:chem_Bayes_marginals}.
+
+\begin{table}[!htb]
+\centering
+\begin{tabular}{cccc}
+	\toprule
+	Model description & $k$ & \quad $\mathbb{P}(D =
+                                  (\mathbf{R},\mathbf{T})^\top|\mathcal{M}_k)$
+  & \DIFdelbeginFL \DIFdelFL{$B_{0,k}$ }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Bayes' factor  }\DIFaddendFL \\ \cmidrule(lr){1-4}
+	Full & 0 & 6.8e-3 & 1 \\
+	CMA & 1 & 3.2e-3 & 2.09 \\
+	QEA & 2 & 1.7e-3 & 4.10 \\ \bottomrule
+\end{tabular}
+\caption{Marginal distributions and Bayes factors for the data
+  $(\mathbf{R},\mathbf{T})^\top$ for each model considered in
+  Section~\ref{sec:chem_multiscale}. \DIFaddbeginFL \DIFaddFL{The Bayes' factors are computed
+  with respect to the ``full'' model.}\DIFaddendFL }
+\label{tab:chem_Bayes_marginals}
+\end{table}
+
+Computing the Bayes factors from Table~\ref{tab:chem_Bayes_marginals}
+we see that we should of course prefer the model \DIFdelbegin \DIFdel{$\mathcal{M}_0$ in
+which we observe all reactions perfectly}\DIFdelend \DIFaddbegin \edit{ in
+which we observe all reactions perfectly and are able to explicitly
+compute the likelihood}\DIFaddend . However this model is not
+significantly better than the CMA model ($B_{0,1} = 2.09 < 3.2$,
+~\cite{kass1995bayes}). The Bayes factor $B_{0,2} = 4.1 > 3.2$ tells
+us that we should significantly prefer the full model to the QEA
+approximation of the posterior. These Bayes factors provide evidence
+for our
+argument that the constrained approximation of the posterior is
+superior to the QEA approximation. 
+
+\begin{figure}[!htb]
+\centering
+\subfigure[Marginal for $\hat{k}_4^{\text{QEA}}$.]{\includegraphics[width=0.495\textwidth]{"images/Applications/QEA_approx_marginal"}}
+\subfigure[Marginal for $\hat{k}_4^{\text{CMA}}$.]{\includegraphics[width=0.495\textwidth]{"images/Applications/CMA_approx_marginal"}}
+\caption{Comparison of the approximate marginal densities for the
+  quantities $\hat{k}_4^{\text{QEA}}$ and $\hat{k}_4^{\text{CMA}}$
+  across the three posterior densities $\pi_i = \mathbb{P}(\theta_i|D,\mathcal{M}_i)$ for $i = 0, 1, 2$.}
+\label{fig:chem_model_comp}
+\end{figure}
+
+Figure~\ref{fig:chem_model_comp} displays more compelling evidence in
+this direction. Here we show the marginal distributions for the
+quantities $\hat{k}_4^{\text{QEA}}$ and $\hat{k}_4^{\text{CMA}}$ with
+respect to each of the three posterior distributions, $\pi_i(\cdot|D,
+\mathcal{M}_i)$, $i = 0, 1, 2$. Firstly, in
+Figure~\ref{fig:chem_model_comp} (a), displaying the marginals for
+$\hat{k}_4^{\text{QEA}}$ we see that $\pi_0$, the density arising from
+the full model with all reactions observed, is peaked a distance away
+from $\pi_2$, QEA approximation. The CMA approximation $\pi_1$, in contrast, is
+peaked close to peak of $\pi_0$, but there is more uncertainty here
+since we do not observe the fast reactions.
+
+In contrast, in Figure~\ref{fig:chem_model_comp} (b), the marginal
+densities for $\hat{k}_4^{\text{CMA}}$ for $\pi_0$ and $\pi_1$ are
+barely distinguishable, even with the vastly reduced data available in
+the posterior $\pi_1$ with CMA approximation. The QEA approximation
+$\pi_2$ is again peaked far away from both of the other distributions.
+This demonstrates that the data regarding the slow variable
+$S$ is only informative about $k_1 $ and $\hat{k}_4^{\text{CMA}}$, as
+predicted by the constrained multiscale approximation.
+
+\subsection{Gene Regulatory Network}\label{sec:grn}
+In this example, we look at a model of a gene regulatory network (GRN)
+mechanism~\cite{kaern2005stochasticity,guido2006bottom,becskei2000engineering}
+used by a cell to regulate the amount of a protein, $P$,
+present. Proteins can bind in pairs to form a dimer $D$. The dimer can
+bind to the gene $G$ and convert it into a ``switched off'' state $G'$, in which the
+production of mRNA molecules $M$ is inhibited. The mRNA encodes for
+production of the protein $P$, and both $P$ and $M$ can degrade. 
+The eight reactions are given in Equation~\eqref{eqn:GRN_reactions}.
+\begin{align}
+	P+P \xleftrightarrows[k_2]{k_1} D \quad & \quad G+D \xleftrightarrows[k_4]{k_3} G' \nonumber\\
+	G \xrightarrow{k_5} G+M \quad & \quad M\xrightarrow{k_6} M+P  \label{eqn:GRN_reactions} \\
+	P \xrightarrow{k_7} \emptyset \quad & \quad M \xrightarrow{k_8} \emptyset \nonumber
+\end{align}
+
+We create trajectories of this system, using the Gillespie SSA, with the following parameters:
+\DIFdelbegin \begin{align*}
+\DIFdel{k_1 = 0.04, \qquad
+k_2 = 5000, \qquad
+k_3 = 100, \qquad
+k_4 = 1, }\\ 
+\DIFdel{k_5 = 0.5, \qquad
+k_6 = 2, \qquad
+k_7 = 0.2, \qquad
+k_8 = 0.05,
+}\end{align*}
+%DIFAUXCMD
+\DIFdelend \DIFaddbegin \begin{eqnarray}
+\DIFadd{k_1 = 0.04, \qquad
+k_2 = 5000, \qquad
+k_3 = 100, \qquad
+k_4 = 1, }\\ 
+\DIFadd{k_5 = 0.5, \qquad
+k_6 = 2, \qquad
+k_7 = 0.2, \qquad
+k_8 = 0.05,
+}\end{eqnarray}
+\DIFaddend over the time period $t \in [0,500]$.
+
+T-cells can be manufactured which bind to
+proteins of a certain type, and cause them to phosphoresce, allowing
+for approximate observations of the concentration levels of that
+protein. However, the T-cells will not necessarily differentiate
+between monomers and dimers of the protein. We approximately replicate such a
+scenario, in a zero-observational noise setting, by assuming that we
+can only observe $T=P + 2D + 2G'$, the total number of protein
+molecules in the system, alongside $M$, the concentration of mRNA. The
+number of dimers, and the status of the genetic switch, are assumed
+unobservable. In
+order to sample from the posterior distribution on the reaction
+parameters in the system given these observations, we can either integrate over all possible
+trajectories of the fast variables (which is computationally
+intractable), or as in Section \ref{sec:chem_multiscale} we can use a
+multiscale method to approximate the posterior. 
+
+The effective dynamics of $T$ and $M$ are then given by:
+\begin{align}
+	\emptyset \xrightarrow{\hat{\alpha}_5} M \quad & \quad M\xrightarrow{\alpha_6} M+T  \label{eqn:GRN_eff} \\
+	T \xrightarrow{\hat{\alpha}_7} \emptyset \quad & \quad M \xrightarrow{\alpha_8} \emptyset \nonumber
+\end{align}
+Here, the propensities are displayed, as opposed to the rates, with
+approximations of the propensities $\hat{\alpha}_5$ and
+$\hat{\alpha}_7$ to be computed. We omit the derivation of these
+effective propensities, using the CMA methodology, for brevity, but
+interested readers can see more details in \cite{russ2017parallel}.
+
+\subsubsection{Target Distribution}
+As alluded to in the previous section, we aim to sample from the CMA
+approximation of the posterior distribution\DIFdelbegin \DIFdel{as defined in
+Equation~}%DIFDELCMD < \eqref{eqn:chem_posterior}%%%
+\DIFdelend . This example is more involved
+than the previous one, since we have an eight dimensional parameter
+space corresponding to the eight reaction rates in the system
+\eqref{eqn:GRN_reactions}. Half of those reactions are
+unobservable, and their effect on the posterior is only felt through
+their effect on the effective propensities $\hat{\alpha}_5$ and
+$\hat{\alpha}_7$, and observations of the frequencies of these reactions.
+
+The priors for this problem were chosen to be fairly uninformative,
+and a list of the hyper-parameters corresponding to each Gamma prior can be found in Table~\ref{tab:grn_priors}.
+
+\begin{table}[!h]
+\centering
+\DIFdelbeginFL %DIFDELCMD < \begin{tabular}{|l|R{1.8em}|R{1.8em}|R{1.8em}|R{1.8em}|R{1.8em}|R{1.8em}|R{1.8em}|R{1.8em}|}
+%DIFDELCMD < 	%%%
+\DIFdelendFL %DIF > \begin{tabular}{|l|R{1.8em}|R{1.8em}|R{1.8em}|R{1.8em}|R{1.8em}|R{1.8em}|R{1.8em}|R{1.8em}|}
+\DIFaddbeginFL \begin{tabular}{lrrrrrrrr}
+	\DIFaddendFL \hline
+	Dimension $i$ & 1 & 2& 3& 4 & 5 & 6 & 7 & 8 \\ \hline
+	$\alpha_i$ & 2 & 100 & 100 & 3 & 3 & 3 & 2 & 2\\ \hline
+	$\beta_i$ &50 & 0.02 & 1 & 1 & 0.6 & 1 & 50 & 50 \\ \hline
+\end{tabular}
+\caption{Hyper parameters for the Gamma priors on each of the reaction rates in the GRN example in Section~\ref{sec:grn}.}
+\label{tab:grn_priors}
+\end{table}
+
+\begin{figure}[htb]
+\centering
+\makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]{"images/Applications/GRN_posterior"}}%
+\caption{Marginal densities of the CMA approximation of the posterior
+  distribution for the GRN example in Section~\ref{sec:grn}.}
+\label{fig:GRN_posterior}
+\end{figure}
+
+The one- and two-dimensional marginal distributions for the full
+posterior distribution are displayed in
+Figure~\ref{fig:GRN_posterior}. The posterior does not appear from
+these joint marginals to contain many
+interesting correlation structures, although several dimensions have
+leptokurtic tails which are difficult for the standard ETAIS algorithm
+to sample from. However as with the previous example, the density is
+concentrated close to a lower-dimensional manifold. The marginal densities also vary over very different
+scales, which could lead to problems with the algorithms which do not
+benefit from the transport map.
+
+\subsubsection{Implementation}
+
+We apply the \DIFdelbegin \DIFdel{eight RW and logRW }\DIFdelend \DIFaddbegin \edit{four logRW} \DIFaddend proposal distributions, with and
+without transport map acceleration, which were discussed in
+Section~\ref{sec:chem_multiscale} to this posterior. As with this
+example, the log conditioner is required so that our transport map is a function $T\colon\mathbb{R}^d\rightarrow\mathbb{R}^d$, rather than a map from $\mathbb{R}_+^d$ to $\mathbb{R}^d$.
+
+The transport map setup has not changed from the previous
+example. However, due to the scaling of the \DIFdelbegin \DIFdel{weight }\DIFdelend \DIFaddbegin \DIFadd{weights }\DIFaddend we have had to be
+more careful about which samples we use to build our map. We require
+that the objective function $C(T)$, from
+Equation~\eqref{eqn:TETAIS_objective} is convex, which requires that
+the second derivative, given in Equation~\eqref{eqn:TETAIS_hessian},
+is positive definite. This positive definite property depends on all
+weights in our sample being strictly positive, which is not always
+possible on a computer, where very small positive numbers can be
+rounded down to absolute zero. For this reason we filter out any samples from the optimisation problem where the weight is a numeric zero. This does not affect the validity of the map since a weight zero would not contribute to the expectation.
+
+In all \DIFdelbegin \DIFdel{eight }\DIFdelend \DIFaddbegin \edit{four} \DIFaddend algorithms we adapt the proposal variances during the
+burn-in phase of the algorithms to avoid the need for a huge ensemble size to approximate the posterior with a mixture of isotropic Gaussian kernels.
+We use the MT resampler, this time with an ensemble size of $M=2500$. The increase in ensemble size compensates for the increase in dimension from four to eight.
+
+As in the previous chemical reaction example, we measure convergence of the algorithms only through the convergence of the mean. We use the sample Mahalanobis distance, with `true' covariance and `true' mean built from a sample of size 2.4 billion using the MH-RW algorithm.
+
+\subsubsection{Convergence results}
+
+The scaling parameters used are selected by optimising the acceptance
+rate for the MH algorithms, and optimising the effective sample size
+for the ETAIS algorithms. The optimal parameters are given in
+Table~\ref{tab:grn_scaling_parameters}. Here, for Metropolis-Hastings
+variants, $\beta_{\%}^*$ is the variance of the proposal, optimised
+for an acceptance rate of $50\%$. For the ETAIS variants,
+$\beta_{\text{ESS}}^*$ is the variance of each of the proposal kernels
+around each particle, optimised numerically for the maximal effective
+sample size (ESS). ESS/$M$ denotes the ratio of ESS to the number of
+particles, with values closer to one denoting a more efficient algorithm.
+
+\begin{table}[!h]
+	\centering
+	\DIFdelbeginFL %DIFDELCMD < \begin{tabular}{lrrrrrrrr}
+%DIFDELCMD < 	%%%
+\DIFdelendFL \DIFaddbeginFL \begin{tabular}{lrrrr}
+	\DIFaddendFL \toprule
+		 & \DIFdelbeginFL %DIFDELCMD < \multicolumn{4}{c}{MH} %%%
+\DIFdelendFL \DIFaddbeginFL \multicolumn{2}{c}{MH} \DIFaddendFL & \DIFdelbeginFL %DIFDELCMD < \multicolumn{4}{c}{ETAIS} %%%
+\DIFdelendFL \DIFaddbeginFL \multicolumn{2}{c}{ETAIS} \DIFaddendFL \\ \cmidrule(lr){\DIFdelbeginFL \DIFdelFL{2-5}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{2-3}\DIFaddendFL } \cmidrule(lr){\DIFdelbeginFL \DIFdelFL{6-9}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{4-5}\DIFaddendFL }
+		& \DIFdelbeginFL \DIFdelFL{RW }%DIFDELCMD < & %%%
+\DIFdelendFL logRW & \DIFdelbeginFL \DIFdelFL{TRW }%DIFDELCMD < & %%%
+\DIFdelendFL log-TRW & \DIFdelbeginFL \DIFdelFL{RW }%DIFDELCMD < & %%%
+\DIFdelendFL logRW & \DIFdelbeginFL \DIFdelFL{TRW }%DIFDELCMD < & %%%
+\DIFdelendFL log-TRW \\ \midrule
+		$\beta_{\%}^*$	 	& \DIFdelbeginFL \DIFdelFL{1.0e-1 }%DIFDELCMD < & %%%
+\DIFdelendFL 3.9e-1 &\DIFdelbeginFL \DIFdelFL{1.0e-0 }%DIFDELCMD < &%%%
+\DIFdelendFL 6.0e-1 & - & - \DIFdelbeginFL %DIFDELCMD < & %%%
+\DIFdelFL{- }%DIFDELCMD < & %%%
+\DIFdelFL{- }\DIFdelendFL \\
+		$\beta_{\text{ESS}}^*$	       & -            & -          & \DIFdelbeginFL \DIFdelFL{-            }%DIFDELCMD < & %%%
+\DIFdelFL{-            }%DIFDELCMD < & %%%
+\DIFdelFL{1.0e-0 }%DIFDELCMD < & %%%
+\DIFdelendFL 1.3e-0 & \DIFdelbeginFL \DIFdelFL{8.0e-1 }%DIFDELCMD < & %%%
+\DIFdelendFL 5.0e-1 \\
+		ESS/$M$		 	 & -            & -            & \DIFdelbeginFL \DIFdelFL{-            }%DIFDELCMD < & %%%
+\DIFdelFL{-            }%DIFDELCMD < & %%%
+\DIFdelFL{3.5e-4 }%DIFDELCMD < & %%%
+\DIFdelendFL 4.7e-2 & \DIFdelbeginFL \DIFdelFL{4.8e-2 }%DIFDELCMD < & %%%
+\DIFdelendFL 1.6e-1  \\
+	\bottomrule
+	\end{tabular}
+	\caption{Scaling parameters for the sampling algorithms applied to the GRN example in Section~\ref{sec:grn}.}
+	\label{tab:grn_scaling_parameters}
+\end{table}
+
+From the effective sample sizes shown in
+Table~\ref{tab:grn_scaling_parameters} we can see the improvement to
+the efficiency of the algorithm both by transforming the parameter
+space into something closer to Gaussian\DIFdelbegin \DIFdel{, and additionally by utilising
+a log preconditioner}\DIFdelend .
+
+Due to the numerical cost of calculating the full relative $L^2$ errors for this posterior, we quantify the convergence speeds of these algorithms using the sample Mahalanobis distance between the sample mean and the `true' mean. This convergence analysis is shown in Figure~\ref{fig:grn_L2}.
+
+\begin{figure}[!htb]
+\centering
+\DIFdelbeginFL %DIFDELCMD < \subfigure[Sampling algorithms with no preconditioner for $\tilde{T}$.]{\includegraphics[width=0.495\textwidth]{"images/Applications/GRN_convergence"}}
+%DIFDELCMD < \subfigure[Sampling algorithms with a $\log$ preconditioner for $\tilde{T}$.]{\includegraphics[width=0.495\textwidth]{"images/Applications/GRN_convergence_log"}}
+%DIFDELCMD < %%%
+\DIFdelendFL %DIF >  \subfigure[Sampling algorithms with no preconditioner for $\tilde{T}$.]{\includegraphics[width=0.495\textwidth]{"images/Applications/GRN_convergence"}}
+\DIFaddbeginFL \includegraphics[width=0.495\textwidth]{"images/Applications/GRN_convergence_log"}
+\DIFaddendFL \caption{Convergence of \DIFdelbeginFL \DIFdelFL{eight }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{four }\DIFaddendFL different MCMC algorithms for the CMA
+  approximation of the  posterior arising from the example in Section
+  \ref{sec:grn}. \DIFaddbeginFL \edit{Plots show average
+    convergence over 32 repeats.}\DIFaddendFL }
+\label{fig:grn_L2}
+\end{figure}
+
+We believe that an ensemble size of 2500
+is over-cautious, despite the larger number of dimensions in this
+example, and that the required ensemble size to sample
+from these posteriors is reduced by the use of the transport map.
+
+The second obvious feature of these convergence plots is that the ETAIS
+algorithms outperform the MH algorithms by a large margin - roughly a
+reduction of two orders of magnitude in the relative error over the
+same number of samples.
+
+\DIFdelbegin \DIFdel{We note that in this 
+example the ETAIS-TRW algorithm does not perform as well as the ETAIS-RW
+algorithm. This is due to the lack of log preconditioner. The
+posterior has support only on the positive quadrant, and without the
+preconditioner, the transport map has to work hard to enforce
+this. With a relatively low-dimensional approximation being used for
+the transport map, this makes it more likely that the map produced
+may hinder sampling rather than improving it. This highlights the
+importance of using preconditioners with transport maps in order to
+ensure absolute continuity of the posterior distribution with respect
+to the pullback of the proposal distribution on reference space.
+}\DIFdelend %DIF >  We note that in this 
+%DIF >  example the ETAIS-TRW algorithm does not perform as well as the ETAIS-RW
+%DIF >  algorithm. This is due to the lack of log preconditioner. The
+%DIF >  posterior has support only on the positive quadrant, and without the
+%DIF >  preconditioner, the transport map has to work hard to enforce
+%DIF >  this. With a relatively low-dimensional approximation being used for
+%DIF >  the transport map, this makes it more likely that the map produced
+%DIF >  may hinder sampling rather than improving it. This highlights the
+%DIF >  importance of using preconditioners with transport maps in order to
+%DIF >  ensure absolute continuity of the posterior distribution with respect
+%DIF >  to the pullback of the proposal distribution on reference space.
+
+\DIFdelbegin \DIFdel{In contrast, when we look at the convergence of these two algorithms
+with the log preconditioner, the transport map version exhibits more
+consistent and stable convergence, with some of the 32 repeats for the
+ETAIS-logRW algorithm producing rare large weights which hinder convergence.
+}\DIFdelend \DIFaddbegin \edit{The transport map version exhibits more
+consistent and stable convergence, with some of the 32 repeats for the
+ETAIS-logRW algorithm producing rare large weights which hinder convergence.}
+\DIFaddend The large increase in the effective sample size
+observed between the ETAIS-logRW and ETAIS-logTRW algorithms is
+converted into an estimate which is twice as accurate after 1 million
+samples. This demonstrates our claim that the transport map can
+produce stable ETAIS implementations with smaller ensemble sizes than without.
+
+\DIFdelbegin \DIFdel{A similar pattern is seen in the MH algorithms, where the MH-TRW
+performs the worst, and the MH-logTRW algorithm performs the best,
+although only marginally. 
+}\DIFdelend \DIFaddbegin \edit{A similar pattern is seen in the MH algorithms, where the MH-logTRW algorithm performs the best,
+although only marginally. }
+\DIFaddend 
+
+\section{Discussion}\label{sec:conc}
+In this paper, we have investigated the use of transport maps to
+accelerate and stabilise ensemble importance sampling schemes. We
+considered the ETAIS methodology here, but the approach used is
+applicable to all such methods. The idea is powerful since it allows
+adaptive importance sampling schemes to be efficient and stable for
+smaller ensemble sizes. This in turn suggests that the improvements in
+performance that adaptive importance sampling schemes can deliver
+could be made applicable to a bigger class of problems.
+
+\DIFaddbegin \edit{If good transport maps can be found, such that the push forward
+  of the posterior is close to a reference Gaussian, then the most
+  efficient approach is to draw independent samples pulled back
+  through the map onto the target space. However, for complex
+  posteriors, in particular the type that we have observed here where
+  due to sloppiness in the model, the posterior is concentrated on a
+  low-dimensional manifold, a good map is hard to find. The numerical
+  approximation of the optimal map leads to a measure on the reference
+  space which is far removed from the reference Gaussian, and requires
+  more considered exploration. Adaptive importance sampling schemes
+  such as ETAIS are able to efficiently sample from such a measure
+  more efficiently than Metropolis-Hastings equivalents.}
+
+\DIFaddend In particular we looked at the application of these methods to
+problems arising in inverse problems for multiscale stochastic
+chemical networks, where the posterior distributions which arise can
+be highly concentrated along curved manifolds in parameter
+space. Through these results we also demonstrated the improvement in
+accuracy of inference for multiscale problems when more sophisticated
+multiscale approximations are employed. Below we highlight two areas for future work.
+
+\subsection{Sampling in higher
+  dimensions}\label{sec:TETAIS_higher_dim}
+
+One major issue with importance sampling-based algorithms is the curse of
+dimensionality. This curse is two-fold, since as the target
+distribution's dimension is increased, a larger ensemble size is often
+required in order to capture the addition complexity of the density
+that the higher dimension enables. Furthermore, the cost of the
+resampling step within the algorithm grows with the ensemble size. For
+example, the ETPF algorithm is $\mathcal{O}(n^2)$. However, the
+simplification that the transport map makes has some potential to go
+some way to tackling this problem.
+
+Here, we will briefly discuss how transport maps could aid
+with making moderately higher dimensional problems accessible to this
+family of methods. It is important to emphasise here that these
+methods are unlikely to be suitable in anything other than low
+dimensional problems, but the idea that we present here, which is the
+subject of future investigation, could make them applicable to more
+problems which have more than a handful of parameters.
+
+Armed with a high quality transport map, we can transform the target
+distribution close to a Gaussian reference measure, which is
+uncorrelated in all dimensions. This lack of correlations allows us to
+resample in each dimension separately. Resampling in a
+single dimension allows for optimisations in resampling code, and also
+means that the resampler is not affected by the curse of
+dimensionality. 
+
+In one
+dimension, the ETPF algorithm can be implemented very efficiently. As
+described in~\cite{reich2013nonparametric}, the coupling matrix has
+all non-zero entries in a staircase pattern when the state space is
+ordered. We can exploit this knowledge to produce
+Algorithm~\ref{alg:ETPF_1d}, which is much faster than using the
+simplex algorithm to minimise the associated cost function, and faster
+than the MT algorithm\cite{cotter2015parallel}, which is itself a
+greedy approximation to the output of the ETPF resampler. Moreover, the task of
+running this resampler can then be parallelised over $d$
+processors. This could be an area for further study.
+
+\begin{table}[!htpb]
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\BlankLine
+Sort the states, $\{(w_i, x_i)\}_{i=1}^M$, into ascending order.\;
+Normalise the weights $p_i = w_i/\|w\|_1$.\;
+Set $y_i \leftarrow 0$ for all $i=1,\dots,M$.\;
+Set $c \leftarrow 0$\;
+\For{$i \leftarrow 1, \dots, M$}{
+	Set $t \leftarrow p_i$\;
+	\While{$j \leq M$ and $t > 0$}
+	{
+		Set $s \leftarrow \left(M^{-1}-c\right) \wedge t$\;
+		Increase $y_j$ by $M\times s\times x_i$.\;
+		Decrease $t$ by $s$.\;
+		Increase $c$ by $s$.\;
+		\If{$t>0$}
+		{
+			Increase $j$ by 1.\;
+			Set $c \leftarrow 0$.
+		}
+	}
+}
+Return $y$.\;
+\caption{ETPF algorithm in one dimension.\label{alg:ETPF_1d}}
+\end{algorithm}
+\end{table}
+
+\DIFdelbegin \subsection{\DIFdel{Invertibility of the transport map}}
+%DIFAUXCMD
+\addtocounter{subsection}{-1}%DIFAUXCMD
+\DIFdel{In this paper, we have considered an approach similar to that
+presented in \mbox{%DIFAUXCMD
+\cite{parno2014transport}}\hspace{0pt}%DIFAUXCMD
+, where we aim to find an
+invertible map which approximates the true transport map between the
+reference measure and the target measure. However, this true map is
+invariably itself not invertible. However, by considering embedding
+the map in higher dimensions\mbox{%DIFAUXCMD
+\cite{whitney_self-intersections_1994,nash1956imbedding,takens_detecting_1981}}\hspace{0pt}%DIFAUXCMD
+, these issues of non-invertibility may be
+avoided, and higher quality maps may be found which better aid
+exploration and sampling of the whole state space.
+}\DIFdelend %DIF >  \subsection{Invertibility of the transport map}
+%DIF >  In this paper, we have considered an approach similar to that
+%DIF >  presented in \cite{parno2018transport}, where we aim to find an
+%DIF >  invertible map which approximates the true transport map between the
+%DIF >  reference measure and the target measure. However, this true map is
+%DIF >  invariably itself not invertible. However, by considering embedding
+%DIF >  the map in higher dimensions\cite{whitney_self-intersections_1994,nash1956imbedding,takens_detecting_1981}, these issues of non-invertibility may be
+%DIF >  avoided, and higher quality maps may be found which better aid
+%DIF >  exploration and sampling of the whole state space.
+
+\subsection{Adaptivity of ensemble sizes}
+At initialisation, our transport map approximation is equal to the
+identity, and the algorithm is essentially the standard ETAIS
+algorithm. In order to build a good transport map approximation, we
+require a good sample from the posterior distribution. Since our aim
+is to apply this methodology to challenging problems, this is itself a
+challenge. However, in the limit of the number of ensemble members
+going to infinity, this approach is consistent and stable. However,
+large ensemble sizes come with large computational costs.
+
+We propose that the transport map acceleration could be used in
+conjunction with an adaptive ensemble size mechanism. First we can
+initialise the algorithm with a large ensemble size, and the identity transport map. As
+we explore the density, the transport map quickly improves, making it
+possible to sample efficiently and stably with a smaller ensemble
+size. The problem then amounts to finding a reliable method to
+approximate the lowest stable ensemble size.
+
+% \subsection{The chicken and egg paradox}
+% Another issue with the use of transport maps of this ilk, is that in
+% order to construct such a map, we require a representative sample from
+% the posterior distribution. Since these methods are designed to sample
+% from distributions which are inherently difficult to sample from, be
+% it due to multimodality, as looked at in \cite{cotter2015parallel}, or
+% as in this paper, due to the density being highly concentrated close
+% to a curved manifold in parameter space, it could be argued that accessing this initial set of
+% samples remains a hard problem. This remains an open problem, which we
+% are aiming to address in future work.
+
+
+\bibliographystyle{siam}
+\bibliography{bibliography}
+
+\end{document}
